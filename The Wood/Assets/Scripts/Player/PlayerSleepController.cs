@@ -21,19 +21,26 @@ public class PlayerSleepController : MonoBehaviour
         // Update the sleep canvas group
         sleepCanvasGroup.alpha = Mathf.Lerp(sleepCanvasGroup.alpha, (IsSleeping) ? 1f : 0f, Time.deltaTime * 4f);
         // Update the global audio volume
-        AudioListener.volume = Mathf.Lerp(AudioListener.volume, (IsSleeping) ? 0f : 1f, Time.deltaTime * 4f);
+        AudioListener.volume = Mathf.Lerp(AudioListener.volume, (IsSleeping) ? 0f : 1f, Time.deltaTime * 2f);
     }
 
     // Event listeners
     private void SleepController_OnGoToSleep()
     {
-        IsSleeping = true;
-        print("You fell asleep...");
+        StartCoroutine(SleepFadeDelay());
     }
 
     private void SleepController_OnWakeUp()
     {
         IsSleeping = false;
         print("You woke up.");
+    }
+
+    IEnumerator SleepFadeDelay()
+    {
+        yield return new WaitForSeconds(1f);
+
+        IsSleeping = true;
+        print("You fell asleep...");
     }
 }

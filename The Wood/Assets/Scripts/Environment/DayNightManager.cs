@@ -174,7 +174,7 @@ public class DayNightManager : MonoBehaviour
 
     private IEnumerator RestartSound(Sound sound, float playbackTime)
     {
-        print("RestartSound [" + sound.name + "]");
+        //print("RestartSound [" + sound.name + "]");
         yield return StopSound(sound);
         sound.playCoroutine = StartCoroutine(PlaySound(sound, playbackTime));
     }

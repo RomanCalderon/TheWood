@@ -211,7 +211,7 @@ public class BuildingManager : MonoBehaviour
             Debug.LogError("Building is null");
         else
         {
-            Debug.Log("Already have a reference to [" + building.name + "] ID: " + building.instanceID);
+            //Debug.Log("Already have a reference to [" + building.name + "] ID: " + building.instanceID);
             //buildings.Add(new BuildingSaveData(building, building.instanceID));
             //Destroy(building.gameObject);
         }

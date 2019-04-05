@@ -20,8 +20,6 @@ public class Player : Killable
         SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
 
         UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
-
-        SleepController.OnGoToSleep += SleepController_OnGoToSleep;
     }
 
     // Start is called before the first frame update
@@ -57,13 +55,6 @@ public class Player : Killable
     {
         SetCursorActive(state);
         SetControlState(!state);
-    }
-
-    // Save the game when the player sleeps
-    private void SleepController_OnGoToSleep()
-    {
-        // Invoke the SaveGame event
-        SaveLoadController.SaveGame();
     }
 
     private void SaveLoadController_OnSaveGame()

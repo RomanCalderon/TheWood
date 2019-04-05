@@ -9,6 +9,6 @@ public class DayNightCycleSaveData
 
     public DayNightCycleSaveData(DayNightCycle dayNightCycle)
     {
-        hour = (dayNightCycle.GetCurrentHour() + SleepController.Instance.HoursSlept) % 24;
+        hour = (SleepController.Instance.HourSleptAt + SleepController.Instance.HoursSlept) % 24;
     }
 }

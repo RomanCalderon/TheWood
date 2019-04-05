@@ -12,6 +12,7 @@ public class SleepController : MonoBehaviour
 
     private const int SLEEP_TIME_RATE = 60;
 
+    [HideInInspector] public int HourSleptAt;
     [HideInInspector] public int HoursSlept;
 
     void Awake()
@@ -22,13 +23,6 @@ public class SleepController : MonoBehaviour
             Instance = this;
     }
 
-    private void Update()
-    {
-        // FOR TESTING
-        if (Input.GetKeyDown(KeyCode.T))
-            Sleep(8);
-    }
-
     public void Sleep(int hours)
     {
         if (hours < 1)
@@ -37,8 +31,10 @@ public class SleepController : MonoBehaviour
         hours = Mathf.Clamp(hours, 0, 23);
 
         HoursSlept = hours;
+        HourSleptAt = DayNightCycle.instance.GetCurrentHour();
         OnGoToSleep?.Invoke();
         StartCoroutine(SleepEnum(hours));
+        StartCoroutine(SaveGameEnum());
     }
 
     private IEnumerator SleepEnum(int hours)
@@ -55,5 +51,13 @@ public class SleepController : MonoBehaviour
 
         DayNightCycle.instance.SetRate(1);
         OnWakeUp?.Invoke();
+    }
+
+    private IEnumerator SaveGameEnum()
+    {
+        yield return new WaitForSeconds(2f);
+
+        // Invoke the SaveGame event
+        SaveLoadController.SaveGame();
     }
 }

@@ -20,6 +20,8 @@ public class InteractionController : MonoBehaviour
     {
         OnPreviewInteractable += ShowInteractablePrompt;
         UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
+        SleepController.OnGoToSleep += SleepController_OnGoToSleep;
+        SleepController.OnWakeUp += SleepController_OnWakeUp;
     }
 
     // Start is called before the first frame update
@@ -82,5 +84,16 @@ public class InteractionController : MonoBehaviour
     {
         interactionPromptText.text = string.Empty;
         interactionPromptText.gameObject.SetActive(false);
+    }
+
+    private void SleepController_OnGoToSleep()
+    {
+        CanInteract = false;
+        HideInteractablePrompt();
+    }
+
+    private void SleepController_OnWakeUp()
+    {
+        CanInteract = true;
     }
 }
