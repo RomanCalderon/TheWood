@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a170e5859c3bf9d4393dd0b51dc3cfbc, type: 3}
+  m_Name: Test Quest
+  m_EditorClassIdentifier: 
+  QuestName: Test Quest Time!
+  Description: You know what time it is...
+  KillGoals:
+  - Description: Kill 2 Corrupted Wolves.
+    RequiredAmount: 2
+    EnemyID: 0
+  CollectionGoals:
+  - Description: Get 1 Log Potion
+    RequiredAmount: 1
+    ItemID: potion_log
+  ExperienceReward: 150
+  Completed: 1

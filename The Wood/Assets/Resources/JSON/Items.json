@@ -1,0 +1,178 @@
+[
+  // CONSUMABLES
+  {
+    "itemSlug": "water",
+    "itemName": "Water",
+    "description": "Vital for all known forms of life. Provides substantial rehydration.",
+    "itemType": "CONSUMABLE",
+    "actionName": "Drink",
+    "itemModifier": 0
+  },
+  {
+    "itemSlug": "milk",
+    "itemName": "Milk",
+    "description": "A valuable commodity in these parts.",
+    "itemType": "CONSUMABLE",
+    "actionName": "Drink",
+    "itemModifier": 0
+  },
+  {
+    "itemSlug": "health_potion",
+    "itemName": "Health Potion",
+    "description": "Provides full recovery from all conventional wounds.",
+    "itemType": "CONSUMABLE",
+    "actionName": "Drink",
+    "itemModifier": 0
+  },
+  {
+    "itemSlug": "meds",
+    "itemName": "Meds",
+    "description": "A small supply of medication to treat minor illnesses.",
+    "itemType": "CONSUMABLE",
+    "actionName": "Use",
+    "itemModifier": 0
+  },
+  {
+    "itemSlug": "potion_log",
+    "itemName": "Log Potion",
+    "description": "A potion that logs something to the console.",
+    "itemType": "CONSUMABLE",
+    "actionName": "Drink",
+    "itemModifier": 0
+  },
+
+
+  // WEAPONS
+  {
+    "itemSlug": "shotgun",
+    "itemName": "Shotgun",
+    "description": "Good for close-range attack.",
+    "itemType": "WEAPON",
+    "actionName": "Equip",
+    "itemModifier": 0,
+    "stats": [
+      {
+        "StatType": "ATTACK",
+        "baseValue": 80,
+        "statName": "Attack"
+      },
+      {
+        "StatType": "DEFENSE",
+        "baseValue": 15,
+        "statName": "Defense"
+      }
+    ]
+  },
+  {
+    "itemSlug": "slingshot",
+    "itemName": "Slingshot",
+    "description": "Hunting slingshot for small game.",
+    "itemType": "WEAPON",
+    "actionName": "Equip",
+    "itemModifier": 0,
+    "stats": [
+      {
+        "StatType": "ATTACK",
+        "baseValue": 15,
+        "statName": "Attack"
+      },
+      {
+        "StatType": "DEFENSE",
+        "baseValue": 4,
+        "statName": "Defense"
+      }
+    ]
+  },
+
+
+  // GOODS
+  {
+    "itemSlug": "silver",
+    "itemName": "Silver",
+    "description": "A precious metal, commonly used as currency.",
+    "itemType": "GOOD",
+    "actionName": "Use",
+    "itemModifier": 0
+  },
+
+
+  // TOOLS
+  {
+    "itemSlug": "pitchfork",
+    "itemName": "Pitch Fork",
+    "description": "Good for defense and close-range attack.",
+    "itemType": "TOOL",
+    "actionName": "Equip",
+    "itemModifier": 0,
+    "stats": [
+      {
+        "StatType": "ATTACK",
+        "baseValue": 22,
+        "statName": "Attack"
+      },
+      {
+        "StatType": "DEFENSE",
+        "baseValue": 10,
+        "statName": "Defense"
+      }
+    ]
+  },
+  {
+    "itemSlug": "torch",
+    "itemName": "Torch",
+    "description": "A source of light.",
+    "itemType": "TOOL",
+    "actionName": "Equip",
+    "itemModifier": 0,
+    "stats": [
+      {
+        "StatType": "ATTACK",
+        "baseValue": 6,
+        "statName": "Attack"
+      },
+      {
+        "StatType": "DEFENSE",
+        "baseValue": 5,
+        "statName": "Defense"
+      }
+    ]
+  },
+  {
+    "itemSlug": "bucket",
+    "itemName": "Bucket",
+    "description": "1 gallon bucket for carrying liquids.",
+    "itemType": "TOOL",
+    "actionName": "Equip",
+    "itemModifier": 0
+  },
+
+
+  // RESOURCES
+  {
+    "itemSlug": "wood",
+    "itemName": "Wood",
+    "description": "It used to be a heavy branch to an old oak tree, now it's just a dry wood log. Used for building.",
+    "itemType": "RESOURCE",
+    "actionName": "",
+    "itemModifier": 0
+  },
+  {
+    "itemSlug": "rope",
+    "itemName": "Rope",
+    "description": "1 meter long piece of rope. Used for building.",
+    "itemType": "RESOURCE",
+    "actionName": "",
+    "itemModifier": 0
+  },
+
+
+  // QUEST ITEMS
+  {
+    "itemSlug": "meds",
+    "itemName": "Meds",
+    "description": "A small supply of medication to treat minor illnesses.",
+    "itemType": "QUESTING",
+    "actionName": "Use",
+    "itemModifier": 0
+  }
+]
