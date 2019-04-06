@@ -32,7 +32,10 @@ public class BuildingController : MonoBehaviour
     [SerializeField] List<Resource> resources;
 
     [SerializeField] List<Blueprint> blueprints = new List<Blueprint>();
+
+    public static bool blueprintPreviewMode;
     private Blueprint blueprintToPlace;
+    private Blueprint blueprintInstance;
 
 
     private void Awake()
@@ -42,35 +45,67 @@ public class BuildingController : MonoBehaviour
         OnRequestResources += ValidateResourceRequest;
     }
 
-    private void Start()
-    {
-        // FOR TESTING
-        blueprintToPlace = blueprints[0];
-    }
-
     private void Update()
     {
-        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
-        Quaternion blueprintRotation = transform.rotation;
-        blueprintRotation.x = 0;
-        blueprintRotation.y -= 90;
-        blueprintRotation.z = 0;
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 6f, validBlueprintLayerMask))
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            // Display a preview of where this blueprint will be placed first
+            PreviewBlueprint(blueprintPreviewMode = !blueprintPreviewMode, blueprints[0]);
+        }
 
-            if (Input.GetKeyDown(/*FOR TESTING*/KeyCode.B))
+        if (blueprintPreviewMode)
+        {
+            Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+            Quaternion blueprintRotation = Quaternion.Euler(0, transform.eulerAngles.y - 90, 0);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 6f, validBlueprintLayerMask))
             {
-                PlaceBlueprint(blueprintToPlace, hit.point, blueprintRotation);
+                // Recreate blueprintInstance if blueprintToPlace is null
+                if (blueprintInstance == null)
+                    PreviewBlueprint(true, blueprintToPlace);
+
+                if (!blueprintInstance.gameObject.activeSelf)
+                    blueprintInstance.gameObject.SetActive(true);
+
+                // Display a preview of where this blueprint will be placed
+                if (blueprintInstance != null)
+                {
+                    blueprintInstance.transform.position = hit.point;
+                    blueprintInstance.transform.rotation = blueprintRotation;
+
+                    // Place blueprintToPlace
+                    if (Input.GetKeyDown(/*FOR TESTING*/KeyCode.P))
+                    {
+                        PlaceBlueprint(hit.point, blueprintRotation);
+                    }
+                }
+            }
+            else
+                blueprintToPlace.gameObject.SetActive(false);
+        }
+    }
+
+    private void PreviewBlueprint(bool previewMode, Blueprint blueprintReference)
+    {
+        if (previewMode)
+        {
+            blueprintToPlace = blueprintInstance = Instantiate(blueprintReference.gameObject).GetComponent<Blueprint>();
+            blueprintToPlace.gameObject.name = blueprintInstance.gameObject.name = blueprintReference.gameObject.name;
+        }
+        else
+        {
+            // Stop blueprint preview mode
+            if (blueprintInstance != null)
+            {
+                Destroy(blueprintInstance.gameObject);
+                blueprintToPlace = blueprintInstance = null;
             }
         }
     }
 
-    private void PlaceBlueprint(Blueprint blueprintReference, Vector3 pos, Quaternion rot)
+    private void PlaceBlueprint(Vector3 pos, Quaternion rot)
     {
-        Blueprint blueprintInstance = Instantiate(blueprintReference.gameObject, pos, rot).GetComponent<Blueprint>();
         blueprintInstance.generated = true;
+        blueprintInstance = null;
     }
 
 

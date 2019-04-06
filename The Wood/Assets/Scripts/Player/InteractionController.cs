@@ -38,7 +38,7 @@ public class InteractionController : MonoBehaviour
 
     void Interactions()
     {
-        if (CanInteract && !PlayerSleepController.IsSleeping)
+        if (CanInteract && !PlayerSleepController.IsSleeping && !BuildingController.blueprintPreviewMode)
         {
             Ray ray = new Ray(camera.position, camera.forward);
 
