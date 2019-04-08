@@ -23,57 +23,91 @@ public class Resource
 
 public class BuildingController : MonoBehaviour
 {
+    public delegate void BuildModeHandler(Blueprint blueprint);
+    public static event BuildModeHandler OnSelectedBlueprint;
     public delegate void ResourceRequestHandler(Resource resource, Action<Resource, int> onValidate);
     public static event ResourceRequestHandler OnRequestResources;
 
     [SerializeField] Transform playerCamera;
-    [SerializeField] LayerMask validBlueprintLayerMask;
+    [SerializeField] LayerMask validLayerMask;
+    int validHitLayers;
 
     [SerializeField] List<Resource> resources;
 
     [SerializeField] List<Blueprint> blueprints = new List<Blueprint>();
 
-    public static bool blueprintPreviewMode;
+    public static bool InBuildMode;
     private Blueprint blueprintToPlace;
     private Blueprint blueprintInstance;
+    private string originalLayerName;
+
+    [Header("UI")]
+    [SerializeField] RectTransform blueprintUIHolder;
+    [SerializeField] GameObject blueprintUIButtonPrefab;
 
 
     private void Awake()
     {
+        // Resources
         UIEventHandler.OnItemAddedToInventory += AddResource;
         UIEventHandler.OnItemRemovedFromInventory += RemoveResource;
         OnRequestResources += ValidateResourceRequest;
+
+        // Blueprints
+        OnSelectedBlueprint += BuildingController_OnSelectedBlueprint;
+        UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
+    }
+
+    private void Start()
+    {
+        // Ignore the Player layer
+        validHitLayers = LayerMask.NameToLayer("Terrain");
+
+        // Setup the UI
+        foreach (Blueprint blueprint in blueprints)
+        {
+            BlueprintUIButton blueprintUI = Instantiate(blueprintUIButtonPrefab, blueprintUIHolder).GetComponent<BlueprintUIButton>();
+            blueprintUI.Initialize(blueprint, this);
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            PreviewBlueprint(blueprintPreviewMode = !blueprintPreviewMode, blueprints[0]);
-        }
+        BuildMode();
+    }
 
-        if (blueprintPreviewMode)
+    private void BuildMode()
+    {
+        if (InBuildMode)
         {
             Ray ray = new Ray(playerCamera.position, playerCamera.forward);
             Quaternion blueprintRotation = Quaternion.Euler(0, transform.eulerAngles.y - 90, 0);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, 6f, validBlueprintLayerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 6f, validLayerMask))
             {
-                // Recreate blueprintInstance if blueprintToPlace is null
+                // Create blueprintInstance if it's is null
                 if (blueprintInstance == null)
                     PreviewBlueprint(true, blueprintToPlace);
 
+                // If the raycast hit is not on the Terrain, return
+                if (hit.transform.gameObject.layer != validHitLayers)
+                {
+                    blueprintToPlace.gameObject.SetActive(false);
+                    return;
+                }
+
+                // Enable blueprintInstance if it's disabled
                 if (!blueprintInstance.gameObject.activeSelf)
                     blueprintInstance.gameObject.SetActive(true);
 
                 // Display a preview of where this blueprint will be placed
-                if (blueprintInstance != null)
+                if (blueprintInstance != null && blueprintInstance.gameObject.activeSelf)
                 {
                     blueprintInstance.transform.position = hit.point;
                     blueprintInstance.transform.rotation = blueprintRotation;
 
-                    // Place blueprintToPlace
-                    if (Input.GetKeyDown(/*FOR TESTING*/KeyCode.P))
+                    // Place blueprintInstancec
+                    if (Input.GetKeyDown(KeyBindings.ActionOne))
                     {
                         PlaceBlueprint(hit.point, blueprintRotation);
                     }
@@ -81,15 +115,28 @@ public class BuildingController : MonoBehaviour
             }
             else
                 blueprintToPlace.gameObject.SetActive(false);
+
+            // Cancel build mode with ActionTwo
+            if (Input.GetKeyDown(KeyBindings.ActionTwo))
+            {
+                CancelBuildMode();
+            }
         }
     }
 
-    private void PreviewBlueprint(bool previewMode, Blueprint blueprintReference)
+    public void PreviewBlueprint(bool buildMode, Blueprint blueprintReference)
     {
-        if (previewMode)
+        InBuildMode = buildMode;
+
+        if (InBuildMode)
         {
-            blueprintToPlace = blueprintInstance = Instantiate(blueprintReference.gameObject).GetComponent<Blueprint>();
-            blueprintToPlace.gameObject.name = blueprintInstance.gameObject.name = blueprintReference.gameObject.name;
+            originalLayerName = LayerMask.LayerToName(blueprintReference.gameObject.layer);
+
+            blueprintInstance = Instantiate(blueprintReference.gameObject).GetComponent<Blueprint>();
+            blueprintInstance.gameObject.name = blueprintReference.gameObject.name;
+            blueprintInstance.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+            blueprintToPlace = blueprintInstance;
         }
         else
         {
@@ -102,12 +149,44 @@ public class BuildingController : MonoBehaviour
         }
     }
 
-    private void PlaceBlueprint(Vector3 pos, Quaternion rot)
+    public void CancelBuildMode()
     {
-        blueprintInstance.generated = true;
-        blueprintInstance = null;
+        InBuildMode = false;
+
+        // Stop blueprint preview mode
+        if (blueprintInstance != null)
+        {
+            Destroy(blueprintInstance.gameObject);
+            blueprintToPlace = blueprintInstance = null;
+        }
     }
 
+    private void PlaceBlueprint(Vector3 pos, Quaternion rot)
+    {
+        blueprintInstance.gameObject.SetActive(true);
+        blueprintInstance.generated = true;
+        blueprintInstance.gameObject.layer = LayerMask.NameToLayer(originalLayerName);
+        blueprintInstance = null;
+    }
+    
+    // Events
+    public static void SelectedBlueprint(Blueprint blueprint)
+    {
+        OnSelectedBlueprint?.Invoke(blueprint);
+    }
+
+    // Event Listeners
+    private void BuildingController_OnSelectedBlueprint(Blueprint blueprint)
+    {
+        PreviewBlueprint(true, blueprint);
+    }
+
+    private void UIEventHandler_OnUIDisplayed(bool state)
+    {
+        // When a UI is displayed, cancel build mode
+        if (state)
+            CancelBuildMode();
+    }
 
 
     #region Resource Management

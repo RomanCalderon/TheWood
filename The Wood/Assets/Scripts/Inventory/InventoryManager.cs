@@ -48,7 +48,6 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-
         GiveDefaultItems();
     }
 
@@ -91,7 +90,6 @@ public class InventoryManager : MonoBehaviour
         GiveItem("potion_log");
         GiveItem("pitchfork");
         GiveItem("wood", 7);
-        GiveItem("rope", 2);
     }
 
     public void SetItemDetails(Item item, Button selectedButton)
@@ -161,7 +159,8 @@ public class InventoryManager : MonoBehaviour
         // Give saved Items
         foreach (string itemSlug in data.playerItemsSlugs)
         {
-            GiveItem(itemSlug);
+            if (!playerItems.Contains(GetItem(itemSlug)))
+                GiveItem(itemSlug);
         }
 
         //Debug.Log("Loaded InventoryManager");

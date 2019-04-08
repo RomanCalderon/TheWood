@@ -49,8 +49,8 @@ public class BlueprintSaveData
 public class Blueprint : Interactable
 {
     public string prefabPath;
-    /*[HideInInspector]*/ public int instanceID = -1;
-    /*[HideInInspector]*/ public bool generated;
+    [HideInInspector] public int instanceID = -1;
+    [HideInInspector] public bool generated;
 
     public int CurrentProgress;
     public int Requirement;

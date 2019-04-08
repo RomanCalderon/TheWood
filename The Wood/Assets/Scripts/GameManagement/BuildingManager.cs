@@ -170,17 +170,13 @@ public class BuildingManager : MonoBehaviour
     // Blueprints
     private void BuildingManager_OnBlueprintAdded(Blueprint blueprint)
     {
-        //BlueprintSaveData bsd = new BlueprintSaveData(blueprint, blueprints.Count);
-
         if (blueprint != null && !ContainsBlueprint(blueprint) && blueprint.generated)
             blueprints.Add(new BlueprintSaveData(blueprint, blueprints.Count));
         else if (blueprint == null)
             Debug.LogError("Blueprint is null");
         else
         {
-            Debug.Log("Already have a reference to [" + blueprint.name + "] ID: " + blueprint.instanceID);
-            //blueprints.Add(new BlueprintSaveData(blueprint, blueprint.instanceID));
-            //Destroy(blueprint.gameObject);
+            //Debug.Log("Already have a reference to [" + blueprint.name + "] ID: " + blueprint.instanceID);
         }
     }
 
@@ -203,8 +199,6 @@ public class BuildingManager : MonoBehaviour
     // Buildings
     private void BuildingManager_OnBuildingAdded(Building building)
     {
-        //BuildingSaveData bsd = new BuildingSaveData(building, buildings.Count);
-
         if (building != null && !ContainsBuilding(building) && building.generated)
             buildings.Add(new BuildingSaveData(building, buildings.Count));
         else if (building == null)
@@ -212,8 +206,6 @@ public class BuildingManager : MonoBehaviour
         else
         {
             //Debug.Log("Already have a reference to [" + building.name + "] ID: " + building.instanceID);
-            //buildings.Add(new BuildingSaveData(building, building.instanceID));
-            //Destroy(building.gameObject);
         }
     }
 

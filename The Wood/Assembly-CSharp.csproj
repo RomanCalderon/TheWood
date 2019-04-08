@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Audio\Sound.cs" />
     <Compile Include="Assets\Scripts\BaseStat.cs" />
+    <Compile Include="Assets\Scripts\Building\BlueprintUIButton.cs" />
     <Compile Include="Assets\Scripts\CharacterPanel.cs" />
     <Compile Include="Assets\Scripts\CharacterStats.cs" />
     <Compile Include="Assets\Scripts\CombatEvents.cs" />

@@ -25,7 +25,6 @@ public class QuestController : MonoBehaviour
     public static event QuestProgressHandler OnQuestProgressUpdated;
 
     private bool QuestMenuDisplayed = false;
-    [SerializeField] GameObject questMenuUI;
 
     public List<Quest> trackedQuests = new List<Quest>();
     public List<Quest> untrackedQuests = new List<Quest>();
@@ -56,13 +55,6 @@ public class QuestController : MonoBehaviour
         OnQuestUntracked += UntrackQuest;
         OnQuestAbandoned += AbandonQuest;
     }
-
-    //private void QuestMenuState(bool state)
-    //{
-    //    QuestMenuDisplayed = state;
-    //    questMenuUI.SetActive(QuestMenuDisplayed);
-    //    UIEventHandler.UIDisplayed(QuestMenuDisplayed);
-    //}
 
     // Events
     public static void ChangeQuestMenuState(bool state)

@@ -43,8 +43,8 @@ public class BuildingSaveData
 public class Building : Killable
 {
     public string prefabPath;
-    /*[HideInInspector]*/ public int instanceID = -1;
-    /*[HideInInspector]*/ public bool generated;
+    [HideInInspector] public int instanceID = -1;
+    [HideInInspector] public bool generated;
 
     [Header("Destroy Building")]
     public AudioClip[] destroyBuildingSounds;

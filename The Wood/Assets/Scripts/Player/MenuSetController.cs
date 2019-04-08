@@ -30,6 +30,7 @@ public class MenuSetController : MonoBehaviour
     private void Awake()
     {
         QuestController.OnQuestMenuStateChanged += QuestController_OnQuestMenuStateChanged;
+        BuildingController.OnSelectedBlueprint += BuildingController_OnSelectedBlueprint;
     }
 
     // Start is called before the first frame update
@@ -50,12 +51,19 @@ public class MenuSetController : MonoBehaviour
             ChangeMenuSetState(!menuIsActive, currentMenuPanel);
     }
 
+
     // Event listener
     private void QuestController_OnQuestMenuStateChanged(bool state)
     {
         // Called when a Quest has been proposed, open the menu set AND quest panel
         ChangeMenuSetState(state, MenuPanels.QUESTS);
     }
+
+    private void BuildingController_OnSelectedBlueprint(Blueprint blueprint)
+    {
+        ChangeMenuSetState(false);
+    }
+
 
     private void ChangeMenuSetState(bool newState)
     {
