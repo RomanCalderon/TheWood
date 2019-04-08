@@ -132,7 +132,7 @@ public class BuildingController : MonoBehaviour
         {
             originalLayerName = LayerMask.LayerToName(blueprintReference.gameObject.layer);
 
-            blueprintInstance = Instantiate(blueprintReference.gameObject).GetComponent<Blueprint>();
+            blueprintInstance = Instantiate(blueprintReference.gameObject, GameObject.FindGameObjectWithTag("BlueprintHolder").transform).GetComponent<Blueprint>();
             blueprintInstance.gameObject.name = blueprintReference.gameObject.name;
             blueprintInstance.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 

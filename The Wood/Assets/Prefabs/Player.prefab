@@ -1072,7 +1072,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000016390564}
+  m_AnchoredPosition: {x: 0, y: 0.000043308886}
   m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &778283965
@@ -6423,7 +6423,7 @@ MonoBehaviour:
   _useFogVolumes: 1
   _enableDithering: 0
   _ditherStrength: 0.03
-  _alpha: 1.0537876
+  _alpha: 1.0843961
   _noiseStrength: 0.24
   _noiseScale: 0.031
   _distance: 0
@@ -6443,7 +6443,7 @@ MonoBehaviour:
   _skyHaze: 350
   _skySpeed: 0.05
   _skyNoiseStrength: 0.8
-  _skyAlpha: 1.0537876
+  _skyAlpha: 1.0843961
   _sun: {fileID: 0}
   _fogOfWarEnabled: 0
   _fogOfWarCenter: {x: 0, y: 0, z: 0}
@@ -16088,7 +16088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000052292227}
+  m_AnchoredPosition: {x: 0, y: -0.000045487603}
   m_SizeDelta: {x: 642.7, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1411007933909403614
@@ -16869,7 +16869,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Item Name
+  m_Text: Blueprints
 --- !u!1 &8298067760451123184
 GameObject:
   m_ObjectHideFlags: 0

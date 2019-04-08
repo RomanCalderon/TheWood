@@ -120,6 +120,9 @@ public class BuildingManager : MonoBehaviour
         blueprints = data.blueprints;
         buildings = data.buildings;
 
+        Transform blueprintHolder = GameObject.FindGameObjectWithTag("BlueprintHolder").transform;
+        Transform buildingHolder = GameObject.FindGameObjectWithTag("BuildingHolder").transform;
+
         // Create blueprints from save
         foreach (BlueprintSaveData bsd in blueprints)
         {
@@ -135,7 +138,7 @@ public class BuildingManager : MonoBehaviour
             AudioClip completeBuildingSound = Resources.Load<AudioClip>("Audio/Building/" + bsd.completeBuildingSoundName);
 
             // Instantiate the blueprint
-            Blueprint blueprintInstance = Instantiate(blueprintPrefab, pos, rot).GetComponent<Blueprint>();
+            Blueprint blueprintInstance = Instantiate(blueprintPrefab, pos, rot, blueprintHolder).GetComponent<Blueprint>();
             blueprintInstance.instanceID = bsd.instanceID;
             blueprintInstance.generated = true;
             blueprintInstance.CurrentProgress = bsd.currentProgress;
@@ -159,7 +162,7 @@ public class BuildingManager : MonoBehaviour
             GameObject destructionPrefab = Resources.Load<GameObject>("Buildings/" + bsd.destructionPrefabName);
 
             // Instantiate the building
-            Building buildingInstance = Instantiate(buildingPrefab, pos, rot).GetComponent<Building>();
+            Building buildingInstance = Instantiate(buildingPrefab, pos, rot, buildingHolder).GetComponent<Building>();
             buildingInstance.instanceID = bsd.instanceID;
             buildingInstance.generated = true;
             buildingInstance.destroyBuildingSounds = destroyBuildingSounds;

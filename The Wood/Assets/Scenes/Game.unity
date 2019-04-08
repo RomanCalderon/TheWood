@@ -12584,6 +12584,36 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1357793712}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1360759871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1360759872}
+  m_Layer: 0
+  m_Name: Blueprints
+  m_TagString: BlueprintHolder
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1360759872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360759871}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1801508964}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1371705866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13162,11 +13192,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1579704305, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
       propertyPath: _alpha
-      value: 1.0537876
+      value: 1.0843961
       objectReference: {fileID: 0}
     - target: {fileID: 1579704305, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
       propertyPath: _skyAlpha
-      value: 1.0537876
+      value: 1.0843961
       objectReference: {fileID: 0}
     - target: {fileID: 827860244760385277, guid: e9576543f4135ad44bd3420ecc83de84,
         type: 3}
@@ -13179,7 +13209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1420758784, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000052218198
+      value: 0.00005165059
       objectReference: {fileID: 0}
     - target: {fileID: 1849484344, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
       propertyPath: m_AnchorMax.x
@@ -15669,6 +15699,7 @@ Transform:
   - {fileID: 2134844215}
   - {fileID: 2074551842}
   - {fileID: 2013233824}
+  - {fileID: 1360759872}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16322,7 +16353,7 @@ GameObject:
   - component: {fileID: 2013233824}
   m_Layer: 0
   m_Name: Buildings
-  m_TagString: Untagged
+  m_TagString: BuildingHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
