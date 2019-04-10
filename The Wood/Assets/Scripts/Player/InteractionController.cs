@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class InteractionController : MonoBehaviour
 {
+    public static InteractionController instance;
+
     public delegate void InteractionHandler(string interactablePrompt);
     public static event InteractionHandler OnPreviewInteractable;
 
-    [HideInInspector] public bool CanInteract = true;
+    public static bool CanInteract = true;
 
     [SerializeField] new Transform camera;
     [SerializeField] float interactDistance = 4f;
@@ -18,16 +20,15 @@ public class InteractionController : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+            Destroy(gameObject);
+        else
+            instance = this;
+
         OnPreviewInteractable += ShowInteractablePrompt;
         UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
         SleepController.OnGoToSleep += SleepController_OnGoToSleep;
         SleepController.OnWakeUp += SleepController_OnWakeUp;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -36,26 +37,63 @@ public class InteractionController : MonoBehaviour
         Interactions();
     }
 
+    /// <summary>
+    /// Allows the player to interact with interactable objects in the game.
+    /// Only works when CanInteract is true, the player is not sleeping and is not in BuildMode
+    /// </summary>
     void Interactions()
     {
-        if (CanInteract && !PlayerSleepController.IsSleeping && !BuildingController.InBuildMode)
+        if (CanInteract && !PlayerSleepController.IsSleeping)
         {
             Ray ray = new Ray(camera.position, camera.forward);
 
             if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactableLayermask))
             {
                 Interactable interactableObject = hit.transform.GetComponent<Interactable>();
+                
+                // Display an interaction preview for Blueprints
+                if (interactableObject is Blueprint)
+                {
+                    // Only if in BuildMode
+                    if (BuildingController.InBuildMode)
+                        interactableObject.Preview();
+                }
+                // If the interactableObject is not a Blueprint
+                else
+                {
+                    // And not in BuildMode, preview the object
+                    if (!BuildingController.InBuildMode)
+                        interactableObject.Preview();
+                }
 
-                if (!interactableObject.HasInteracted)
-                    interactableObject.Preview();
-
-                if (Input.GetKeyDown(interactableObject.interactionKeyBinding))
-                    if (!interactableObject.HasInteracted)
+                // If the interactionObject is not a Blueprint, interact with the object
+                if ((interactableObject is Blueprint) == false)
+                    if (Input.GetKeyDown(interactableObject.interactionKeyBinding))
                         interactableObject.Interact();
             }
             else
                 HideInteractablePrompt();
         }
+    }
+
+    /// <summary>
+    /// If the player CanInteract and is not sleeping,
+    /// get the current Interactable object infront of the player.
+    /// </summary>
+    /// <returns></returns>
+    public Interactable GetInteractable()
+    {
+        if (CanInteract && !PlayerSleepController.IsSleeping)
+        {
+            Ray ray = new Ray(camera.position, camera.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactableLayermask))
+            {
+                return hit.transform.GetComponent<Interactable>();
+            }
+        }
+
+        return null;
     }
 
     // Events

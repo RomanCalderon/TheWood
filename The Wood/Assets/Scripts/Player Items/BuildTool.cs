@@ -6,8 +6,6 @@ public class BuildTool : MonoBehaviour, ITool, IWeapon
 {
     private Animator animator;
 
-    public event ToolActionHandler OnPerformAction;
-
     public List<BaseStat> Stats { get; set; }
     public CharacterStats CharacterStats { get; set; }
     public int CurrentDamage { get; set; }
@@ -17,7 +15,19 @@ public class BuildTool : MonoBehaviour, ITool, IWeapon
     {
         animator = GetComponent<Animator>();
     }
-    
+
+    private void OnEnable()
+    {
+        BuildingController.InBuildMode = true;
+        print("BuildingController.InBuildMode = " + BuildingController.InBuildMode);
+    }
+
+    private void OnDisable()
+    {
+        BuildingController.InBuildMode = false;
+        print("BuildingController.InBuildMode = " + BuildingController.InBuildMode);
+    }
+
     public void PerformAttack(int damage)
     {
         CurrentDamage = damage;
@@ -42,7 +52,12 @@ public class BuildTool : MonoBehaviour, ITool, IWeapon
 
     public void PerformActionEvent()
     {
-        print("Perform Tool Action.");
-        OnPerformAction?.Invoke();
+        Interactable interactableObject = InteractionController.instance.GetInteractable();
+
+        if (interactableObject == null)
+            return;
+
+        if (interactableObject is Blueprint)
+            interactableObject.Interact();
     }
 }

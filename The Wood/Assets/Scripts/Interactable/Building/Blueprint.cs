@@ -49,8 +49,8 @@ public class BlueprintSaveData
 public class Blueprint : Interactable
 {
     public string prefabPath;
-    /*[HideInInspector] */public int instanceID = -1;
-    /*[HideInInspector] */public bool modified;
+    public int instanceID = -1;
+    public bool modified;
 
     public int CurrentProgress;
     public int Requirement;
@@ -63,7 +63,7 @@ public class Blueprint : Interactable
     /// </summary>
     public override void Preview()
     {
-        if (HasInteracted)
+        if (!BuildingController.InBuildMode)
             return;
 
         InteractionController.PreviewInteraction(GetInteractionPreview());

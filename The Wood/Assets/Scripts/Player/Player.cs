@@ -4,18 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
+[RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(InventoryManager))]
 [RequireComponent(typeof(BuildingController))]
 public class Player : Killable
 {
     public CharacterStats CharacterStats;
-    [SerializeField]
-    RigidbodyFirstPersonController playerMovementController;
+    PlayerMovement playerMovementController;
     
     public PlayerLevel PlayerLevel { get; set; }
 
     private void Awake()
     {
+        playerMovementController = GetComponent<PlayerMovement>();
+        PlayerLevel = GetComponent<PlayerLevel>();
+
         SaveLoadController.OnSaveGame += SaveLoadController_OnSaveGame;
         SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
 
@@ -26,8 +29,7 @@ public class Player : Killable
     protected override void Start()
     {
         base.Start();
-
-        PlayerLevel = GetComponent<PlayerLevel>();
+        
         CharacterStats = new CharacterStats(4, 2);
         
         UIEventHandler.HealthChanged(Health, maxHealth);

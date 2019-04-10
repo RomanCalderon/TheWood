@@ -36,7 +36,7 @@ public class BuildingController : MonoBehaviour
 
     [SerializeField] List<Blueprint> blueprints = new List<Blueprint>();
 
-    public static bool InBuildMode;
+    [SerializeField] public static bool InBuildMode;
     private Blueprint blueprintToPlace;
     private Blueprint blueprintInstance;
     private string originalLayerName;
@@ -85,9 +85,14 @@ public class BuildingController : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, 6f, validLayerMask))
             {
-                // Create blueprintInstance if it's is null
+                // Create blueprintInstance if it's null
                 if (blueprintInstance == null)
-                    PreviewBlueprint(true, blueprintToPlace);
+                {
+                    if (blueprintToPlace != null)
+                        PreviewBlueprint(true, blueprintToPlace);
+                    else
+                        return;
+                }
 
                 // If the raycast hit is not on the Terrain, return
                 if (hit.transform.gameObject.layer != validHitLayers)
@@ -114,7 +119,11 @@ public class BuildingController : MonoBehaviour
                 }
             }
             else
-                blueprintToPlace.gameObject.SetActive(false);
+            {
+                // Hide the blueprint if it's in an invalid location
+                if (blueprintToPlace != null)
+                    blueprintToPlace.gameObject.SetActive(false);
+            }
 
             // Cancel build mode with ActionTwo
             if (Input.GetKeyDown(KeyBindings.ActionTwo))

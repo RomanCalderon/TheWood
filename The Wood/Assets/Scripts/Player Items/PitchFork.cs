@@ -6,8 +6,6 @@ public class PitchFork : MonoBehaviour, ITool, IWeapon
 {
     private Animator animator;
 
-    public event ToolActionHandler OnPerformAction;
-
     public List<BaseStat> Stats { get; set; }
     public int CurrentDamage { get; set; }
 
@@ -48,6 +46,5 @@ public class PitchFork : MonoBehaviour, ITool, IWeapon
     public void PerformActionEvent()
     {
         print("Perform Tool Action.");
-        OnPerformAction?.Invoke();
     }
 }
