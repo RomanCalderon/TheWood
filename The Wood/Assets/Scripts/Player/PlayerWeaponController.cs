@@ -31,6 +31,9 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (EquippedWeapon != null)
             UnequipWeapon();
+
+        if (itemToEquip != null)
+            InventoryManager.instance.RemoveItem(itemToEquip);
         
         EquippedWeapon = Instantiate(Resources.Load<GameObject>("Items/" + itemToEquip.ItemSlug), playerHand.position, playerHand.rotation);
         equippedWeapon = EquippedWeapon.GetComponent<IWeapon>();

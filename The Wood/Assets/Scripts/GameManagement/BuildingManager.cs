@@ -97,6 +97,7 @@ public class BuildingManager : MonoBehaviour
 
     #endregion
 
+
     #region Event Listeners
 
     // Save/Load
@@ -140,7 +141,7 @@ public class BuildingManager : MonoBehaviour
             // Instantiate the blueprint
             Blueprint blueprintInstance = Instantiate(blueprintPrefab, pos, rot, blueprintHolder).GetComponent<Blueprint>();
             blueprintInstance.instanceID = bsd.instanceID;
-            blueprintInstance.generated = true;
+            blueprintInstance.modified = true;
             blueprintInstance.CurrentProgress = bsd.currentProgress;
             blueprintInstance.Requirement = bsd.requirement;
             blueprintInstance.buildingPrefab = buildingPrefab;
@@ -164,7 +165,7 @@ public class BuildingManager : MonoBehaviour
             // Instantiate the building
             Building buildingInstance = Instantiate(buildingPrefab, pos, rot, buildingHolder).GetComponent<Building>();
             buildingInstance.instanceID = bsd.instanceID;
-            buildingInstance.generated = true;
+            buildingInstance.modified = true;
             buildingInstance.destroyBuildingSounds = destroyBuildingSounds;
             buildingInstance.destructionPrefab = destructionPrefab;
         }
@@ -173,7 +174,7 @@ public class BuildingManager : MonoBehaviour
     // Blueprints
     private void BuildingManager_OnBlueprintAdded(Blueprint blueprint)
     {
-        if (blueprint != null && !ContainsBlueprint(blueprint) && blueprint.generated)
+        if (blueprint != null && !ContainsBlueprint(blueprint) && blueprint.modified)
             blueprints.Add(new BlueprintSaveData(blueprint, blueprints.Count));
         else if (blueprint == null)
             Debug.LogError("Blueprint is null");
@@ -191,7 +192,7 @@ public class BuildingManager : MonoBehaviour
 
     private void BuildingManager_OnContainsBlueprint(Blueprint blueprint, Action onContains)
     {
-        if (!blueprint.generated && ContainsBlueprint(blueprint))
+        if (!blueprint.modified && ContainsBlueprint(blueprint))
         {
             print("Destroy pre-existing blueprint and its savedata");
             blueprints.Remove(GetBlueprintData(blueprint));
@@ -202,7 +203,7 @@ public class BuildingManager : MonoBehaviour
     // Buildings
     private void BuildingManager_OnBuildingAdded(Building building)
     {
-        if (building != null && !ContainsBuilding(building) && building.generated)
+        if (building != null && !ContainsBuilding(building) && building.modified)
             buildings.Add(new BuildingSaveData(building, buildings.Count));
         else if (building == null)
             Debug.LogError("Building is null");
@@ -220,7 +221,7 @@ public class BuildingManager : MonoBehaviour
 
     private void BuildingManager_OnContainsBuilding(Building building, Action onContains)
     {
-        if (!building.generated && ContainsBuilding(building))
+        if (!building.modified && ContainsBuilding(building))
         {
             print("Destroy pre-existing building and its savedata");
             buildings.Remove(GetBuildingData(building));
@@ -229,6 +230,7 @@ public class BuildingManager : MonoBehaviour
     }
 
     #endregion
+
 
     private bool ContainsBlueprint(Blueprint blueprint)
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Torch : MonoBehaviour, ITool, IWeapon
+public class Torch : MonoBehaviour, IWeapon
 {
     private Animator animator;
     public List<BaseStat> Stats { get; set; }

@@ -138,6 +138,26 @@
     ]
   },
   {
+    "itemSlug": "build_tool",
+    "itemName": "Build Tool",
+    "description": "Your Build Tool allows you to construct and deconstruct buildings.",
+    "itemType": "TOOL",
+    "actionName": "Equip",
+    "itemModifier": 0,
+    "stats": [
+      {
+        "StatType": "ATTACK",
+        "baseValue": 12,
+        "statName": "Attack"
+      },
+      {
+        "StatType": "DEFENSE",
+        "baseValue": 5,
+        "statName": "Defense"
+      }
+    ]
+  },
+  {
     "itemSlug": "bucket",
     "itemName": "Bucket",
     "description": "1 gallon bucket for carrying liquids.",

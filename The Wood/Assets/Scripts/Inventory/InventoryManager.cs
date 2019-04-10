@@ -86,6 +86,7 @@ public class InventoryManager : MonoBehaviour
 
     private void GiveDefaultItems()
     {
+        GiveItem("build_tool");
         GiveItem("torch");
         GiveItem("potion_log");
         GiveItem("pitchfork");
@@ -109,6 +110,9 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(Item item)
     {
+        if (!playerItems.Contains(item))
+            return;
+
         UIEventHandler.ItemRemovedFromInventory(item);
         playerItems.Remove(item);
     }

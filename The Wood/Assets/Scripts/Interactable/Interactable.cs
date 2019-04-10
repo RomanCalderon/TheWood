@@ -18,18 +18,19 @@ public class Interactable : MonoBehaviour
     [HideInInspector] public bool HasInteracted;
     [SerializeField] InteractionTypes interactionType;
     [SerializeField] protected string interactionName;
+    public KeyCode interactionKeyBinding = KeyBindings.Interact;
 
     protected virtual void Awake()
     {
         DialogueSystem.OnDialogueFinished += DialogueSystem_OnDialogueFinished;
     }
 
-    public void Preview()
+    public virtual void Preview()
     {
         if (HasInteracted)
             return;
 
-        InteractionController.PreviewInteraction(GetInteractablePrompt());
+        InteractionController.PreviewInteraction("[" + KeyBindings.Interact + "] " + GetInteractablePrompt());
     }
 
     public virtual void Interact()
@@ -49,7 +50,8 @@ public class Interactable : MonoBehaviour
         this.interactionName = interactionName;
     }
 
-    private string GetInteractablePrompt()
+
+    protected string GetInteractablePrompt()
     {
         switch (interactionType)
         {
@@ -71,5 +73,10 @@ public class Interactable : MonoBehaviour
 
         Debug.LogError("Invalid interaction type: " + interactionType);
         return string.Empty;
+    }
+
+    public InteractionTypes GetInteractionType()
+    {
+        return interactionType;
     }
 }

@@ -49,14 +49,29 @@ public class BlueprintSaveData
 public class Blueprint : Interactable
 {
     public string prefabPath;
-    [HideInInspector] public int instanceID = -1;
-    [HideInInspector] public bool generated;
+    /*[HideInInspector] */public int instanceID = -1;
+    /*[HideInInspector] */public bool modified;
 
     public int CurrentProgress;
     public int Requirement;
     public GameObject buildingPrefab;
     public AudioClip completeBuildingSound;
     
+    /// <summary>
+    /// Displays an info prompt for this Blueprint.
+    /// The player can progress this Blueprint to completion or cancel/remove this Blueprint.
+    /// </summary>
+    public override void Preview()
+    {
+        if (HasInteracted)
+            return;
+
+        InteractionController.PreviewInteraction(GetInteractionPreview());
+
+        // Cancel the Blueprint
+        if (Input.GetKeyUp(KeyBindings.ActionTwo))
+            Destroy(gameObject);
+    }
 
     public override void Interact()
     {
@@ -67,8 +82,9 @@ public class Blueprint : Interactable
 
     private void CheckResourceRequest(Resource resource, int quantity)
     {
-        print(gameObject.name + " received " + quantity + " " + resource.item.Name);
+        //print(gameObject.name + " received " + quantity + " " + resource.item.Name);
         CurrentProgress += quantity;
+        modified = true;
 
         if (CurrentProgress >= Requirement)
             CompleteBuilding();
@@ -77,17 +93,39 @@ public class Blueprint : Interactable
     private void CompleteBuilding()
     {
         Building b = Instantiate(buildingPrefab, transform.position, transform.rotation).GetComponent<Building>();
-        b.generated = true;
+        b.modified = true;
         AudioManager.Instance.Play(completeBuildingSound, transform.position, 0.2f).maxDistance = 10f;
         Destroy(gameObject);
     }
 
-    protected override void Awake()
+    private string GetInteractionPreview()
+    {
+        // First add the Build blueprint option prompt
+        string result = "[" + KeyBindings.GetFormat(KeyBindings.ActionOne) + "] " + GetInteractablePrompt();
+
+        // If this blueprint is incomplete, add the progress prompt
+        if (CurrentProgress < Requirement)
+            result += "\n\tBUILD PROGRESS: " + CurrentProgress + "/" + Requirement;
+
+        // Finally add the Cancel blueprint option prompt
+        result += "\n[" + KeyBindings.GetFormat(KeyBindings.ActionTwo) + "] Cancel Blueprint";
+
+        return result;
+    }
+
+    //protected override void Awake()
+    //{
+    //    print("sub to onsave/onload");
+    //    BuildingManager.OnSave += BuildingManager_OnSave;
+    //    BuildingManager.OnLoad += BuildingManager_OnLoad;
+
+    //    base.Awake();
+    //}
+
+    private void OnEnable()
     {
         BuildingManager.OnSave += BuildingManager_OnSave;
         BuildingManager.OnLoad += BuildingManager_OnLoad;
-
-        base.Awake();
     }
 
     private void BuildingManager_OnSave()

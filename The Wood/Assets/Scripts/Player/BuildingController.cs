@@ -164,7 +164,7 @@ public class BuildingController : MonoBehaviour
     private void PlaceBlueprint(Vector3 pos, Quaternion rot)
     {
         blueprintInstance.gameObject.SetActive(true);
-        blueprintInstance.generated = true;
+        blueprintInstance.modified = true;
         blueprintInstance.gameObject.layer = LayerMask.NameToLayer(originalLayerName);
         blueprintInstance = null;
     }

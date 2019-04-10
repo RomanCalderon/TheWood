@@ -49,7 +49,7 @@ public class InteractionController : MonoBehaviour
                 if (!interactableObject.HasInteracted)
                     interactableObject.Preview();
 
-                if (Input.GetKeyDown(KeyBindings.Interact))
+                if (Input.GetKeyDown(interactableObject.interactionKeyBinding))
                     if (!interactableObject.HasInteracted)
                         interactableObject.Interact();
             }
@@ -68,7 +68,7 @@ public class InteractionController : MonoBehaviour
     private void ShowInteractablePrompt(string interactablePrompt)
     {
         interactionPromptText.gameObject.SetActive(true);
-        interactionPromptText.text = "[" + KeyBindings.Interact + "] " + interactablePrompt;
+        interactionPromptText.text = interactablePrompt;
     }
 
     private void UIEventHandler_OnUIDisplayed(bool state)

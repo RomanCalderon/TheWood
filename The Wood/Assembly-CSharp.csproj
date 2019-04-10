@@ -89,13 +89,13 @@
     <Compile Include="Assets\Scripts\GameManagement\SleepController.cs" />
     <Compile Include="Assets\Scripts\GameSettings\KeyBindings.cs" />
     <Compile Include="Assets\Scripts\Interactable\ActionItem.cs" />
-    <Compile Include="Assets\Scripts\Interactable\ActionItems\Bed.cs" />
-    <Compile Include="Assets\Scripts\Interactable\ActionItems\Building\Blueprint.cs" />
-    <Compile Include="Assets\Scripts\Interactable\ActionItems\Building\Building.cs" />
-    <Compile Include="Assets\Scripts\Interactable\ActionItems\SignPost.cs" />
-    <Compile Include="Assets\Scripts\Interactable\ActionItems\WaterWell.cs" />
+    <Compile Include="Assets\Scripts\Interactable\Bed.cs" />
+    <Compile Include="Assets\Scripts\Interactable\Building\Blueprint.cs" />
+    <Compile Include="Assets\Scripts\Interactable\Building\Building.cs" />
     <Compile Include="Assets\Scripts\Interactable\Interactable.cs" />
     <Compile Include="Assets\Scripts\Interactable\NPC.cs" />
+    <Compile Include="Assets\Scripts\Interactable\SignPost.cs" />
+    <Compile Include="Assets\Scripts\Interactable\WaterWell.cs" />
     <Compile Include="Assets\Scripts\Interfaces\Hostile.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IConsumable.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IHands.cs" />
@@ -111,6 +111,7 @@
     <Compile Include="Assets\Scripts\Inventory\UIEventHandler.cs" />
     <Compile Include="Assets\Scripts\ItemSlot.cs" />
     <Compile Include="Assets\Scripts\PickupItem.cs" />
+    <Compile Include="Assets\Scripts\Player Items\BuildTool.cs" />
     <Compile Include="Assets\Scripts\Player Items\PitchFork.cs" />
     <Compile Include="Assets\Scripts\Player Items\PotionLog.cs" />
     <Compile Include="Assets\Scripts\Player Items\Torch.cs" />

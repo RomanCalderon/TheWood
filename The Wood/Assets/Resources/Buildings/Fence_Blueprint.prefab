@@ -108,6 +108,7 @@ MonoBehaviour:
   HasInteracted: 0
   interactionType: 2
   interactionName: Fence
+  interactionKeyBinding: 323
   prefabPath: Buildings/Fence_Blueprint
   instanceID: -1
   generated: 0

@@ -14,6 +14,6 @@ public class BlueprintUIButton : MonoBehaviour
         this.blueprint = blueprint;
         this.buildingController = buildingController;
 
-        button.onClick.AddListener(delegate { BuildingController.SelectedBlueprint(blueprint); /*buildingController.PreviewBlueprint(true, blueprint);*/ } );
+        button.onClick.AddListener(delegate { BuildingController.SelectedBlueprint(blueprint); } );
     }
 }
