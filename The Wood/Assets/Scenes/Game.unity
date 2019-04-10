@@ -13191,6 +13191,14 @@ PrefabInstance:
       propertyPath: fogMat
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1579704305, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
+      propertyPath: _alpha
+      value: 0.4051793
+      objectReference: {fileID: 0}
+    - target: {fileID: 1579704305, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
+      propertyPath: _skyAlpha
+      value: 0.4051793
+      objectReference: {fileID: 0}
     - target: {fileID: 827860244760385277, guid: e9576543f4135ad44bd3420ecc83de84,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -13202,7 +13210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1420758784, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00005197751
+      value: 0.00007981501
       objectReference: {fileID: 0}
     - target: {fileID: 1849484344, guid: e9576543f4135ad44bd3420ecc83de84, type: 3}
       propertyPath: m_AnchorMax.x

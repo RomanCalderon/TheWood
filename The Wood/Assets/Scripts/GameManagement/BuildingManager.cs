@@ -176,6 +176,9 @@ public class BuildingManager : MonoBehaviour
     {
         if (blueprint != null && !ContainsBlueprint(blueprint) && blueprint.modified)
             blueprints.Add(new BlueprintSaveData(blueprint, blueprints.Count));
+        else if (ContainsBlueprint(blueprint))
+            // Update the duplicate bsd with it's current values
+            blueprints[IndexOfBlueprint(blueprint.instanceID)] = new BlueprintSaveData(blueprint, blueprint.instanceID);
         else if (blueprint == null)
             Debug.LogError("Blueprint is null");
         else
@@ -252,4 +255,20 @@ public class BuildingManager : MonoBehaviour
         return buildings.Find(bsd => bsd.instanceID == building.instanceID);
     }
 
+    private int IndexOfBlueprint(int instanceId)
+    {
+        return blueprints.IndexOf(blueprints.Find(bsd => bsd.instanceID == instanceId));
+    }
+
+    //public static void Replace<T>(ref IList<T> list, T oldItem, T newItem)
+    //{
+    //    int index = 0;
+
+    //    if (list.Contains(oldItem))
+    //    {
+    //        index = list.IndexOf(oldItem);
+    //        list.Remove(oldItem);
+    //        list.Insert(index, newItem);
+    //    }
+    //}
 }
