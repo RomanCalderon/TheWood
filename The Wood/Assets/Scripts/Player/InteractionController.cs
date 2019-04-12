@@ -15,6 +15,7 @@ public class InteractionController : MonoBehaviour
     [SerializeField] new Transform camera;
     [SerializeField] float interactDistance = 4f;
     [SerializeField] LayerMask interactableLayermask;
+    [SerializeField] LayerMask buildingLayerMask;
 
     [SerializeField] Text interactionPromptText;
 
@@ -78,19 +79,35 @@ public class InteractionController : MonoBehaviour
 
     /// <summary>
     /// If the player CanInteract and is not sleeping,
-    /// get the current Interactable object infront of the player.
+    /// get the current Blueprint object in front of the player.
     /// </summary>
-    /// <returns></returns>
-    public Interactable GetInteractable()
+    /// <returns>A Blueprint object</returns>
+    public Blueprint GetBlueprint()
     {
         if (CanInteract && !PlayerSleepController.IsSleeping)
         {
             Ray ray = new Ray(camera.position, camera.forward);
 
             if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactableLayermask))
-            {
-                return hit.transform.GetComponent<Interactable>();
-            }
+                return hit.transform.GetComponent<Blueprint>();
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// If the player CanInteract and is not sleeping,
+    /// get the current Building object in front of the player.
+    /// </summary>
+    /// <returns>A Building object</returns>
+    public Building GetBuilding()
+    {
+        if (CanInteract && !PlayerSleepController.IsSleeping)
+        {
+            Ray ray = new Ray(camera.position, camera.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, buildingLayerMask))
+                return hit.transform.GetComponent<Building>();
         }
 
         return null;

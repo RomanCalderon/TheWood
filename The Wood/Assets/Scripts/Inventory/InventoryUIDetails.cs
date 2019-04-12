@@ -28,6 +28,7 @@ public class InventoryUIDetails : MonoBehaviour
 
         itemInteractButton.onClick.RemoveAllListeners();
         dropItemButton.onClick.RemoveAllListeners();
+        
         this.item = item;
         selectedItemButton = selectedButton;
         itemNameText.text = item.Name;

@@ -30,14 +30,23 @@ public class PlayerWeaponController : MonoBehaviour
     public void EquipWeapon(Item itemToEquip)
     {
         if (EquippedWeapon != null)
-            UnequipWeapon();
-
-        if (itemToEquip != null)
-            InventoryManager.instance.RemoveItem(itemToEquip);
+        {
+            // If the previously equipped Item is the Build Tool,
+            // set the BuildingController mode to None
+            if (currentlyEquippedItem.ItemSlug == InventoryManager.instance.BuildTool.ItemSlug)
+                BuildingController.SetMode(BuildingController.Modes.NONE);
+            // Otherwise, currentlyEquippedItem can just be unequipped
+            else
+                UnequipWeapon();
+        }
         
-        EquippedWeapon = Instantiate(Resources.Load<GameObject>("Items/" + itemToEquip.ItemSlug), playerHand.position, playerHand.rotation);
+        // Remove itemToEquip from the Inventory if it's NOT the Build Tool
+        if (itemToEquip.ItemSlug != InventoryManager.instance.BuildTool.ItemSlug)
+            InventoryManager.instance.RemoveItem(itemToEquip);
+
+        EquippedWeapon = Instantiate(Resources.Load<GameObject>("Items/" + itemToEquip.ItemSlug), playerHand.position, playerHand.rotation, playerHand);
         equippedWeapon = EquippedWeapon.GetComponent<IWeapon>();
-        EquippedWeapon.transform.SetParent(playerHand);
+
         equippedWeapon.Stats = itemToEquip.Stats;
         currentlyEquippedItem = itemToEquip;
         characterStats.AddStatBonus(itemToEquip.Stats);
@@ -49,7 +58,10 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void UnequipWeapon()
     {
-        InventoryManager.instance.GiveItem(currentlyEquippedItem.ItemSlug);
+        // Only put the Item back in the Inventory if it's NOT the Build Tool
+        if (currentlyEquippedItem.ItemSlug != InventoryManager.instance.BuildTool.ItemSlug)
+            InventoryManager.instance.GiveItem(currentlyEquippedItem.ItemSlug);
+
         characterStats.RemoveStatBonus(EquippedWeapon.GetComponent<IWeapon>().Stats);
         Destroy(EquippedWeapon);
         EquippedWeapon = null;
@@ -95,8 +107,7 @@ public class PlayerWeaponController : MonoBehaviour
         int totalDamage = (characterStats.GetStat(BaseStat.BaseStatType.ATTACK).GetCalculatedStatValue()) + Random.Range(-1, 3);
 
         totalDamage += CalculateCritialDamage(totalDamage);
-
-        //Debug.Log("Damage output: " + totalDamage);
+        
         return totalDamage;
     }
 

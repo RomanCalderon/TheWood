@@ -29,7 +29,8 @@ public class InventoryManager : MonoBehaviour
     public InventoryUIDetails inventoryDetailsPanel;
 
     [SerializeField] List<Item> playerItems = new List<Item>();
-    
+
+    public Item BuildTool { get; private set; }
 
     private void Awake()
     {
@@ -48,7 +49,23 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
+        // FOR TESTING
         GiveDefaultItems();
+    }
+
+    #region Give Item
+
+    private void GiveDefaultItems()
+    {
+        // The build tool is an "internal" Item, meaning it cannot be dropped or
+        // equipped like other Items in the Inventory
+        BuildTool = ItemDatabase.instance.GetItem("build_tool");
+
+        // Basic Items given at the beginning
+        GiveItem("torch");
+        GiveItem("potion_log");
+        GiveItem("pitchfork");
+        GiveItem("wood", 7);
     }
 
     public void GiveItem(string itemSlug)
@@ -84,38 +101,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void GiveDefaultItems()
-    {
-        GiveItem("build_tool");
-        GiveItem("torch");
-        GiveItem("potion_log");
-        GiveItem("pitchfork");
-        GiveItem("wood", 7);
-    }
+    #endregion
 
-    public void SetItemDetails(Item item, Button selectedButton)
-    {
-        inventoryDetailsPanel.SetItem(item, selectedButton);
-    }
-
-    public void EquipItem(Item itemToEquip)
-    {
-        playerWeaponController.EquipWeapon(itemToEquip);
-    }
-
-    public void ConsumeItem(Item itemToConsume)
-    {
-        consumableController.ConsumeItem(itemToConsume);
-    }
-
-    public void RemoveItem(Item item)
-    {
-        if (!playerItems.Contains(item))
-            return;
-
-        UIEventHandler.ItemRemovedFromInventory(item);
-        playerItems.Remove(item);
-    }
+    #region GetItem(s)
 
     public Item GetItem(string itemSlug)
     {
@@ -143,6 +131,47 @@ public class InventoryManager : MonoBehaviour
         return result;
     }
 
+    #endregion
+
+
+    public void EquipItem(Item itemToEquip)
+    {
+        playerWeaponController.EquipWeapon(itemToEquip);
+    }
+
+    public void EquipBuildTool()
+    {
+        playerWeaponController.EquipWeapon(BuildTool);
+    }
+
+    public void UnequipBuildTool()
+    {
+        playerWeaponController.UnequipWeapon();
+    }
+
+    public void ConsumeItem(Item itemToConsume)
+    {
+        consumableController.ConsumeItem(itemToConsume);
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (item == null || !playerItems.Contains(item))
+            return;
+
+        UIEventHandler.ItemRemovedFromInventory(item);
+        playerItems.Remove(item);
+    }
+
+
+    public void SetItemDetails(Item item, Button selectedButton)
+    {
+        //if (!inventoryDetailsPanel.isActiveAndEnabled)
+        //    return;
+
+        inventoryDetailsPanel.SetItem(item, selectedButton);
+    }
+
 
     // Event Listeners
     private void SaveLoadController_OnSaveGame()
@@ -154,13 +183,14 @@ public class InventoryManager : MonoBehaviour
     {
         InventoryManagerSaveData data = SaveSystem.LoadData<InventoryManagerSaveData>(Application.persistentDataPath + "/inventory.dat");
 
+        // New game - Give default Items
         if (data == null)
         {
             GiveDefaultItems();
             return;
         }
 
-        // Give saved Items
+        // From load - Give saved Items
         foreach (string itemSlug in data.playerItemsSlugs)
         {
             if (!playerItems.Contains(GetItem(itemSlug)))

@@ -10,6 +10,7 @@ public class Interactable : MonoBehaviour
         TALK,
         READ,
         BUILD,
+        DECONSTRUCT,
         SEARCH,
         TAKE,
         SLEEP

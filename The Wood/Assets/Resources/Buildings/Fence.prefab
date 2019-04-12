@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1048846527176546458}
   - component: {fileID: 1048846527179970746}
   - component: {fileID: 1048846527178971770}
+  - component: {fileID: 6997077305183450802}
   - component: {fileID: 1048846527174617626}
   - component: {fileID: 7416430392021373837}
   - component: {fileID: 8617472443253255457}
@@ -80,6 +81,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &6997077305183450802
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048846527176705210}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.58990896, y: 1.5925059, z: 4.003442}
+  m_Center: {x: 0.14388849, y: 0.728075, z: -0.298804}
 --- !u!64 &1048846527174617626
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -109,7 +123,7 @@ MonoBehaviour:
   maxHealth: 100
   prefabPath: Buildings/Fence
   instanceID: -1
-  generated: 0
+  modified: 0
   destroyBuildingSounds:
   - {fileID: 8300000, guid: d188eefab97310543af1fee93f09f16e, type: 3}
   - {fileID: 8300000, guid: 803e9f48516791c4c9326003a3eaabfd, type: 3}

@@ -147,7 +147,7 @@
     "stats": [
       {
         "StatType": "ATTACK",
-        "baseValue": 12,
+        "baseValue": 25,
         "statName": "Attack"
       },
       {

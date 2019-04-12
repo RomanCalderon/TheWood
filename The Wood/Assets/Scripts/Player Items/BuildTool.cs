@@ -18,14 +18,14 @@ public class BuildTool : MonoBehaviour, ITool, IWeapon
 
     private void OnEnable()
     {
-        BuildingController.InBuildMode = true;
-        print("BuildingController.InBuildMode = " + BuildingController.InBuildMode);
+        //BuildingController.InBuildMode = true;
+        //print("BuildingController.InBuildMode = " + BuildingController.InBuildMode);
     }
 
     private void OnDisable()
     {
-        BuildingController.InBuildMode = false;
-        print("BuildingController.InBuildMode = " + BuildingController.InBuildMode);
+        //BuildingController.InBuildMode = false;
+        //print("BuildingController.InBuildMode = " + BuildingController.InBuildMode);
     }
 
     public void PerformAttack(int damage)
@@ -36,6 +36,9 @@ public class BuildTool : MonoBehaviour, ITool, IWeapon
 
     public void PerformBlock(bool isActive)
     {
+        if (BuildingController.InBuildMode)
+            return;
+
         animator.SetBool("BuildTool_Block", isActive);
     }
 
@@ -45,19 +48,21 @@ public class BuildTool : MonoBehaviour, ITool, IWeapon
             hit.GetComponent<Killable>().TakeDamage(CurrentDamage);
     }
 
-    public void PerformAction()
-    {
-        animator.SetTrigger("BuildTool_Action");
-    }
-
+    /// <summary>
+    /// Called when the BuildTool_Action animation reaches the event trigger,
+    /// at the point of impact.
+    /// </summary>
     public void PerformActionEvent()
     {
-        Interactable interactableObject = InteractionController.instance.GetInteractable();
+        Interactable interactableObject = InteractionController.instance.GetBlueprint();
+        Building buildingObject = InteractionController.instance.GetBuilding();
+        
+        // If the player is InBlueprintMode and hit a Blueprint
+        if (BuildingController.InBlueprintMode && interactableObject != null)
+            interactableObject.Interact();  // Interacts with the Blueprint
 
-        if (interactableObject == null)
-            return;
-
-        if (interactableObject is Blueprint)
-            interactableObject.Interact();
+        // If the player is InBuildMode and hit a Building
+        if (BuildingController.InBuildMode && buildingObject != null)
+            buildingObject.TakeDamage(CurrentDamage);   // Deals damage to the Building
     }
 }

@@ -23,6 +23,13 @@ public class Resource
 
 public class BuildingController : MonoBehaviour
 {
+    public enum Modes
+    {
+        NONE,
+        BLUEPRINT,
+        BUILD
+    }
+
     public delegate void BuildModeHandler(Blueprint blueprint);
     public static event BuildModeHandler OnSelectedBlueprint;
     public delegate void ResourceRequestHandler(Resource resource, Action<Resource, int> onValidate);
@@ -30,13 +37,16 @@ public class BuildingController : MonoBehaviour
 
     [SerializeField] Transform playerCamera;
     [SerializeField] LayerMask validLayerMask;
-    int validHitLayers;
+    int terrainLayer;
 
     [SerializeField] List<Resource> resources;
 
     [SerializeField] List<Blueprint> blueprints = new List<Blueprint>();
+    
+    public static Modes CurrentMode { get; private set; }
+    public static bool InBuildMode { get; private set; }
+    public static bool InBlueprintMode { get; private set; }
 
-    [SerializeField] public static bool InBuildMode;
     private Blueprint blueprintToPlace;
     private Blueprint blueprintInstance;
     private string originalLayerName;
@@ -60,8 +70,8 @@ public class BuildingController : MonoBehaviour
 
     private void Start()
     {
-        // Ignore the Player layer
-        validHitLayers = LayerMask.NameToLayer("Terrain");
+        // Set to the Terrain's layer
+        terrainLayer = LayerMask.NameToLayer("Terrain");
 
         // Setup the UI
         foreach (Blueprint blueprint in blueprints)
@@ -69,16 +79,58 @@ public class BuildingController : MonoBehaviour
             BlueprintUIButton blueprintUI = Instantiate(blueprintUIButtonPrefab, blueprintUIHolder).GetComponent<BlueprintUIButton>();
             blueprintUI.Initialize(blueprint, this);
         }
+
     }
 
     private void Update()
     {
+        BlueprintMode();
         BuildMode();
+
+        // FOR TESTING
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            ToggleBuildMode();
+        }
     }
 
-    private void BuildMode()
+    private void ToggleBuildMode()
     {
-        if (InBuildMode)
+        SetMode((InBuildMode) ? Modes.NONE : Modes.BUILD);
+    }
+
+    // Sets the new mode (None/Blueprint mode/Build mode)
+    public static void SetMode(Modes newMode)
+    {
+        switch (newMode)
+        {
+            case Modes.NONE:
+                InBlueprintMode = InBuildMode = false;
+                InventoryManager.instance.UnequipBuildTool();
+                break;
+            case Modes.BLUEPRINT:
+                InBuildMode = false;
+                InBlueprintMode = true;
+                InventoryManager.instance.UnequipBuildTool();
+                break;
+            case Modes.BUILD:
+                InBlueprintMode = false;
+                InBuildMode = true;
+                InventoryManager.instance.EquipBuildTool();
+                break;
+            default:
+                Debug.LogError("No case for new mode: " + newMode);
+                break;
+        }
+        CurrentMode = newMode;
+        print("New mode: " + CurrentMode.ToString());
+    }
+
+    #region Blueprint Mode
+
+    private void BlueprintMode()
+    {
+        if (InBlueprintMode)
         {
             Ray ray = new Ray(playerCamera.position, playerCamera.forward);
             Quaternion blueprintRotation = Quaternion.Euler(0, transform.eulerAngles.y - 90, 0);
@@ -95,7 +147,7 @@ public class BuildingController : MonoBehaviour
                 }
 
                 // If the raycast hit is not on the Terrain, return
-                if (hit.transform.gameObject.layer != validHitLayers)
+                if (hit.transform.gameObject.layer != terrainLayer)
                 {
                     blueprintToPlace.gameObject.SetActive(false);
                     return;
@@ -111,7 +163,7 @@ public class BuildingController : MonoBehaviour
                     blueprintInstance.transform.position = hit.point;
                     blueprintInstance.transform.rotation = blueprintRotation;
 
-                    // Place blueprintInstancec
+                    // Place blueprintInstance
                     if (Input.GetKeyDown(KeyBindings.ActionOne))
                     {
                         PlaceBlueprint(hit.point, blueprintRotation);
@@ -125,10 +177,10 @@ public class BuildingController : MonoBehaviour
                     blueprintToPlace.gameObject.SetActive(false);
             }
 
-            // Cancel build mode with ActionTwo
+            // Cancel Blueprint Mode with ActionTwo
             if (Input.GetKeyDown(KeyBindings.ActionTwo))
             {
-                CancelBuildMode();
+                CancelBlueprintMode();
             }
         }
     }
@@ -158,9 +210,9 @@ public class BuildingController : MonoBehaviour
         }
     }
 
-    public void CancelBuildMode()
+    public void CancelBlueprintMode()
     {
-        InBuildMode = false;
+        CurrentMode = Modes.NONE;
 
         // Stop blueprint preview mode
         if (blueprintInstance != null)
@@ -177,7 +229,34 @@ public class BuildingController : MonoBehaviour
         blueprintInstance.gameObject.layer = LayerMask.NameToLayer(originalLayerName);
         blueprintInstance = null;
     }
-    
+
+    #endregion
+
+    #region Build Mode
+
+    private void BuildMode()
+    {
+        if (InBuildMode)
+        {
+            Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 6f, validLayerMask))
+            {
+                if (Input.GetKeyDown(KeyBindings.ActionOne))
+                {
+
+                }
+            }
+        }
+    }
+
+    private void CancelBuildMode()
+    {
+        CurrentMode = Modes.NONE;
+    }
+
+    #endregion
+
     // Events
     public static void SelectedBlueprint(Blueprint blueprint)
     {
@@ -192,9 +271,7 @@ public class BuildingController : MonoBehaviour
 
     private void UIEventHandler_OnUIDisplayed(bool state)
     {
-        // When a UI is displayed, cancel build mode
-        if (state)
-            CancelBuildMode();
+        
     }
 
 
