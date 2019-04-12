@@ -30,6 +30,9 @@ public class BuildingController : MonoBehaviour
         BUILD
     }
 
+    public delegate void BuildModeStateHandler();
+    public static event BuildModeStateHandler OnDisabledBuildMode;
+
     public delegate void BuildModeHandler(Blueprint blueprint);
     public static event BuildModeHandler OnSelectedBlueprint;
     public delegate void ResourceRequestHandler(Resource resource, Action<Resource, int> onValidate);
@@ -110,6 +113,10 @@ public class BuildingController : MonoBehaviour
             print("Entering Blueprint mode, unequip Build Tool");
             InventoryManager.instance.UnequipBuildTool();
         }
+
+        // If build mode is switched off, invoke the OnDisabledBuildMode event
+        if (CurrentMode == Modes.BUILD && newMode != Modes.BUILD)
+            OnDisabledBuildMode?.Invoke();
 
         switch (newMode)
         {

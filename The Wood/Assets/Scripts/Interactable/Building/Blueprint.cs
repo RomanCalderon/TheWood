@@ -113,15 +113,6 @@ public class Blueprint : Interactable
         return result;
     }
 
-    //protected override void Awake()
-    //{
-    //    print("sub to onsave/onload");
-    //    BuildingManager.OnSave += BuildingManager_OnSave;
-    //    BuildingManager.OnLoad += BuildingManager_OnLoad;
-
-    //    base.Awake();
-    //}
-
     private void OnEnable()
     {
         BuildingManager.OnSave += BuildingManager_OnSave;

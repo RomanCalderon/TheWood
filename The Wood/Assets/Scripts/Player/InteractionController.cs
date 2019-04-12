@@ -30,6 +30,7 @@ public class InteractionController : MonoBehaviour
         UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
         SleepController.OnGoToSleep += SleepController_OnGoToSleep;
         SleepController.OnWakeUp += SleepController_OnWakeUp;
+        BuildingController.OnDisabledBuildMode += HideInteractablePrompt;
     }
 
     // Update is called once per frame
