@@ -7,16 +7,17 @@ public enum MenuPanels
 {
     INVENTORY,
     QUESTS,
-    BUILDER
+    BUILDER,
+    NONE
 }
 
 public class MenuSetController : MonoBehaviour
 {
     [Header("Menus")]
-    [SerializeField] RectTransform menuSet;
-    [SerializeField] RectTransform inventoryPanel;
-    [SerializeField] RectTransform questPanel;
-    [SerializeField] RectTransform builderPanel;
+    [SerializeField] CanvasGroup mainPanel;
+    [SerializeField] CanvasGroup inventoryPanel;
+    [SerializeField] CanvasGroup questPanel;
+    [SerializeField] CanvasGroup builderPanel;
 
     [Header("Menu Buttons")]
     [SerializeField] Button inventoryButton;
@@ -36,7 +37,7 @@ public class MenuSetController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ChangeMenuSetState(menuIsActive = false);
+        ChangeMenuSetState(MenuPanels.NONE);
 
         inventoryButton.onClick.AddListener(delegate { OpenMenuPanel(MenuPanels.INVENTORY); } );
         questsButton.onClick.AddListener(delegate { OpenMenuPanel(MenuPanels.QUESTS); });
@@ -48,7 +49,82 @@ public class MenuSetController : MonoBehaviour
     {
         // Toggle Menu Set UI if player is awake
         if (Input.GetKeyDown(KeyBindings.ToggleMenuSet) && !PlayerSleepController.IsSleeping)
-            ChangeMenuSetState(!menuIsActive, currentMenuPanel);
+            ChangeMenuSetState(menuIsActive ? MenuPanels.NONE : currentMenuPanel);
+    }
+
+
+    private void ChangeMenuSetState(MenuPanels menuPanel)
+    {
+        OpenMenuPanel(menuPanel);
+
+        UIEventHandler.UIDisplayed(menuIsActive);
+    }
+    
+    private void OpenMenuPanel(MenuPanels openPanel)
+    {
+        print("OpenMenuPanel() " + openPanel);
+
+        menuIsActive = false;
+        SetCanvasGroupActive(inventoryPanel, false);
+        SetCanvasGroupActive(questPanel, false);
+        SetCanvasGroupActive(builderPanel, false);
+
+        inventoryButton.interactable = false;
+        questsButton.interactable = false;
+        builderButton.interactable = false;
+
+        // Activate the main panel if openPanel is anything but NONE
+        menuIsActive = openPanel != MenuPanels.NONE;
+        SetCanvasGroupActive(mainPanel, menuIsActive);
+
+        switch (openPanel)
+        {
+            case MenuPanels.INVENTORY:
+                SetCanvasGroupActive(inventoryPanel, true);
+                questsButton.interactable = true;
+                builderButton.interactable = true;
+                break;
+            case MenuPanels.QUESTS:
+                SetCanvasGroupActive(questPanel, true);
+                inventoryButton.interactable = true;
+                builderButton.interactable = true;
+                break;
+            case MenuPanels.BUILDER:
+                SetCanvasGroupActive(builderPanel, true);
+                inventoryButton.interactable = true;
+                questsButton.interactable = true;
+                break;
+            case MenuPanels.NONE:
+                SetCanvasGroupActive(inventoryPanel, false);
+                SetCanvasGroupActive(questPanel, false);
+                SetCanvasGroupActive(builderPanel, false);
+
+                inventoryButton.interactable = false;
+                questsButton.interactable = false;
+                builderButton.interactable = false;
+                break;
+            default:
+                break;
+        }
+
+        if (openPanel != MenuPanels.NONE)
+            currentMenuPanel = openPanel;
+    }
+
+    private void SetCanvasGroupActive(CanvasGroup cg, bool state)
+    {
+        if (state) // Active
+        {
+            cg.alpha = 1;
+            cg.interactable = true;
+            cg.blocksRaycasts = true;
+        }
+        else // Inactive
+        {
+            cg.alpha = 0;
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
+        }
     }
 
 
@@ -56,61 +132,11 @@ public class MenuSetController : MonoBehaviour
     private void QuestController_OnQuestMenuStateChanged(bool state)
     {
         // Called when a Quest has been proposed, open the menu set AND quest panel
-        ChangeMenuSetState(state, MenuPanels.QUESTS);
+        ChangeMenuSetState(state ? MenuPanels.QUESTS : MenuPanels.NONE);
     }
 
     private void BuildingController_OnSelectedBlueprint(Blueprint blueprint)
     {
-        ChangeMenuSetState(false);
-    }
-
-
-    private void ChangeMenuSetState(bool newState)
-    {
-        menuIsActive = newState;
-        menuSet.gameObject.SetActive(menuIsActive);
-
-        UIEventHandler.UIDisplayed(menuIsActive);
-    }
-
-    private void ChangeMenuSetState(bool newState, MenuPanels menuPanel)
-    {
-        ChangeMenuSetState(newState);
-
-        OpenMenuPanel(menuPanel);
-    }
-    
-    private void OpenMenuPanel(MenuPanels openPanel)
-    {
-        inventoryPanel.gameObject.SetActive(false);
-        questPanel.gameObject.SetActive(false);
-        builderPanel.gameObject.SetActive(false);
-
-        inventoryButton.interactable = false;
-        questsButton.interactable = false;
-        builderButton.interactable = false;
-
-        switch (openPanel)
-        {
-            case MenuPanels.INVENTORY:
-                inventoryPanel.gameObject.SetActive(true);
-                questsButton.interactable = true;
-                builderButton.interactable = true;
-                break;
-            case MenuPanels.QUESTS:
-                questPanel.gameObject.SetActive(true);
-                inventoryButton.interactable = true;
-                builderButton.interactable = true;
-                break;
-            case MenuPanels.BUILDER:
-                builderPanel.gameObject.SetActive(true);
-                inventoryButton.interactable = true;
-                questsButton.interactable = true;
-                break;
-            default:
-                break;
-        }
-
-        currentMenuPanel = openPanel;
+        ChangeMenuSetState(MenuPanels.NONE);
     }
 }

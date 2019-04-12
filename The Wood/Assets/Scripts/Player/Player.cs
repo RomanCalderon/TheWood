@@ -23,14 +23,14 @@ public class Player : Killable
         SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
 
         UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
+
+        CharacterStats = new CharacterStats(4, 2);
     }
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        
-        CharacterStats = new CharacterStats(4, 2);
         
         UIEventHandler.HealthChanged(Health, maxHealth);
         SetCursorActive(false);

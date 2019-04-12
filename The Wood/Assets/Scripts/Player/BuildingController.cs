@@ -99,12 +99,17 @@ public class BuildingController : MonoBehaviour
         SetMode((InBuildMode) ? Modes.NONE : Modes.BUILD);
     }
 
-    // Sets the new mode (None/Blueprint mode/Build mode)
+    // Sets the new mode (None/Blueprint/Build)
     public static void SetMode(Modes newMode)
     {
+        print("Switch from [" + CurrentMode + "] to [" + newMode + "]");
+
         // Unequip the Build Tool if player is switching from Build Mode to Blueprint Mode
         if (CurrentMode == Modes.BUILD && newMode == Modes.BLUEPRINT)
+        {
+            print("Entering Blueprint mode, unequip Build Tool");
             InventoryManager.instance.UnequipBuildTool();
+        }
 
         switch (newMode)
         {

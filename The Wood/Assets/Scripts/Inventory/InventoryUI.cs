@@ -5,23 +5,16 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    public RectTransform inventoryPanel;
     public RectTransform scrollViewContent;
     InventoryUIItem itemContainer { get; set; }
     Item currentSelectedItem { get; set; }
-
-
-    private void Awake()
-    {
-        inventoryPanel.gameObject.SetActive(true);
-    }
+    
 
     private void Start()
     {
         itemContainer = Resources.Load<InventoryUIItem>("UI/Item_Container");
         UIEventHandler.OnItemAddedToInventory += ItemAdded;
         UIEventHandler.OnItemRemovedFromInventory += ItemRemoved;
-        inventoryPanel.gameObject.SetActive(false);
     }
 
     private void ItemAdded(Item item)

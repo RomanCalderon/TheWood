@@ -51,14 +51,16 @@ public class PlayerWeaponController : MonoBehaviour
         currentlyEquippedItem = itemToEquip;
         characterStats.AddStatBonus(itemToEquip.Stats);
         UIEventHandler.ItemEquipped(itemToEquip);
-        UIEventHandler.StatsChanged();
+        //if (itemToEquip.ItemSlug != InventoryManager.instance.BuildTool.ItemSlug)
+            UIEventHandler.StatsChanged();
 
         Debug.Log(EquippedWeapon.name + " equipped.");
     }
 
     public void UnequipWeapon()
     {
-        if (currentlyEquippedItem == null)
+        // If there is no Item/Weapon equipped, return
+        if (EquippedWeapon == null)
             return;
 
         // Only put the Item back in the Inventory if it's NOT the Build Tool
