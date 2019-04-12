@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4848776627734027405
 Transform:
   m_ObjectHideFlags: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   interactionKeyBinding: 323
   prefabPath: Buildings/Fence_Blueprint
   instanceID: -1
-  generated: 0
+  modified: 0
   CurrentProgress: 0
   Requirement: 5
   buildingPrefab: {fileID: 1048846527176705210, guid: 1a949f6f7b7416c418468a9f6477f761,

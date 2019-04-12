@@ -140,6 +140,7 @@ public class BuildingManager : MonoBehaviour
 
             // Instantiate the blueprint
             Blueprint blueprintInstance = Instantiate(blueprintPrefab, pos, rot, blueprintHolder).GetComponent<Blueprint>();
+            blueprintInstance.gameObject.SetActive(true);
             blueprintInstance.instanceID = bsd.instanceID;
             blueprintInstance.modified = true;
             blueprintInstance.CurrentProgress = bsd.currentProgress;

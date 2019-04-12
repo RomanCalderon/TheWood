@@ -102,6 +102,10 @@ public class BuildingController : MonoBehaviour
     // Sets the new mode (None/Blueprint mode/Build mode)
     public static void SetMode(Modes newMode)
     {
+        // Unequip the Build Tool if player is switching from Build Mode to Blueprint Mode
+        if (CurrentMode == Modes.BUILD && newMode == Modes.BLUEPRINT)
+            InventoryManager.instance.UnequipBuildTool();
+
         switch (newMode)
         {
             case Modes.NONE:
@@ -111,7 +115,6 @@ public class BuildingController : MonoBehaviour
             case Modes.BLUEPRINT:
                 InBuildMode = false;
                 InBlueprintMode = true;
-                InventoryManager.instance.UnequipBuildTool();
                 break;
             case Modes.BUILD:
                 InBlueprintMode = false;
@@ -141,7 +144,7 @@ public class BuildingController : MonoBehaviour
                 if (blueprintInstance == null)
                 {
                     if (blueprintToPlace != null)
-                        PreviewBlueprint(true, blueprintToPlace);
+                        PreviewBlueprint(blueprintToPlace);
                     else
                         return;
                 }
@@ -183,13 +186,19 @@ public class BuildingController : MonoBehaviour
                 CancelBlueprintMode();
             }
         }
+        else
+        {
+            if (blueprintInstance != null)
+            {
+                Destroy(blueprintInstance.gameObject);
+                blueprintToPlace = blueprintInstance = null;
+            }
+        }
     }
 
-    public void PreviewBlueprint(bool buildMode, Blueprint blueprintReference)
+    public void PreviewBlueprint(Blueprint blueprintReference)
     {
-        InBuildMode = buildMode;
-
-        if (InBuildMode)
+        if (InBlueprintMode)
         {
             originalLayerName = LayerMask.LayerToName(blueprintReference.gameObject.layer);
 
@@ -212,7 +221,7 @@ public class BuildingController : MonoBehaviour
 
     public void CancelBlueprintMode()
     {
-        CurrentMode = Modes.NONE;
+        SetMode(Modes.NONE);
 
         // Stop blueprint preview mode
         if (blueprintInstance != null)
@@ -250,10 +259,10 @@ public class BuildingController : MonoBehaviour
         }
     }
 
-    private void CancelBuildMode()
-    {
-        CurrentMode = Modes.NONE;
-    }
+    //private void CancelBuildMode()
+    //{
+    //    SetMode(Modes.NONE);
+    //}
 
     #endregion
 
@@ -266,7 +275,10 @@ public class BuildingController : MonoBehaviour
     // Event Listeners
     private void BuildingController_OnSelectedBlueprint(Blueprint blueprint)
     {
-        PreviewBlueprint(true, blueprint);
+        // When the player selects a Blueprint UI, enable Blueprint Mode
+        SetMode(Modes.BLUEPRINT);
+
+        blueprintToPlace = blueprint;
     }
 
     private void UIEventHandler_OnUIDisplayed(bool state)

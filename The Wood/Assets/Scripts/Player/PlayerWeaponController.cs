@@ -58,6 +58,9 @@ public class PlayerWeaponController : MonoBehaviour
 
     public void UnequipWeapon()
     {
+        if (currentlyEquippedItem == null)
+            return;
+
         // Only put the Item back in the Inventory if it's NOT the Build Tool
         if (currentlyEquippedItem.ItemSlug != InventoryManager.instance.BuildTool.ItemSlug)
             InventoryManager.instance.GiveItem(currentlyEquippedItem.ItemSlug);

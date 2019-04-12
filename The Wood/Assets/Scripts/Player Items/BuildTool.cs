@@ -58,7 +58,7 @@ public class BuildTool : MonoBehaviour, ITool, IWeapon
         Building buildingObject = InteractionController.instance.GetBuilding();
         
         // If the player is InBlueprintMode and hit a Blueprint
-        if (BuildingController.InBlueprintMode && interactableObject != null)
+        if (BuildingController.InBuildMode && interactableObject != null)
             interactableObject.Interact();  // Interacts with the Blueprint
 
         // If the player is InBuildMode and hit a Building
