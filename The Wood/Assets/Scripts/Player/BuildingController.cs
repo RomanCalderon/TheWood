@@ -31,6 +31,7 @@ public class BuildingController : MonoBehaviour
     }
 
     public delegate void BuildModeStateHandler();
+    public static event BuildModeStateHandler OnEnabledBuildMode;
     public static event BuildModeStateHandler OnDisabledBuildMode;
 
     public delegate void BuildModeHandler(Blueprint blueprint);
@@ -82,7 +83,6 @@ public class BuildingController : MonoBehaviour
             BlueprintUIButton blueprintUI = Instantiate(blueprintUIButtonPrefab, blueprintUIHolder).GetComponent<BlueprintUIButton>();
             blueprintUI.Initialize(blueprint, this);
         }
-
     }
 
     private void Update()
@@ -110,7 +110,6 @@ public class BuildingController : MonoBehaviour
         // Unequip the Build Tool if player is switching from Build Mode to Blueprint Mode
         if (CurrentMode == Modes.BUILD && newMode == Modes.BLUEPRINT)
         {
-            print("Entering Blueprint mode, unequip Build Tool");
             InventoryManager.instance.UnequipBuildTool();
         }
 
@@ -132,6 +131,7 @@ public class BuildingController : MonoBehaviour
                 InBlueprintMode = false;
                 InBuildMode = true;
                 InventoryManager.instance.EquipBuildTool();
+                OnEnabledBuildMode?.Invoke();
                 break;
             default:
                 Debug.LogError("No case for new mode: " + newMode);

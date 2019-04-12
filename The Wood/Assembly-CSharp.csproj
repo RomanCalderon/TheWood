@@ -137,6 +137,7 @@
     <Compile Include="Assets\Scripts\Questing\QuestUIView.cs" />
     <Compile Include="Assets\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\StatBonus.cs" />
+    <Compile Include="Assets\Scripts\UI\ActionBarItem.cs" />
     <Compile Include="Assets\yaSingleton\yaSingleton\Attributes\SingletonAttribute.cs" />
     <Compile Include="Assets\yaSingleton\yaSingleton\BaseSingleton.cs" />
     <Compile Include="Assets\yaSingleton\yaSingleton\Helpers\SingletonInitializer.cs" />

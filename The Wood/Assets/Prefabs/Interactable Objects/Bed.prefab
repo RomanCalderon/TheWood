@@ -60,8 +60,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HasInteracted: 0
-  interactionType: 5
+  interactionType: 6
   interactionName: 
+  interactionKeyBinding: 101
   bedCamera: {fileID: 1490731367435028894}
 --- !u!1 &517131107128945506
 GameObject:
