@@ -24,6 +24,9 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance { get; set; }
 
+    public delegate void ItemListHandler(List<Item> updatedList);
+    public static event ItemListHandler OnItemListUpdated;
+
     PlayerWeaponController playerWeaponController;
     ConsumableController consumableController;
     public InventoryUIDetails inventoryDetailsPanel;
@@ -41,6 +44,8 @@ public class InventoryManager : MonoBehaviour
 
         SaveLoadController.OnSaveGame += SaveLoadController_OnSaveGame;
         SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
+
+        UIEventHandler.OnItemAddedToInventory += UIEventHandler_OnItemAddedToInventory;
 
         playerWeaponController = GetComponent<PlayerWeaponController>();
         consumableController = GetComponent<ConsumableController>();
@@ -71,23 +76,22 @@ public class InventoryManager : MonoBehaviour
     public void GiveItem(string itemSlug)
     {
         Item item = ItemDatabase.instance.GetItem(itemSlug);
-        playerItems.Add(item);
-        UIEventHandler.ItemAddedToInventory(item);
+        
+        GiveItem(item);
     }
 
     public void GiveItem(string itemSlug, int amount)
     {
         Item item = ItemDatabase.instance.GetItem(itemSlug);
-
-        for (int i = 0; i < amount; i++)
-        {
-            playerItems.Add(item);
-            UIEventHandler.ItemAddedToInventory(item);
-        }
+        
+        GiveItem(item, amount);
     }
 
     public void GiveItem(Item item)
     {
+        if (item == null)
+            return;
+
         playerItems.Add(item);
         UIEventHandler.ItemAddedToInventory(item);
     }
@@ -95,10 +99,7 @@ public class InventoryManager : MonoBehaviour
     public void GiveItem(Item item, int amount)
     {
         for (int i = 0; i < amount; i++)
-        {
-            playerItems.Add(item);
-            UIEventHandler.ItemAddedToInventory(item);
-        }
+            GiveItem(item);
     }
 
     #endregion
@@ -162,16 +163,17 @@ public class InventoryManager : MonoBehaviour
         UIEventHandler.ItemRemovedFromInventory(item);
         playerItems.Remove(item);
     }
-
-
+    
     public void SetItemDetails(Item item, Button selectedButton)
     {
-        //if (!inventoryDetailsPanel.isActiveAndEnabled)
-        //    return;
-
         inventoryDetailsPanel.SetItem(item, selectedButton);
     }
 
+    // Events
+    private void UpdatedItemList()
+    {
+        OnItemListUpdated?.Invoke(playerItems);
+    }
 
     // Event Listeners
     private void SaveLoadController_OnSaveGame()
@@ -199,5 +201,25 @@ public class InventoryManager : MonoBehaviour
 
         //Debug.Log("Loaded InventoryManager");
     }
+    
+    /// <summary>
+    /// Sorts the new Item into the Inventory list of Items
+    /// </summary>
+    /// <param name="item">The new Item.</param>
+    private void UIEventHandler_OnItemAddedToInventory(Item item)
+    {
+        if (playerItems.Count > 0)
+        {
+            playerItems.Sort(SortByType);
+        }
 
+        // Invoke event (OnItemListUpdated)
+        UpdatedItemList();
+    }
+
+    // Item compare method
+    int SortByType(Item a, Item b)
+    {
+        return a.ItemType.CompareTo(b.ItemType);
+    }
 }
