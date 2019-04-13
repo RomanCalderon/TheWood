@@ -13,17 +13,28 @@ public class InventoryUI : MonoBehaviour
     private void Start()
     {
         itemContainer = Resources.Load<InventoryUIItem>("UI/Item_Container");
-        UIEventHandler.OnItemAddedToInventory += ItemAdded;
-        UIEventHandler.OnItemRemovedFromInventory += ItemRemoved;
+        //UIEventHandler.OnItemAddedToInventory += ItemAdded;
+        InventoryManager.OnItemListUpdated += InventoryManager_OnItemListUpdated;
+        UIEventHandler.OnItemRemovedFromInventory += RemoveItemUI;
     }
 
-    private void ItemAdded(Item item)
+    private void InventoryManager_OnItemListUpdated(List<Item> updatedList)
+    {
+        // Clear old UI Item elements
+        ClearItemUIList();
+
+        // Construct new list of UI Item elements
+        foreach (Item item in updatedList)
+            AddItemUI(item);
+    }
+
+    private void AddItemUI(Item item)
     {
         InventoryUIItem emptyItem = Instantiate(itemContainer, scrollViewContent);
         emptyItem.SetItem(item);
     }
 
-    private void ItemRemoved(Item item)
+    private void RemoveItemUI(Item item)
     {
         foreach (Transform t in scrollViewContent)
         {
@@ -33,5 +44,11 @@ public class InventoryUI : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void ClearItemUIList()
+    {
+        foreach (Transform t in scrollViewContent)
+            Destroy(t.gameObject);
     }
 }
