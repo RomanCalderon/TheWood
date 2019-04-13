@@ -746,7 +746,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472518720}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -927,7 +927,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 15
+  m_ScrollSensitivity: 20
   m_Viewport: {fileID: 1849484344}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 252054905}
@@ -1085,7 +1085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000028358692}
+  m_AnchoredPosition: {x: 0, y: 0.000058801077}
   m_SizeDelta: {x: 300, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &778283965
@@ -1273,8 +1273,8 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 26
     m_FontStyle: 2
-    m_BestFit: 0
-    m_MinSize: 2
+    m_BestFit: 1
+    m_MinSize: 20
     m_MaxSize: 26
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -2801,7 +2801,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444681252960391972}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -5083,7 +5083,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000011188299}
+  m_AnchoredPosition: {x: 0, y: 0.000071307746}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8957328468032192804
@@ -6623,7 +6623,7 @@ MonoBehaviour:
   _useFogVolumes: 1
   _enableDithering: 0
   _ditherStrength: 0.03
-  _alpha: 0.5325185
+  _alpha: 0.7312812
   _noiseStrength: 0.24
   _noiseScale: 0.031
   _distance: 0
@@ -6643,7 +6643,7 @@ MonoBehaviour:
   _skyHaze: 350
   _skySpeed: 0.05
   _skyNoiseStrength: 0.8
-  _skyAlpha: 0.5325185
+  _skyAlpha: 0.7312812
   _sun: {fileID: 0}
   _fogOfWarEnabled: 0
   _fogOfWarCenter: {x: 0, y: 0, z: 0}
@@ -15956,7 +15956,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 180}
-  m_SizeDelta: {x: -40, y: 260}
+  m_SizeDelta: {x: -40, y: 200}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4241830960121749982
 CanvasRenderer:
@@ -16510,7 +16510,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000033786324}
+  m_AnchoredPosition: {x: 0, y: -0.000008031677}
   m_SizeDelta: {x: 642.7, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1411007933909403614
