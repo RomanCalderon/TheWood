@@ -112,6 +112,13 @@ MonoBehaviour:
   prefabPath: Buildings/Fence_Blueprint
   instanceID: -1
   modified: 0
+  resources:
+  - ItemSlug: wood
+    CurrentAmount: 0
+    RequiredAmount: 5
+  - ItemSlug: rope
+    CurrentAmount: 0
+    RequiredAmount: 1
   CurrentProgress: 0
   Requirement: 5
   buildingPrefab: {fileID: 1048846527176705210, guid: 1a949f6f7b7416c418468a9f6477f761,

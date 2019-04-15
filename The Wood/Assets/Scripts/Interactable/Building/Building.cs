@@ -46,6 +46,8 @@ public class Building : Killable
     [HideInInspector] public int instanceID = -1;
     [HideInInspector] public bool modified;
 
+    public List<Resource> resources;
+
     [Header("Destroy Building")]
     public AudioClip[] destroyBuildingSounds;
     public GameObject destructionPrefab;
@@ -82,6 +84,11 @@ public class Building : Killable
     {
         BuildingManager.OnSave -= BuildingManager_OnSave;
         BuildingManager.OnLoad -= BuildingManager_OnLoad;
+
+        // Give player the Resources when destroyed
+        // FIXME: Maybe drop the Resources as Items so they can be picked up,
+        // instead of automatically going into the player's inventory?
+        BuildingController.AddResources(resources);
 
         // Removes a reference of the building from the BuildingManager
         // when destroyed so it wont be reloaded

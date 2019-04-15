@@ -143,8 +143,7 @@ public class BuildingManager : MonoBehaviour
             blueprintInstance.gameObject.SetActive(true);
             blueprintInstance.instanceID = bsd.instanceID;
             blueprintInstance.modified = true;
-            blueprintInstance.CurrentProgress = bsd.currentProgress;
-            blueprintInstance.Requirement = bsd.requirement;
+            blueprintInstance.resources = bsd.resources;
             blueprintInstance.buildingPrefab = buildingPrefab;
             blueprintInstance.completeBuildingSound = completeBuildingSound;
         }

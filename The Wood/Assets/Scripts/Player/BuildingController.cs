@@ -6,18 +6,18 @@ using UnityEngine;
 [Serializable]
 public class Resource
 {
-    public Item item;
+    public string itemSlug;
     public int quantity;
 
-    public Resource(Item item, int quantity)
+    public Resource(string itemSlug, int quantity)
     {
-        this.item = item;
+        this.itemSlug = itemSlug;
         this.quantity = quantity;
     }
 
     public bool Equals(Resource other)
     {
-        return other.item.ItemSlug == item.ItemSlug;
+        return other.itemSlug == itemSlug;
     }
 }
 
@@ -36,8 +36,11 @@ public class BuildingController : MonoBehaviour
 
     public delegate void BuildModeHandler(Blueprint blueprint);
     public static event BuildModeHandler OnSelectedBlueprint;
-    public delegate void ResourceRequestHandler(Resource resource, Action<Resource, int> onValidate);
+    public delegate void ResourceRequestHandler(List<RequiredResource> requiredResources, Action<string, int> onValidate);
     public static event ResourceRequestHandler OnRequestResources;
+
+    public delegate void ResourcesHandler(List<Resource> resources);
+    public static event ResourcesHandler OnAddResources;
 
     [SerializeField] Transform playerCamera;
     [SerializeField] LayerMask validLayerMask;
@@ -66,10 +69,10 @@ public class BuildingController : MonoBehaviour
         UIEventHandler.OnItemAddedToInventory += AddResource;
         UIEventHandler.OnItemRemovedFromInventory += RemoveResource;
         OnRequestResources += ValidateResourceRequest;
+        OnAddResources += BuildingController_OnAddResources;
 
         // Blueprints
         OnSelectedBlueprint += BuildingController_OnSelectedBlueprint;
-        UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
     }
 
     private void Start()
@@ -191,7 +194,7 @@ public class BuildingController : MonoBehaviour
                 if (blueprintToPlace != null)
                     blueprintToPlace.gameObject.SetActive(false);
             }
-
+            
             // Cancel Blueprint Mode with ActionTwo
             if (Input.GetKeyDown(KeyBindings.ActionTwo))
             {
@@ -284,6 +287,11 @@ public class BuildingController : MonoBehaviour
         OnSelectedBlueprint?.Invoke(blueprint);
     }
 
+    public static void AddResources(List<Resource> resources)
+    {
+        OnAddResources?.Invoke(resources);
+    }
+
     // Event Listeners
     private void BuildingController_OnSelectedBlueprint(Blueprint blueprint)
     {
@@ -293,9 +301,16 @@ public class BuildingController : MonoBehaviour
         blueprintToPlace = blueprint;
     }
 
-    private void UIEventHandler_OnUIDisplayed(bool state)
+    private void BuildingController_OnAddResources(List<Resource> resources)
     {
-        
+        if (resources == null)
+            return;
+
+        // Add more resources
+        foreach (Resource r in resources)
+        {
+            InventoryManager.instance.GiveItem(r.itemSlug, r.quantity);
+        }
     }
 
 
@@ -316,7 +331,7 @@ public class BuildingController : MonoBehaviour
             {
                 // If a group of similar item type exists, add 1 to it's quantity
                 // and move on to the next item in the inventory
-                if (r.item.ItemSlug == item.ItemSlug)
+                if (r.itemSlug == item.ItemSlug)
                 {
                     r.quantity++;
                     groupFound = true;
@@ -327,7 +342,7 @@ public class BuildingController : MonoBehaviour
             // If a group of similar type does not exist, create a new group
             // and add this item to it
             if (!groupFound)
-                resourceGroups.Add(new Resource(item, 1));
+                resourceGroups.Add(new Resource(item.ItemSlug, 1));
         }
 
         resources = resourceGroups;
@@ -344,7 +359,7 @@ public class BuildingController : MonoBehaviour
         foreach (Resource r in resources)
         {
             // If a group of similar item type exists, add 1 to it's quantity
-            if (r.item.ItemSlug == item.ItemSlug)
+            if (r.itemSlug == item.ItemSlug)
             {
                 r.quantity++;
                 groupFound = true;
@@ -355,7 +370,7 @@ public class BuildingController : MonoBehaviour
         // If a group of similar type does not exist, create a new group
         // and add this item to it
         if (!groupFound)
-            resources.Add(new Resource(item, 1));
+            resources.Add(new Resource(item.ItemSlug, 1));
     }
 
     private void RemoveResource(Item item)
@@ -367,7 +382,7 @@ public class BuildingController : MonoBehaviour
         foreach (Resource r in resources)
         {
             // If a group of similar item type exists, subtract 1 from it's quantity
-            if (r.item.ItemSlug == item.ItemSlug)
+            if (r.itemSlug == item.ItemSlug)
             {
                 r.quantity--;
 
@@ -380,37 +395,46 @@ public class BuildingController : MonoBehaviour
         }
     }
 
-    public static void RequestResources(Resource resource, Action<Resource, int> onValidate)
+    public static void RequestResources(List<RequiredResource> resource, Action<string, int> onValidate)
     {
+        // Calls ValidateResourcesRequest()
         OnRequestResources?.Invoke(resource, onValidate);
     }
 
-    public void ValidateResourceRequest(Resource requestedResource, Action<Resource, int> onValidate)
+    public void ValidateResourceRequest(List<RequiredResource> requestedResources, Action<string, int> onValidate)
     {
-        if (requestedResource != null)
+        if (requestedResources != null && requestedResources.Count > 0)
         {
-            foreach (Resource r in resources)
+            // For each RequiredResource
+            foreach (RequiredResource rr in requestedResources)
             {
-                if (r.Equals(requestedResource))
+                // Search the player's Resource collection for that Resource
+                foreach (Resource r in resources)
                 {
-                    int providedAmount = Mathf.Min(requestedResource.quantity, r.quantity);
-                    onValidate(r, providedAmount);
-                    StartCoroutine(RemoveItemEnum(r.item, providedAmount));
+                    if (r.itemSlug == rr.ItemSlug)
+                    {
+                        int amountNeeded = rr.RequiredAmount - rr.CurrentAmount;
+                        int providedAmount = Mathf.Min(amountNeeded, r.quantity);
 
-                    return;
+                        onValidate(r.itemSlug, providedAmount);
+
+                        // Remove the proper amount to Resources provided
+                        StartCoroutine(RemoveItemEnum(r.itemSlug, providedAmount));
+
+                        break;
+                    }
                 }
             }
-            Debug.Log("Player doesn't have requested resource " + requestedResource.item.Name);
         }
         else
             Debug.LogError("Requested resource is null");
     }
 
-    private IEnumerator RemoveItemEnum(Item item, int iterations = 1)
+    private IEnumerator RemoveItemEnum(string itemSlug, int iterations = 1)
     {
         for (int i = 0; i < iterations; i++)
         {
-            InventoryManager.instance.RemoveItem(item);
+            InventoryManager.instance.RemoveItem(itemSlug);
             yield return null;
         }
     }

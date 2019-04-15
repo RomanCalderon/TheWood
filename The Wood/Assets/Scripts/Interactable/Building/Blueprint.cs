@@ -14,8 +14,7 @@ public class BlueprintSaveData
     public float[] position;
     public float[] rotation;
 
-    public int currentProgress;
-    public int requirement;
+    public List<RequiredResource> resources;
     public string buildingPrefabName;
     public string completeBuildingSoundName;
 
@@ -39,10 +38,22 @@ public class BlueprintSaveData
             blueprint.transform.rotation.w
         };
 
-        currentProgress = blueprint.CurrentProgress;
-        requirement = blueprint.Requirement;
+        resources = blueprint.resources;
         buildingPrefabName = blueprint.buildingPrefab.name;
         completeBuildingSoundName = blueprint.completeBuildingSound.name;
+    }
+}
+
+[System.Serializable]
+public class RequiredResource
+{
+    public string ItemSlug;
+    public int CurrentAmount;
+    public int RequiredAmount;
+
+    public bool IsSufficient()
+    {
+        return (CurrentAmount >= RequiredAmount);
     }
 }
 
@@ -52,8 +63,8 @@ public class Blueprint : Interactable
     public int instanceID = -1;
     public bool modified;
 
-    public int CurrentProgress;
-    public int Requirement;
+    public List<RequiredResource> resources = new List<RequiredResource>();
+
     public GameObject buildingPrefab;
     public AudioClip completeBuildingSound;
     
@@ -70,24 +81,40 @@ public class Blueprint : Interactable
 
         // Cancel the Blueprint
         if (Input.GetKeyUp(KeyBindings.ActionTwo))
+        {
+            // Provide all Resources used for this Blueprint
+            BuildingController.AddResources(GetResources(resources));
+
+            // Destroy this gameObject
             Destroy(gameObject);
+        }
     }
 
     public override void Interact()
     {
-        BuildingController.RequestResources(new Resource(ItemDatabase.instance.GetItem("wood"), Requirement - CurrentProgress), CheckResourceRequest);
+        BuildingController.RequestResources(resources, CheckResourceRequest);
 
         HasInteracted = false;
     }
 
-    private void CheckResourceRequest(Resource resource, int quantity)
+    private void CheckResourceRequest(string resourceSlug, int quantity)
     {
-        //print(gameObject.name + " received " + quantity + " " + resource.item.Name);
-        CurrentProgress += quantity;
+        RequiredResource rr = resources.Find(r => r.ItemSlug == resourceSlug);
+        rr.CurrentAmount += quantity;
         modified = true;
 
-        if (CurrentProgress >= Requirement)
-            CompleteBuilding();
+        // Check if all the requirements are met
+        CheckCompletion();
+    }
+
+    private void CheckCompletion()
+    {
+        foreach (RequiredResource rr in resources)
+            if (!rr.IsSufficient())
+                return; // This resource requirement is not complete
+        
+        // Called if all resource requirements are complete
+        CompleteBuilding();
     }
 
     private void CompleteBuilding()
@@ -104,8 +131,13 @@ public class Blueprint : Interactable
         string result = "[" + KeyBindings.GetFormat(KeyBindings.ActionOne) + "] " + GetInteractablePrompt();
 
         // If this blueprint is incomplete, add the progress prompt
-        if (CurrentProgress < Requirement)
-            result += "\n\tBUILD PROGRESS: " + CurrentProgress + "/" + Requirement;
+        foreach (RequiredResource rr in resources)
+        {
+            if (rr.IsSufficient())
+                result += "\n\t\t<color=green>" + rr.ItemSlug.ToUpper() + "</color>";
+            else
+                result += "\n\t\t" + rr.ItemSlug.ToUpper() + " " + rr.CurrentAmount + "/" + rr.RequiredAmount;
+        }
 
         // Finally add the Cancel blueprint option prompt
         result += "\n[" + KeyBindings.GetFormat(KeyBindings.ActionTwo) + "] Cancel Blueprint";
@@ -146,5 +178,17 @@ public class Blueprint : Interactable
     private void RemoveDuplicate()
     {
         Destroy(gameObject);
+    }
+
+    private List<Resource> GetResources(List<RequiredResource> rrList)
+    {
+        List<Resource> resources = new List<Resource>();
+
+        foreach (RequiredResource rr in rrList)
+        {
+            resources.Add(new Resource(rr.ItemSlug, rr.CurrentAmount));
+        }
+
+        return resources;
     }
 }

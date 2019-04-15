@@ -71,6 +71,7 @@ public class InventoryManager : MonoBehaviour
         GiveItem("potion_log");
         GiveItem("pitchfork");
         GiveItem("wood", 7);
+        GiveItem("rope", 5);
     }
 
     public void GiveItem(string itemSlug)
@@ -163,7 +164,16 @@ public class InventoryManager : MonoBehaviour
         UIEventHandler.ItemRemovedFromInventory(item);
         playerItems.Remove(item);
     }
-    
+
+    public void RemoveItem(string itemSlug)
+    {
+        if (itemSlug == string.Empty || !playerItems.Contains(GetItem(itemSlug)))
+            return;
+
+        UIEventHandler.ItemRemovedFromInventory(GetItem(itemSlug));
+        playerItems.Remove(GetItem(itemSlug));
+    }
+
     public void SetItemDetails(Item item, Button selectedButton)
     {
         inventoryDetailsPanel.SetItem(item, selectedButton);

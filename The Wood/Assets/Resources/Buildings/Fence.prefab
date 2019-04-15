@@ -124,6 +124,11 @@ MonoBehaviour:
   prefabPath: Buildings/Fence
   instanceID: -1
   modified: 0
+  resources:
+  - itemSlug: wood
+    quantity: 5
+  - itemSlug: rope
+    quantity: 1
   destroyBuildingSounds:
   - {fileID: 8300000, guid: d188eefab97310543af1fee93f09f16e, type: 3}
   - {fileID: 8300000, guid: 803e9f48516791c4c9326003a3eaabfd, type: 3}

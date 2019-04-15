@@ -62,8 +62,6 @@ public class MenuSetController : MonoBehaviour
     
     private void OpenMenuPanel(MenuPanels openPanel)
     {
-        print("OpenMenuPanel() " + openPanel);
-
         menuIsActive = false;
         SetCanvasGroupActive(inventoryPanel, false);
         SetCanvasGroupActive(questPanel, false);
