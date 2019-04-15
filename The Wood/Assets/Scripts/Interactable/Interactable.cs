@@ -19,7 +19,6 @@ public class Interactable : MonoBehaviour
     [HideInInspector] public bool HasInteracted;
     [SerializeField] InteractionTypes interactionType;
     [SerializeField] protected string interactionName;
-    public KeyCode interactionKeyBinding = KeyBindings.Interact;
 
     protected virtual void Awake()
     {

@@ -122,3 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HasInteracted: 0
+  interactionType: 5
+  interactionName: 
+  interactionKeyBinding: 101
