@@ -43,7 +43,7 @@ public class ItemDatabase : MonoBehaviour
 
         if (item != null)
         {
-            PickupItem instance = Instantiate(pickupItem, transform.position, Quaternion.identity);
+            PickupItem instance = Instantiate(pickupItem, pos, Quaternion.identity);
             instance.Item = item;
             instance.SetInteractionPrompt(Interactable.InteractionTypes.TAKE, item.Name);
         }

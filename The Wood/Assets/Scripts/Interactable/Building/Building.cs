@@ -55,7 +55,15 @@ public class Building : Killable
     protected override void Die()
     {
         AudioManager.Instance.Play(destroyBuildingSounds[Random.Range(0, destroyBuildingSounds.Length)], transform.position, 0.15f).maxDistance = 25f;
+
+        // FIXME: Do something about the "broken building" objects
         Instantiate(destructionPrefab, transform.position, transform.rotation);
+
+        // Drop the Resources used for this Building
+        foreach (Resource r in resources)
+            for (int i = 0; i < r.quantity; i++)
+                ItemDatabase.instance.DropLoot(r.itemSlug, transform.position + Vector3.up * 1);
+
         Destroy(gameObject);
         return;
     }
@@ -84,12 +92,7 @@ public class Building : Killable
     {
         BuildingManager.OnSave -= BuildingManager_OnSave;
         BuildingManager.OnLoad -= BuildingManager_OnLoad;
-
-        // Give player the Resources when destroyed
-        // FIXME: Maybe drop the Resources as Items so they can be picked up,
-        // instead of automatically going into the player's inventory?
-        BuildingController.AddResources(resources);
-
+        
         // Removes a reference of the building from the BuildingManager
         // when destroyed so it wont be reloaded
         BuildingManager.RemoveBuilding(this);
