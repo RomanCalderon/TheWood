@@ -13391,6 +13391,7 @@ MonoBehaviour:
   resources: []
   blueprints:
   - {fileID: 2977402006618889401, guid: 78076cdce185e904b824366b33e0ac3d, type: 3}
+  - {fileID: 1615247510547874544, guid: a5a97f0f03a21dc4993ea04fe1511947, type: 3}
   blueprintUIHolder: {fileID: 4139444095623431430}
   blueprintUIButtonPrefab: {fileID: 4091004871852922261, guid: 79246f63d7aa4b74a974fdf4dbdc94ee,
     type: 3}

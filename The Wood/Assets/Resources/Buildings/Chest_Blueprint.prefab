@@ -341,7 +341,8 @@ MonoBehaviour:
     RequiredAmount: 1
   buildingPrefab: {fileID: 724969896738735176, guid: f2950f836aecf0f43898081181c77bf8,
     type: 3}
-  completeBuildingSound: {fileID: 0}
+  completeBuildingSound: {fileID: 8300000, guid: ee80f374ea3ab4a45b78200d0c0ec750,
+    type: 3}
 --- !u!1 &3806734984343069372
 GameObject:
   m_ObjectHideFlags: 0
