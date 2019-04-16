@@ -36,7 +36,6 @@ public class ItemStorage : Interactable
     private void SaveLoadController_OnSaveGame()
     {
         SaveSystem.SaveItemStorage(this, Application.persistentDataPath + "/itemstorage.dat");
-        print("save chest data");
     }
 
     private void SaveLoadController_OnLoadGame()
@@ -47,8 +46,6 @@ public class ItemStorage : Interactable
             return;
 
         items = data.items;
-
-        print("load chest data");
     }
 
     #endregion
