@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\Interactable\Building\Blueprint.cs" />
     <Compile Include="Assets\Scripts\Interactable\Building\Building.cs" />
     <Compile Include="Assets\Scripts\Interactable\Interactable.cs" />
+    <Compile Include="Assets\Scripts\Interactable\ItemStorage.cs" />
     <Compile Include="Assets\Scripts\Interactable\NPC.cs" />
     <Compile Include="Assets\Scripts\Interactable\SignPost.cs" />
     <Compile Include="Assets\Scripts\Interactable\WaterWell.cs" />

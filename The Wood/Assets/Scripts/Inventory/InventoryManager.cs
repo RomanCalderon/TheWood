@@ -72,6 +72,7 @@ public class InventoryManager : MonoBehaviour
         GiveItem("pitchfork");
         GiveItem("wood", 7);
         GiveItem("rope", 5);
+        GiveItem("iron_scrap", 3);
     }
 
     public void GiveItem(string itemSlug)

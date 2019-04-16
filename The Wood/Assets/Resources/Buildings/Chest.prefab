@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 4784541602341486712}
   - component: {fileID: 4854329319878101267}
   - component: {fileID: 8958869220482593957}
+  - component: {fileID: 3076824246964034723}
   m_Layer: 13
   m_Name: Chest
   m_TagString: Building
@@ -246,7 +247,24 @@ MonoBehaviour:
     quantity: 1
   destroyBuildingSounds:
   - {fileID: 8300000, guid: 803e9f48516791c4c9326003a3eaabfd, type: 3}
-  destructionPrefab: {fileID: 0}
+  destructionPrefab: {fileID: 1280590659957239618, guid: b2642b75b2839474e826b012d832afdf,
+    type: 3}
+--- !u!114 &3076824246964034723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724969896738735176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d8c47c271d83e14bab7b93700c32b9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HasInteracted: 0
+  interactionType: 4
+  interactionName: CHEST
+  items: []
 --- !u!1 &724969896738735178
 GameObject:
   m_ObjectHideFlags: 0

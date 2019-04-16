@@ -85,4 +85,18 @@ public static class SaveSystem
         Debug.Log("Saved BuildingManager data.");
     }
 
+    // Save ItemStorage
+    public static void SaveItemStorage(ItemStorage itemStorage, string path)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        ItemStorageSaveData data = new ItemStorageSaveData(itemStorage);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+
+        Debug.Log("Saved ItemStorage data.");
+    }
+
 }
