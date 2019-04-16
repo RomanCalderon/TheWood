@@ -4,38 +4,43 @@ using UnityEngine;
 
 public class Bed : Interactable
 {
+    public delegate void BedHandler();
+    public static event BedHandler OnInBed;
+    public static event BedHandler OnOutOfBed;
+
     [SerializeField] Camera bedCamera;
 
 
     protected override void Awake()
     {
         base.Awake();
-
-        SleepController.OnGoToSleep += SleepController_OnGoToSleep;
-        SleepController.OnWakeUp += SleepController_OnWakeUp;
+        
+        OnOutOfBed += Bed_OnOutOfBed;
     }
 
     public override void Interact()
     {
         base.Interact();
 
-        // Set up a UI so the player can choose how many hours to sleep
-        SleepController.Instance.Sleep(8);
+        GetInBed();
     }
 
-    private void SleepController_OnGoToSleep()
+    private void GetInBed()
     {
-        if (!HasInteracted)
-            return;
-        
+        OnInBed?.Invoke();
+
         bedCamera.enabled = true;
     }
 
-    private void SleepController_OnWakeUp()
+    // Events
+    public static void GetOutOfBed()
     {
-        if (!HasInteracted)
-            return;
+        OnOutOfBed?.Invoke();
+    }
 
+    // Event Listeners
+    private void Bed_OnOutOfBed()
+    {
         bedCamera.enabled = false;
         HasInteracted = false;
     }

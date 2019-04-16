@@ -130,6 +130,7 @@ public class DayNightManager : MonoBehaviour
             return;
 
         // Stop the Sound
+        StopCoroutine(StopSound(sound));
         StartCoroutine(StopSound(sound));
     }
 

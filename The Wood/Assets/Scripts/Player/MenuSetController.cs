@@ -48,7 +48,7 @@ public class MenuSetController : MonoBehaviour
     void Update()
     {
         // Toggle Menu Set UI if player is awake
-        if (Input.GetKeyDown(KeyBindings.ToggleMenuSet) && !PlayerSleepController.IsSleeping)
+        if (Input.GetKeyDown(KeyBindings.ToggleMenuSet) && !PlayerSleepController.IsInBed)
             ChangeMenuSetState(menuIsActive ? MenuPanels.NONE : currentMenuPanel);
     }
 

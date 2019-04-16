@@ -45,7 +45,7 @@ public class InteractionController : MonoBehaviour
     /// </summary>
     void Interactions()
     {
-        if (CanInteract && !PlayerSleepController.IsSleeping)
+        if (CanInteract && !PlayerSleepController.IsInBed)
         {
             Ray ray = new Ray(camera.position, camera.forward);
 
@@ -85,7 +85,7 @@ public class InteractionController : MonoBehaviour
     /// <returns>A Blueprint object</returns>
     public Blueprint GetBlueprint()
     {
-        if (CanInteract && !PlayerSleepController.IsSleeping)
+        if (CanInteract && !PlayerSleepController.IsInBed)
         {
             Ray ray = new Ray(camera.position, camera.forward);
 
@@ -103,7 +103,7 @@ public class InteractionController : MonoBehaviour
     /// <returns>A Building object</returns>
     public Building GetBuilding()
     {
-        if (CanInteract && !PlayerSleepController.IsSleeping)
+        if (CanInteract && !PlayerSleepController.IsInBed)
         {
             Ray ray = new Ray(camera.position, camera.forward);
 

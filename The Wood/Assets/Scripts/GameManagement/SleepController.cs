@@ -51,6 +51,7 @@ public class SleepController : MonoBehaviour
 
         DayNightCycle.instance.SetRate(1);
         OnWakeUp?.Invoke();
+        Bed.GetOutOfBed();
     }
 
     private IEnumerator SaveGameEnum()

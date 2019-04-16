@@ -21,10 +21,10 @@ public class DayNightCycle : MonoBehaviour
 
     private float hourProgress = 0;
     [SerializeField] private float hour = -1;
-    private float Hour
+    public float Hour
     {
         get { return hour; }
-        set
+        private set
         {
             if ((int)hour == (int)value) return;
             hour = value;
@@ -150,6 +150,20 @@ public class DayNightCycle : MonoBehaviour
     public float GetCurrentHourRaw()
     {
         return Hour + hourProgress;
+    }
+
+    public string GetStandardTimeFormatted(int hour)
+    {
+        hour %= 24;
+
+        print("hour = " + hour);
+
+        if (hour >= 12)
+            return (hour == 12 ? hour : (hour % 12)) + ":00 PM";
+        else if (hour == 0)
+            return "12:00 AM";
+        else
+            return hour + ":00 AM";
     }
     
     private float GetIntensity(float baseIntensity)
