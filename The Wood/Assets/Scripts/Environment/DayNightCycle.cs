@@ -152,11 +152,9 @@ public class DayNightCycle : MonoBehaviour
         return Hour + hourProgress;
     }
 
-    public string GetStandardTimeFormatted(int hour)
+    public string GetStandardTime(int hour)
     {
         hour %= 24;
-
-        print("hour = " + hour);
 
         if (hour >= 12)
             return (hour == 12 ? hour : (hour % 12)) + ":00 PM";

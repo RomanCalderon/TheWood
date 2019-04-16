@@ -19,6 +19,8 @@ public class PlayerSleepController : MonoBehaviour
     [SerializeField] Button sleepButton;
     [SerializeField] Button cancelSleepButton;
     [Space]
+    [SerializeField] Text currentTimeText;
+    [Space]
     [SerializeField] CanvasGroup sleepCanvasGroup;
 
     private void Awake()
@@ -42,6 +44,10 @@ public class PlayerSleepController : MonoBehaviour
         sleepCanvasGroup.alpha = Mathf.Lerp(sleepCanvasGroup.alpha, (IsSleeping) ? 1f : 0f, Time.deltaTime * 4f);
         // Update the global audio volume
         AudioListener.volume = Mathf.Lerp(AudioListener.volume, (IsSleeping) ? 0f : 1f, Time.deltaTime * 2f);
+
+        // Display the current time as the player sleeps
+        if (IsSleeping)
+            currentTimeText.text = DayNightCycle.instance.GetStandardTime((int)DayNightCycle.instance.Hour);
     }
 
     #region Event Listeners
@@ -64,7 +70,7 @@ public class PlayerSleepController : MonoBehaviour
         hoursToSleep = 1;
 
         // Update the hoursToSleep text to proper wake up time
-        wakeUpTimeText.text = DayNightCycle.instance.GetStandardTimeFormatted((int)DayNightCycle.instance.Hour + hoursToSleep);
+        wakeUpTimeText.text = DayNightCycle.instance.GetStandardTime((int)DayNightCycle.instance.Hour + hoursToSleep);
 
         // For canceling sleep, call: Bed.GetOutOfBed()
     }
@@ -96,7 +102,7 @@ public class PlayerSleepController : MonoBehaviour
         hoursToSleep = Mathf.Clamp(hoursToSleep, 1, 23);
 
         // Update the hoursToSleep text to proper wake up time
-        wakeUpTimeText.text = DayNightCycle.instance.GetStandardTimeFormatted((int)DayNightCycle.instance.Hour + hoursToSleep);
+        wakeUpTimeText.text = DayNightCycle.instance.GetStandardTime((int)DayNightCycle.instance.Hour + hoursToSleep);
     }
     
     /// <summary>
@@ -122,13 +128,19 @@ public class PlayerSleepController : MonoBehaviour
 
     private void SleepController_OnGoToSleep()
     {
+        currentTimeText.gameObject.SetActive(true);
+
         IsSleeping = true;
+
         print("You fell asleep...");
     }
 
     private void SleepController_OnWakeUp()
     {
         IsSleeping = false;
+
+        currentTimeText.gameObject.SetActive(false);
+
         print("You woke up.");
     }
 }
