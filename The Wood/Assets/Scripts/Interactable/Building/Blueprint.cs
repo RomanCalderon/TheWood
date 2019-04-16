@@ -59,6 +59,7 @@ public class RequiredResource
 
 public class Blueprint : Interactable
 {
+    public Sprite Icon;
     public string prefabPath;
     public int instanceID = -1;
     public bool modified;

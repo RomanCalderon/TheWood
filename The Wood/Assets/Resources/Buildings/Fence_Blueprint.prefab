@@ -108,7 +108,7 @@ MonoBehaviour:
   HasInteracted: 0
   interactionType: 2
   interactionName: Fence
-  interactionKeyBinding: 323
+  Icon: {fileID: 21300000, guid: 374e818916a151e4d999c978366d7ad0, type: 3}
   prefabPath: Buildings/Fence_Blueprint
   instanceID: -1
   modified: 0
@@ -119,8 +119,6 @@ MonoBehaviour:
   - ItemSlug: rope
     CurrentAmount: 0
     RequiredAmount: 1
-  CurrentProgress: 0
-  Requirement: 5
   buildingPrefab: {fileID: 1048846527176705210, guid: 1a949f6f7b7416c418468a9f6477f761,
     type: 3}
   completeBuildingSound: {fileID: 8300000, guid: ee80f374ea3ab4a45b78200d0c0ec750,

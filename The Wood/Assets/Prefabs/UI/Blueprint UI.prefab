@@ -130,4 +130,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52b29f872e5dbbb49a98128e2639cb9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blueprintIcon: {fileID: 3834891289814408118}
   button: {fileID: 6717905124186110671}
