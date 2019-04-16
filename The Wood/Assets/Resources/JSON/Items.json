@@ -184,6 +184,14 @@
     "actionName": "",
     "itemModifier": 0
   },
+  {
+    "itemSlug": "iron_scrap",
+    "itemName": "Iron Scrap",
+    "description": "Discarded pieces of iron that can be repurposed. Used for building.",
+    "itemType": "RESOURCE",
+    "actionName": "",
+    "itemModifier": 0
+  },
 
 
   // QUEST ITEMS

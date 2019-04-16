@@ -57,7 +57,8 @@ public class Building : Killable
         AudioManager.Instance.Play(destroyBuildingSounds[Random.Range(0, destroyBuildingSounds.Length)], transform.position, 0.15f).maxDistance = 25f;
 
         // FIXME: Do something about the "broken building" objects
-        Instantiate(destructionPrefab, transform.position, transform.rotation);
+        if (destructionPrefab != null)
+            Instantiate(destructionPrefab, transform.position, transform.rotation);
 
         // Drop the Resources used for this Building
         foreach (Resource r in resources)
