@@ -52,7 +52,30 @@ public class InteractionController : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactableLayermask))
             {
                 Interactable interactableObject = hit.transform.GetComponent<Interactable>();
+
+                // If the hit object doesn't have an Interactable component, return
+                if (interactableObject == null)
+                {
+                    HideInteractablePrompt();
+                    return;
+                }
                 
+                // Shows an interaction prompt for Blueprints if InBuildMode
+                // Shows an interaction prompt for non-Blueprint objects if not InBuildMode
+                if (BuildingController.InBuildMode)
+                {
+                    if (interactableObject is Blueprint)
+                        interactableObject.Preview();
+                    else
+                        HideInteractablePrompt();
+                }
+                else
+                {
+                    if (!(interactableObject is Blueprint))
+                        interactableObject.Preview();
+                }
+
+                /*
                 // Display an interaction preview for Blueprints
                 if (interactableObject is Blueprint)
                 {
@@ -60,17 +83,27 @@ public class InteractionController : MonoBehaviour
                     if (BuildingController.InBuildMode)
                         interactableObject.Preview();
                 }
-                // If the interactableObject is not a Blueprint
+                else if (interactableObject is ItemStorage)
+                {
+                    if (!BuildingController.InBuildMode)
+                        interactableObject.Preview();
+                    else
+                        HideInteractablePrompt();
+                }
+                // If the interactableObject is not a Blueprint or ItemStorage
                 else
                 {
                     // And not in BuildMode, preview the object
                     if (!BuildingController.InBuildMode)
                         interactableObject.Preview();
+                    else
+                        HideInteractablePrompt();
                 }
+                */
 
                 // If the interactionObject is not a Blueprint, interact with the object
                 if ((interactableObject is Blueprint) == false)
-                    if (Input.GetKeyDown(KeyBindings.Interact))
+                    if (Input.GetKeyDown(KeyBindings.Interact) && !BuildingController.InBuildMode)
                         interactableObject.Interact();
             }
             else

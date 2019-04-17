@@ -13411,7 +13411,7 @@ MonoBehaviour:
   interactDistance: 2
   interactableLayermask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 8704
   buildingLayerMask:
     serializedVersion: 2
     m_Bits: 8192
