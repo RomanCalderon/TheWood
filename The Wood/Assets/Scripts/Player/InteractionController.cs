@@ -104,7 +104,10 @@ public class InteractionController : MonoBehaviour
                 // If the interactionObject is not a Blueprint, interact with the object
                 if ((interactableObject is Blueprint) == false)
                     if (Input.GetKeyDown(KeyBindings.Interact) && !BuildingController.InBuildMode)
+                    {
                         interactableObject.Interact();
+                        HideInteractablePrompt();
+                    }
             }
             else
                 HideInteractablePrompt();
