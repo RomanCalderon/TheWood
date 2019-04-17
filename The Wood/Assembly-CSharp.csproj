@@ -140,6 +140,8 @@
     <Compile Include="Assets\Scripts\StatBonus.cs" />
     <Compile Include="Assets\Scripts\UI\ActionBarItem.cs" />
     <Compile Include="Assets\Scripts\UI\CustomScrollRect.cs" />
+    <Compile Include="Assets\Scripts\UI\DragAndDrop\DraggableElement.cs" />
+    <Compile Include="Assets\Scripts\UI\DragAndDrop\DropZone.cs" />
     <Compile Include="Assets\Scripts\UI\SaveSystemUI.cs" />
     <Compile Include="Assets\yaSingleton\yaSingleton\Attributes\SingletonAttribute.cs" />
     <Compile Include="Assets\yaSingleton\yaSingleton\BaseSingleton.cs" />

@@ -8,6 +8,7 @@ TagManager:
   - Building
   - BuildingHolder
   - BlueprintHolder
+  - UIDropZone
   layers:
   - Default
   - TransparentFX
