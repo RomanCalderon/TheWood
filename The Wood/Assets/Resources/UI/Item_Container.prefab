@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4086650941113162722}
   - component: {fileID: 7651509278064468189}
   - component: {fileID: 125089138}
+  - component: {fileID: 3596527200190481413}
   m_Layer: 0
   m_Name: Item_Container
   m_TagString: Untagged
@@ -111,6 +112,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b60061a96719b4b8dab3a786857b70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Item:
+    Name: 
+    ItemSlug: 
+    Description: 
+    ItemType: 0
+    ActionName: 
+    ItemModifier: 0
+    Icon: {fileID: 0}
   itemNameText: {fileID: 4086650942828213138}
   itemImage: {fileID: 4086650942776289575}
 --- !u!114 &125089138
@@ -166,6 +175,19 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &3596527200190481413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4086650941113162526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df3a49d8503c5441b221c6c2c1cc5d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropZone: {fileID: 0}
 --- !u!1 &4086650942776289573
 GameObject:
   m_ObjectHideFlags: 0

@@ -38,6 +38,9 @@ public class InventoryUI : MonoBehaviour
     {
         foreach (Transform t in scrollViewContent)
         {
+            if (t.GetComponent<InventoryUIItem>() == null)
+                continue;
+
             if (t.GetComponent<InventoryUIItem>().Item.ItemSlug == item.ItemSlug)
             {
                 Destroy(t.gameObject);

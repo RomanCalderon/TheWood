@@ -181,7 +181,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Events
-    private void UpdatedItemList()
+    public void UpdatedItemList()
     {
         OnItemListUpdated?.Invoke(playerItems);
     }

@@ -10,7 +10,7 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public static event DraggableElementHandler OnDraggableElementExit;
 
     GameObject placeholder;
-    DropZone dropZone = null;
+    [HideInInspector] public DropZone dropZone = null;
     bool isDragging = false;
     CanvasGroup canvasGroup;
     Canvas rootCanvas;
@@ -64,6 +64,8 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         {
             transform.SetParent(dropZone.contentHolder, false);
             transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
+
+            dropZone.AddElement(gameObject);
         }
         
         // Destroy the placeholder in original position
