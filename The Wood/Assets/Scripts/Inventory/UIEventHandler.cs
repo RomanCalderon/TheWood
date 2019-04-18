@@ -22,6 +22,9 @@ public class UIEventHandler : MonoBehaviour
     public delegate void PlayerLevelEventHandler();
     public static event PlayerLevelEventHandler OnPlayerLevelChange;
 
+    public delegate void ItemStorageHandler(bool state);
+    public static event ItemStorageHandler OnItemStorage;
+
     public static void UIDisplayed(bool state)
     {
         OnUIDisplayed?.Invoke(state);
@@ -60,5 +63,10 @@ public class UIEventHandler : MonoBehaviour
     public static void PlayerLevelChanged()
     {
         OnPlayerLevelChange?.Invoke();
+    }
+
+    public static void ItemStorageActive(bool state)
+    {
+        OnItemStorage?.Invoke(state);
     }
 }

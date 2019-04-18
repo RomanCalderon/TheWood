@@ -24,6 +24,7 @@ public class MenuSetController : MonoBehaviour
     [SerializeField] Button questsButton;
     [SerializeField] Button builderButton;
 
+    bool canInteract = true;
     bool menuIsActive { get; set; }
     MenuPanels currentMenuPanel = MenuPanels.INVENTORY;
 
@@ -32,6 +33,8 @@ public class MenuSetController : MonoBehaviour
     {
         QuestController.OnQuestMenuStateChanged += QuestController_OnQuestMenuStateChanged;
         BuildingController.OnSelectedBlueprint += BuildingController_OnSelectedBlueprint;
+
+        UIEventHandler.OnItemStorage += UIEventHandler_OnItemStorage;
     }
 
     // Start is called before the first frame update
@@ -47,8 +50,8 @@ public class MenuSetController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Toggle Menu Set UI if player is awake
-        if (Input.GetKeyDown(KeyBindings.ToggleMenuSet) && !PlayerSleepController.IsInBed)
+        // Toggle Menu Set UI if player is not in bed
+        if (Input.GetKeyDown(KeyBindings.ToggleMenuSet) && !PlayerSleepController.IsInBed && canInteract)
             ChangeMenuSetState(menuIsActive ? MenuPanels.NONE : currentMenuPanel);
     }
 
@@ -136,5 +139,10 @@ public class MenuSetController : MonoBehaviour
     private void BuildingController_OnSelectedBlueprint(Blueprint blueprint)
     {
         ChangeMenuSetState(MenuPanels.NONE);
+    }
+
+    private void UIEventHandler_OnItemStorage(bool state)
+    {
+        canInteract = !state;
     }
 }

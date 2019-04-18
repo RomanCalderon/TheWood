@@ -21,7 +21,9 @@ public class ItemStorage : Interactable
 
     [Space]
     [SerializeField] CanvasGroup chestCanvasGroup;
+    [SerializeField] Button closeButton;
 
+    [Space]
     public List<Item> items = new List<Item>();
 
     protected override void Awake()
@@ -45,6 +47,8 @@ public class ItemStorage : Interactable
         // Play the OpenChest animation, then display the chest UI
         animator.SetTrigger("OpenChest");
         StartCoroutine(OpenChestDelay(0.6f));
+        UIEventHandler.UIDisplayed(true);
+        UIEventHandler.ItemStorageActive(true);
 
         base.Interact();
     }
@@ -54,9 +58,8 @@ public class ItemStorage : Interactable
     /// </summary>
     private void OpenChest()
     {
-        print("Opened Chest");
         SetCanvasGroupActive(true);
-        UIEventHandler.UIDisplayed(true);
+        closeButton.onClick.AddListener(delegate { CloseChest(); });
     }
 
     /// <summary>
@@ -67,9 +70,16 @@ public class ItemStorage : Interactable
         animator.SetTrigger("CloseChest");
         SetCanvasGroupActive(false);
         UIEventHandler.UIDisplayed(false);
+        UIEventHandler.ItemStorageActive(false);
+
+        closeButton.onClick.RemoveAllListeners();
         HasInteracted = false;
     }
 
+    /// <summary>
+    /// Hides or displays the Canvas via the CanvasGroup component.
+    /// </summary>
+    /// <param name="state"></param>
     private void SetCanvasGroupActive(bool state)
     {
         chestCanvasGroup.alpha = (state) ? 1f : 0f;

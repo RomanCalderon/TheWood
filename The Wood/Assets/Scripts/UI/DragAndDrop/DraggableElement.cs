@@ -11,7 +11,7 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     GameObject placeholder;
     DropZone dropZone = null;
-    [SerializeField] bool isDragging = false;
+    bool isDragging = false;
     CanvasGroup canvasGroup;
     Canvas rootCanvas;
 
