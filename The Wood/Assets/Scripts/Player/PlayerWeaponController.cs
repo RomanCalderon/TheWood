@@ -39,7 +39,7 @@ public class PlayerWeaponController : MonoBehaviour
             else
                 UnequipWeapon();
         }
-        
+
         // Remove itemToEquip from the Inventory if it's NOT the Build Tool
         if (itemToEquip.ItemSlug != InventoryManager.instance.BuildTool.ItemSlug)
             InventoryManager.instance.RemoveItem(itemToEquip);

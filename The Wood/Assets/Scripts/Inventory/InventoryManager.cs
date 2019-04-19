@@ -54,6 +54,10 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
+        // The build tool is an "internal" Item, meaning it cannot be dropped or
+        // equipped like other Items in the Inventory
+        BuildTool = ItemDatabase.instance.GetItem("build_tool");
+
         // FOR TESTING
         //GiveDefaultItems();
     }
@@ -62,10 +66,6 @@ public class InventoryManager : MonoBehaviour
 
     private void GiveDefaultItems()
     {
-        // The build tool is an "internal" Item, meaning it cannot be dropped or
-        // equipped like other Items in the Inventory
-        BuildTool = ItemDatabase.instance.GetItem("build_tool");
-
         // Basic Items given at the beginning
         GiveItem("torch");
         GiveItem("potion_log");
