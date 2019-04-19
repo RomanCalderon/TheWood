@@ -44,7 +44,11 @@ public class ItemStorage : Interactable
 
         // Save/Load
         SaveLoadController.OnSaveGame += SaveLoadController_OnSaveGame;
-        SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
+        //SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
+
+        // Called on this Awake instead of the standard OnLoadGame event
+        // because this object isn't in the scene by the time the OnLoadGame event is called
+        SaveLoadController_OnLoadGame();
 
         animator = GetComponent<Animator>();
         itemContainer = Resources.Load<InventoryUIItem>("UI/Item_Container");
@@ -75,16 +79,19 @@ public class ItemStorage : Interactable
         
         if (inStorage)
         {
-            print("Add [" + obj.name + "] to storage. Remove from inventory.");
+            //print("Add [" + uiItem.Item.Name + "] to STORAGE. Remove from inventory.");
             storageItems.Add(uiItem.Item);
             playerItems.Remove(uiItem.Item);
         }
         else
         {
-            print("Add [" + obj.name + "] to inventory. Remove from storage.");
+            //print("Add [" + uiItem.Item.Name + "] to INVENTORY. Remove from storage.");
             playerItems.Add(uiItem.Item);
             storageItems.Remove(uiItem.Item);
         }
+
+        // Add this Item to the player's inventory
+        UIEventHandler.ItemAddedToInventory(uiItem.Item);
     }
     
 
@@ -169,8 +176,8 @@ public class ItemStorage : Interactable
     {
         playerItems = updatedList;
 
-        // Remove all old UI elements
-        foreach (Item item in storageItems)
+        // Remove all old UI elements in playerItemsHolder
+        foreach (Item item in playerItems)
             RemoveItemUI(item, playerItemsHolder);
 
         // Construct new list of UI Item elements
@@ -185,8 +192,6 @@ public class ItemStorage : Interactable
 
     private void SaveLoadController_OnLoadGame()
     {
-        print("SaveLoadController_OnLoadGame()");
-
         ItemStorageSaveData data = SaveSystem.LoadData<ItemStorageSaveData>(Application.persistentDataPath + "/itemstorage.dat");
 
         if (data == null)
@@ -197,7 +202,6 @@ public class ItemStorage : Interactable
         {
             //if (!playerItems.Contains(GetItem(itemSlug)))
             storageItems.Add(ItemDatabase.instance.GetItem(itemSlug));
-            print("Add: " + itemSlug);
         }
 
         foreach (Item item in storageItems)

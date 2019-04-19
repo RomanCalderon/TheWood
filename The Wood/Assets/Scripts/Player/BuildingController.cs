@@ -66,8 +66,10 @@ public class BuildingController : MonoBehaviour
     private void Awake()
     {
         // Resources
-        UIEventHandler.OnItemAddedToInventory += AddResource;
-        UIEventHandler.OnItemRemovedFromInventory += RemoveResource;
+        //UIEventHandler.OnItemAddedToInventory += AddResource;
+        //UIEventHandler.OnItemRemovedFromInventory += RemoveResource;
+        InventoryManager.OnItemListUpdated += InventoryManager_OnItemListUpdated;
+
         OnRequestResources += ValidateResourceRequest;
         OnAddResources += BuildingController_OnAddResources;
 
@@ -311,6 +313,15 @@ public class BuildingController : MonoBehaviour
         {
             InventoryManager.instance.GiveItem(r.itemSlug, r.quantity);
         }
+    }
+    
+    private void InventoryManager_OnItemListUpdated(List<Item> updatedList)
+    {
+        resources.Clear();
+
+        // Update resources List with all Resources from updated list (playerItems)
+        foreach (Item item in updatedList)
+            AddResource(item);
     }
 
 

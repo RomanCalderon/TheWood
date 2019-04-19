@@ -55,7 +55,7 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         // FOR TESTING
-        GiveDefaultItems();
+        //GiveDefaultItems();
     }
 
     #region Give Item
@@ -206,7 +206,7 @@ public class InventoryManager : MonoBehaviour
         // From load - Give saved Items
         foreach (string itemSlug in data.playerItemsSlugs)
         {
-            if (!playerItems.Contains(GetItem(itemSlug)))
+            //if (!playerItems.Contains(GetItem(itemSlug)))
                 GiveItem(itemSlug);
         }
 
