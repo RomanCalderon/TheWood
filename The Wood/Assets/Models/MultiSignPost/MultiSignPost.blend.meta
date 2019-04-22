@@ -17,6 +17,16 @@ ModelImporter:
     100022: Circle_007
     100024: Circle_008
     100026: Circle_009
+    100028: Cube_001
+    100030: Cube_002
+    100032: Cube_003
+    100034: Sign_0
+    100036: Sign_1
+    100038: Sign_2
+    100040: Sign_3
+    100042: Text
+    100044: Text_001
+    100046: Sign_2_001
     400000: //RootNode
     400002: Cube
     400004: Wood_Post
@@ -31,8 +41,27 @@ ModelImporter:
     400022: Circle_007
     400024: Circle_008
     400026: Circle_009
+    400028: Cube_001
+    400030: Cube_002
+    400032: Cube_003
+    400034: Sign_0
+    400036: Sign_1
+    400038: Sign_2
+    400040: Sign_3
+    400042: Text
+    400044: Text_001
+    400046: Sign_2_001
     2100000: Wood__wood_jpg
     2100002: Metal__metal_jpg
+    2100004: SingleSign
+    2100006: SingleSign__wood3_jpg
+    2100008: unnamed
+    2100010: ContinueGameSign__Continue_Texture_psd
+    2100012: NewGameSign__wood3_jpg
+    2100014: OptionsSign__Options_Texture_psd
+    2100016: Quit_Sign__Options_Texture_psd
+    2100018: Quit_Sign
+    2100020: Quit_Sign__Quit_Texture_psd
     2300000: //RootNode
     2300002: Cube
     2300004: Wood_Post
@@ -47,6 +76,16 @@ ModelImporter:
     2300022: Circle_007
     2300024: Circle_008
     2300026: Circle_009
+    2300028: Cube_001
+    2300030: Cube_002
+    2300032: Cube_003
+    2300034: Sign_0
+    2300036: Sign_1
+    2300038: Sign_2
+    2300040: Sign_3
+    2300042: Text
+    2300044: Text_001
+    2300046: Sign_2_001
     3300000: //RootNode
     3300002: Cube
     3300004: Wood_Post
@@ -61,6 +100,16 @@ ModelImporter:
     3300022: Circle_007
     3300024: Circle_008
     3300026: Circle_009
+    3300028: Cube_001
+    3300030: Cube_002
+    3300032: Cube_003
+    3300034: Sign_0
+    3300036: Sign_1
+    3300038: Sign_2
+    3300040: Sign_3
+    3300042: Text
+    3300044: Text_001
+    3300046: Sign_2_001
     4300000: Cube
     4300002: Wood_Post
     4300004: Metal_Bracket
@@ -74,14 +123,59 @@ ModelImporter:
     4300020: Circle_002
     4300022: Circle_001
     4300024: Circle
+    4300026: Cube_003
+    4300028: Cube_002
+    4300030: Cube_001
+    4300032: Sign_3
+    4300034: Sign_2
+    4300036: Sign_1
+    4300038: Sign_0
+    4300040: Text
+    4300042: Text_001
+    4300044: Sign_2_001
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: ContinueGameSign__Continue_Texture_psd
+    second: {fileID: 2100000, guid: e796b1976c3bd174badaaa77400ab1f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Metal__metal_jpg
     second: {fileID: 2100000, guid: 8ac640bc1650b7c408a4b3341feeb25c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: NewGameSign__wood3_jpg
+    second: {fileID: 2100000, guid: be49333feb6cb4d4997f3c30a4a8e40d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: OptionsSign__Options_Texture_psd
+    second: {fileID: 2100000, guid: da30928117f826d4cbd5c7d554654c97, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Quit_Sign
+    second: {fileID: 2100000, guid: 04ad97f8efe84c34093c38a83859c6f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Quit_Sign__Options_Texture_psd
+    second: {fileID: 2100000, guid: 92a9c7bfa90be90418672057066671fe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Quit_Sign__Quit_Texture_psd
+    second: {fileID: 2100000, guid: 36f862d56f4ab90419882dc80ff37170, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SingleSign__wood3_jpg
+    second: {fileID: 2100000, guid: 4bc6e8c83550bd840bfd6a4b0653e3c0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

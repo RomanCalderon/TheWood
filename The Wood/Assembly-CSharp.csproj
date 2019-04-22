@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\Environment\LightFlicker.cs" />
     <Compile Include="Assets\Scripts\Environment\Tree.cs" />
     <Compile Include="Assets\Scripts\GameManagement\BuildingManager.cs" />
+    <Compile Include="Assets\Scripts\GameManagement\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveData\DayNightCycleSaveData.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveData\PlayerSaveData.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveLoadController.cs" />
