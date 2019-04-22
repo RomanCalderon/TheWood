@@ -9,6 +9,10 @@ TagManager:
   - BuildingHolder
   - BlueprintHolder
   - UIDropZone
+  - NewGameSign
+  - ContinueSign
+  - OptionsSign
+  - QuitSign
   layers:
   - Default
   - TransparentFX
@@ -26,7 +30,7 @@ TagManager:
   - Building
   - Tree
   - Terrain
-  - 
+  - MainMenuSign
   - 
   - 
   - 

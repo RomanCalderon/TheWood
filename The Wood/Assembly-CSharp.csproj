@@ -82,7 +82,6 @@
     <Compile Include="Assets\Scripts\Environment\LightFlicker.cs" />
     <Compile Include="Assets\Scripts\Environment\Tree.cs" />
     <Compile Include="Assets\Scripts\GameManagement\BuildingManager.cs" />
-    <Compile Include="Assets\Scripts\GameManagement\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveData\DayNightCycleSaveData.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveData\PlayerSaveData.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveLoadController.cs" />
@@ -112,6 +111,8 @@
     <Compile Include="Assets\Scripts\Inventory\ItemDatabase.cs" />
     <Compile Include="Assets\Scripts\Inventory\UIEventHandler.cs" />
     <Compile Include="Assets\Scripts\ItemSlot.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\SignInteractions.cs" />
     <Compile Include="Assets\Scripts\PickupItem.cs" />
     <Compile Include="Assets\Scripts\Player Items\BuildTool.cs" />
     <Compile Include="Assets\Scripts\Player Items\PitchFork.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Assets\Scripts\Questing\QuestGiver.cs" />
     <Compile Include="Assets\Scripts\Questing\QuestUIListed.cs" />
     <Compile Include="Assets\Scripts\Questing\QuestUIView.cs" />
+    <Compile Include="Assets\Scripts\Rope.cs" />
     <Compile Include="Assets\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\StatBonus.cs" />
     <Compile Include="Assets\Scripts\UI\ActionBarItem.cs" />
