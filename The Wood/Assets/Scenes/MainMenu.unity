@@ -2618,6 +2618,8 @@ MonoBehaviour:
     m_Bits: 65536
   hoverForce: 250
   clickForce: 400
+  hoverSound: {fileID: 8300000, guid: 5f293c1d9f900424ea1adee950f05218, type: 3}
+  clickSound: {fileID: 8300000, guid: 199cc5dbd2506e54cb1c79b83a949b56, type: 3}
 --- !u!114 &762718141
 MonoBehaviour:
   m_ObjectHideFlags: 0

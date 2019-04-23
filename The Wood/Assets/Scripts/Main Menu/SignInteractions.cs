@@ -1,38 +1,63 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ChrisTutorials.Persistent;
 
 public class SignInteractions : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
     [SerializeField] LayerMask signLayerMask;
-    Transform currentSign;
+    bool hovered = false;
     [SerializeField] float hoverForce = 250;
     [SerializeField] float clickForce = 400;
+    [SerializeField] AudioClip hoverSound;
+    [SerializeField] AudioClip clickSound;
 
 
     // Update is called once per frame
     void Update()
     {
+        Hover();
+
+        Click();
+    }
+
+    void Hover()
+    {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 25, signLayerMask))
         {
-            if (currentSign != hit.transform)
-            {
-                currentSign = hit.transform;
+            if (hovered)
+                return;
 
-                // Apply a small force
-                hit.transform.GetComponent<Rigidbody>().AddForce(Vector3.forward * hoverForce);
-            }
+            // Apply a small force
+            hit.transform.GetComponent<Rigidbody>().AddForce(Vector3.forward * hoverForce);
+
+            // Play sfx
+            AudioManager.Instance.Play(hoverSound, transform).spatialBlend = 0;
+
+            hovered = true;
         }
+        else
+        {
+            hovered = false;
+        }
+    }
+
+    void Click()
+    {
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(ray, out hit, 25, signLayerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 25, signLayerMask))
             {
                 // Apply a small force
                 hit.transform.GetComponent<Rigidbody>().AddForce(Vector3.forward * clickForce);
+
+                // Play click sfx
+                AudioManager.Instance.Play(clickSound, transform).spatialBlend = 0;
 
                 if (hit.transform.tag == "NewGameSign")
                     print(hit.transform.tag);
