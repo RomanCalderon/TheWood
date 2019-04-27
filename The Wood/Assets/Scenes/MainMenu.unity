@@ -2203,7 +2203,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 2.5370002, y: 0, z: 1.34}
 --- !u!124 &285380092
 Behaviour:
@@ -12319,7 +12319,7 @@ RectTransform:
   - {fileID: 1363300250}
   - {fileID: 1069295478}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -13786,6 +13786,8 @@ GameObject:
   - component: {fileID: 1069295478}
   - component: {fileID: 1069295480}
   - component: {fileID: 1069295479}
+  - component: {fileID: 1069295482}
+  - component: {fileID: 1069295481}
   m_Layer: 5
   m_Name: Game Title Text
   m_TagString: Untagged
@@ -13854,6 +13856,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1069295477}
   m_CullTransparentMesh: 0
+--- !u!225 &1069295481
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069295477}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &1069295482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069295477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc029eae6ef1b774ab6e3554a209217f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDelay: 2
+  fadeSpeed: 0.2
 --- !u!1 &1093957473
 GameObject:
   m_ObjectHideFlags: 0

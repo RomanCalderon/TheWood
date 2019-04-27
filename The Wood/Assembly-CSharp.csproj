@@ -113,6 +113,7 @@
     <Compile Include="Assets\Scripts\ItemSlot.cs" />
     <Compile Include="Assets\Scripts\Main Menu\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Main Menu\SignInteractions.cs" />
+    <Compile Include="Assets\Scripts\Main Menu\UIFadeIn.cs" />
     <Compile Include="Assets\Scripts\PickupItem.cs" />
     <Compile Include="Assets\Scripts\Player Items\BuildTool.cs" />
     <Compile Include="Assets\Scripts\Player Items\PitchFork.cs" />
