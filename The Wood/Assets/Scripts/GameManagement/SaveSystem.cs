@@ -12,10 +12,10 @@ public static class SaveSystem
     /// <returns></returns>
     public static T LoadData<T>(string path)
     {
-        if (File.Exists(path))
+        if (File.Exists(GameDataManager.GetCurrentGamePath() + path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            FileStream stream = new FileStream(GameDataManager.GetCurrentGamePath() + path, FileMode.Open);
 
             T data = (T)formatter.Deserialize(stream);
             stream.Close();
@@ -24,7 +24,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.LogError("Save file not found in " + path);
+            Debug.LogError("Save file not found in " + GameDataManager.GetCurrentGamePath() + path);
             return default;
         }
     }
@@ -33,7 +33,7 @@ public static class SaveSystem
     public static void SavePlayer(Player player, string path)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
+        FileStream stream = new FileStream(GameDataManager.GetCurrentGamePath() + path, FileMode.Create);
 
         PlayerSaveData data = new PlayerSaveData(player);
 
@@ -47,7 +47,7 @@ public static class SaveSystem
     public static void SaveDayNightCycle(DayNightCycle dayNightCycle, string path)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
+        FileStream stream = new FileStream(GameDataManager.GetCurrentGamePath() + path, FileMode.Create);
 
         DayNightCycleSaveData data = new DayNightCycleSaveData(dayNightCycle);
 
@@ -61,7 +61,7 @@ public static class SaveSystem
     public static void SaveInventoryManager(InventoryManager inventoryManager, string path)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
+        FileStream stream = new FileStream(GameDataManager.GetCurrentGamePath() + path, FileMode.Create);
 
         InventoryManagerSaveData data = new InventoryManagerSaveData(inventoryManager);
 
@@ -75,7 +75,7 @@ public static class SaveSystem
     public static void SaveBuildingManager(BuildingManager buildingManager, string path)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
+        FileStream stream = new FileStream(GameDataManager.GetCurrentGamePath() + path, FileMode.Create);
 
         BuildingManagerSaveData data = new BuildingManagerSaveData(buildingManager);
 
@@ -89,7 +89,7 @@ public static class SaveSystem
     public static void SaveItemStorage(ItemStorage itemStorage, string path)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = new FileStream(path, FileMode.Create);
+        FileStream stream = new FileStream(GameDataManager.GetCurrentGamePath() + path, FileMode.Create);
 
         ItemStorageSaveData data = new ItemStorageSaveData(itemStorage);
 

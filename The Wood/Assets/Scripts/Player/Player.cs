@@ -61,12 +61,12 @@ public class Player : Killable
 
     private void SaveLoadController_OnSaveGame()
     {
-        SaveSystem.SavePlayer(this, Application.persistentDataPath + "/player.dat");
+        SaveSystem.SavePlayer(this, "/player.dat");
     }
 
     private void SaveLoadController_OnLoadGame()
     {
-        PlayerSaveData data = SaveSystem.LoadData<PlayerSaveData>(Application.persistentDataPath + "/player.dat");
+        PlayerSaveData data = SaveSystem.LoadData<PlayerSaveData>("/player.dat");
 
         if (data == null)
             return;

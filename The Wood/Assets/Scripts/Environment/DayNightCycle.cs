@@ -172,12 +172,12 @@ public class DayNightCycle : MonoBehaviour
     // Event Listeners
     private void SaveLoadController_OnSaveGame()
     {
-        SaveSystem.SaveDayNightCycle(this, Application.persistentDataPath + "/daynight.dat");
+        SaveSystem.SaveDayNightCycle(this, "/daynight.dat");
     }
 
     private void SaveLoadController_OnLoadGame()
     {
-        DayNightCycleSaveData data = SaveSystem.LoadData<DayNightCycleSaveData>(Application.persistentDataPath + "/daynight.dat");
+        DayNightCycleSaveData data = SaveSystem.LoadData<DayNightCycleSaveData>("/daynight.dat");
 
         if (data == null)
             return;

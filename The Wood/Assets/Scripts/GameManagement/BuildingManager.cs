@@ -105,14 +105,14 @@ public class BuildingManager : MonoBehaviour
     {
         OnSave?.Invoke();
 
-        SaveSystem.SaveBuildingManager(this, Application.persistentDataPath + "/buildingmanager.dat");
+        SaveSystem.SaveBuildingManager(this, "/buildingmanager.dat");
     }
 
     private void SaveLoadController_OnLoadGame()
     {
         OnLoad?.Invoke();
 
-        BuildingManagerSaveData data = SaveSystem.LoadData<BuildingManagerSaveData>(Application.persistentDataPath + "/buildingmanager.dat");
+        BuildingManagerSaveData data = SaveSystem.LoadData<BuildingManagerSaveData>("/buildingmanager.dat");
 
         if (data == null)
             return;

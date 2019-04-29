@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ public class MainMenuManager : MonoBehaviour
 {
     private void Awake()
     {
+        // Verify the SavedGames directory
+        GameDataManager.VerifySavedGamesDirectory();
+
         // Unsubscribe from button events
         SignInteractions.OnNewGamePressed -= SignInteractions_OnNewGamePressed;
         SignInteractions.OnContinueGamePressed -= SignInteractions_OnContinueGamePressed;
@@ -30,13 +34,13 @@ public class MainMenuManager : MonoBehaviour
     // NEW GAME
     private void SignInteractions_OnNewGamePressed()
     {
-
+        //GameDataManager.CreateNewGameDirectory("");
     }
 
     // CONTINUE GAME
     private void SignInteractions_OnContinueGamePressed()
     {
-
+        //GameDataManager.ReteiveSavedGames(PrintSavedGames);
     }
 
     // OPTIONS

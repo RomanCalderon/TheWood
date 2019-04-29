@@ -189,12 +189,12 @@ public class InventoryManager : MonoBehaviour
     // Event Listeners
     private void SaveLoadController_OnSaveGame()
     {
-        SaveSystem.SaveInventoryManager(this, Application.persistentDataPath + "/inventory.dat");
+        SaveSystem.SaveInventoryManager(this, "/inventory.dat");
     }
 
     private void SaveLoadController_OnLoadGame()
     {
-        InventoryManagerSaveData data = SaveSystem.LoadData<InventoryManagerSaveData>(Application.persistentDataPath + "/inventory.dat");
+        InventoryManagerSaveData data = SaveSystem.LoadData<InventoryManagerSaveData>("/inventory.dat");
 
         // New game - Give default Items
         if (data == null)

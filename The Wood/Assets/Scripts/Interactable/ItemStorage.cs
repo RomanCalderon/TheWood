@@ -187,12 +187,12 @@ public class ItemStorage : Interactable
 
     private void SaveLoadController_OnSaveGame()
     {
-        SaveSystem.SaveItemStorage(this, Application.persistentDataPath + "/itemstorage.dat");
+        SaveSystem.SaveItemStorage(this, "/itemstorage.dat");
     }
 
     private void SaveLoadController_OnLoadGame()
     {
-        ItemStorageSaveData data = SaveSystem.LoadData<ItemStorageSaveData>(Application.persistentDataPath + "/itemstorage.dat");
+        ItemStorageSaveData data = SaveSystem.LoadData<ItemStorageSaveData>("/itemstorage.dat");
 
         if (data == null)
             return;
