@@ -5,6 +5,12 @@ using ChrisTutorials.Persistent;
 
 public class SignInteractions : MonoBehaviour
 {
+    public delegate void ButtonPressHandler();
+    public static event ButtonPressHandler OnNewGamePressed;
+    public static event ButtonPressHandler OnContinueGamePressed;
+    public static event ButtonPressHandler OnOptionsPressed;
+    public static event ButtonPressHandler OnQuitPressed;
+
     [SerializeField] Camera mainCamera;
     [SerializeField] LayerMask signLayerMask;
     bool hovered = false;
@@ -60,13 +66,13 @@ public class SignInteractions : MonoBehaviour
                 AudioManager.Instance.Play(clickSound, transform).spatialBlend = 0;
 
                 if (hit.transform.tag == "NewGameSign")
-                    print(hit.transform.tag);
+                    OnNewGamePressed?.Invoke();
                 else if (hit.transform.tag == "ContinueSign")
-                    print(hit.transform.tag);
+                    OnContinueGamePressed?.Invoke();
                 else if (hit.transform.tag == "OptionsSign")
-                    print(hit.transform.tag);
+                    OnOptionsPressed?.Invoke();
                 else if (hit.transform.tag == "QuitSign")
-                    print(hit.transform.tag);
+                    OnQuitPressed?.Invoke();
             }
         }
     }
