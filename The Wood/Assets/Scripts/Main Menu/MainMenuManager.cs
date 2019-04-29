@@ -6,6 +6,12 @@ public class MainMenuManager : MonoBehaviour
 {
     private void Awake()
     {
+        // Unsubscribe from button events
+        SignInteractions.OnNewGamePressed -= SignInteractions_OnNewGamePressed;
+        SignInteractions.OnContinueGamePressed -= SignInteractions_OnContinueGamePressed;
+        SignInteractions.OnOptionsPressed -= SignInteractions_OnOptionsPressed;
+        SignInteractions.OnQuitPressed -= SignInteractions_OnQuitPressed;
+
         // Subscribe to button events
         SignInteractions.OnNewGamePressed += SignInteractions_OnNewGamePressed;
         SignInteractions.OnContinueGamePressed += SignInteractions_OnContinueGamePressed;
