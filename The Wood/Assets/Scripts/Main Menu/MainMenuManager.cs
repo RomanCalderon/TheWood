@@ -24,26 +24,29 @@ public class MainMenuManager : MonoBehaviour
     // NEW GAME
     private void SignInteractions_OnNewGamePressed()
     {
-        throw new System.NotImplementedException();
+
     }
 
     // CONTINUE GAME
     private void SignInteractions_OnContinueGamePressed()
     {
-        throw new System.NotImplementedException();
+
     }
 
     // OPTIONS
     private void SignInteractions_OnOptionsPressed()
     {
-        throw new System.NotImplementedException();
+
     }
 
     // QUIT GAME
     private void SignInteractions_OnQuitPressed()
     {
-        throw new System.NotImplementedException();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        Application.Quit();
     }
 
-    #endregion
+#endregion
 }
