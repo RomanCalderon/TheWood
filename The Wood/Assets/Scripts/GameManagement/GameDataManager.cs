@@ -25,7 +25,7 @@ public static class GameDataManager
     /// Retreives all saved games from Application.persistentDataPath.
     /// </summary>
     /// <param name="callback">Callback when games have been found.</param>
-    public static void ReteiveSavedGames(Action<string[]> callback)
+    public static void RetreiveSavedGames(Action<string[]> callback)
     {
         string[] gameDirectories = Directory.GetDirectories(savedGamesPath);
 
@@ -74,9 +74,12 @@ public static class GameDataManager
     /// Sets the path of the current game.
     /// </summary>
     /// <param name="gameName">Name of game.</param>
-    private static void SetCurrentGame(string gameName)
+    public static void SetCurrentGame(string gameName)
     {
-        CurrentGamePath = savedGamesPath + "/" + gameName;
+        if (GameExists(gameName))
+        {
+            CurrentGamePath = savedGamesPath + "/" + gameName;
+        }
     }
 
     /// <summary>

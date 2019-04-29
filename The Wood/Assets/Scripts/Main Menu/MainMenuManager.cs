@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -40,7 +41,11 @@ public class MainMenuManager : MonoBehaviour
     // CONTINUE GAME
     private void SignInteractions_OnContinueGamePressed()
     {
-        //GameDataManager.ReteiveSavedGames(PrintSavedGames);
+        //GameDataManager.RetreiveSavedGames(PrintSavedGames);
+
+        GameDataManager.SetCurrentGame("TestGame1");
+
+        SceneManager.LoadScene("Game");
     }
 
     // OPTIONS
