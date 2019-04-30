@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\GameManagement\SaveLoadController.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveSystem.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SleepController.cs" />
+    <Compile Include="Assets\Scripts\GameSettings\GameSettings.cs" />
     <Compile Include="Assets\Scripts\GameSettings\KeyBindings.cs" />
     <Compile Include="Assets\Scripts\Interactable\ActionItem.cs" />
     <Compile Include="Assets\Scripts\Interactable\Bed.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Assets\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\StatBonus.cs" />
     <Compile Include="Assets\Scripts\UI\ActionBarItem.cs" />
+    <Compile Include="Assets\Scripts\UI\Base UI\MultiView.cs" />
     <Compile Include="Assets\Scripts\UI\CustomScrollRect.cs" />
     <Compile Include="Assets\Scripts\UI\DragAndDrop\DraggableElement.cs" />
     <Compile Include="Assets\Scripts\UI\DragAndDrop\DropZone.cs" />
