@@ -23,9 +23,11 @@ public class SignInteractions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Hover();
-
-        Click();
+        if (!MainMenuManager.MenuOpen)
+        {
+            Hover();
+            Click();
+        }
     }
 
     void Hover()

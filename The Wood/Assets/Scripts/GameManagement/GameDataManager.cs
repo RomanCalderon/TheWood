@@ -25,9 +25,19 @@ public static class GameDataManager
     /// Retreives all saved games from Application.persistentDataPath.
     /// </summary>
     /// <param name="callback">Callback when games have been found.</param>
-    public static void RetreiveSavedGames(Action<string[]> callback)
+    public static void RetreiveGameDirectories(Action<string[]> callback)
     {
         string[] gameDirectories = Directory.GetDirectories(savedGamesPath);
+
+        //string[] formattedDirectories = new string[gameDirectories.Length];
+
+        //for (int i = 0; i < gameDirectories.Length; i++)
+        //{
+        //    string formattedGamePath = Directory.GetParent(gameDirectories[i]).FullName + "\\" + GetGameNameFromPath(gameDirectories[i]);
+        //    formattedGamePath = formattedGamePath.Replace('\\', '/');
+        //    Debug.Log(formattedGamePath);
+        //    formattedDirectories[i] = formattedGamePath;
+        //}
 
         callback(gameDirectories);
     }
@@ -39,47 +49,59 @@ public static class GameDataManager
     /// <returns>True if game exists, false if not.</returns>
     private static bool GameExists(string gameName)
     {
-        // A game with same name exists, validate
         return Directory.Exists(savedGamesPath + "/" + gameName);
     }
 
     /// <summary>
-    /// 
+    /// Checks if a game path gamePath exists.
     /// </summary>
-    /// <param name="gameName"></param>
-    /// <param name="statusCallback">0 = New game succuessful. 1 = Invalid game name. 2 = Game already exists.</param>
-    public static void CreateNewGameDirectory(string gameName, Action<int> statusCallback)
+    /// <param name="gamePath"></param>
+    /// <returns></returns>
+    private static bool GamePathExists(string gamePath)
+    {
+        return Directory.Exists(gamePath);
+    }
+
+    /// <summary>
+    /// Attempts to create a new game directory.
+    /// </summary>
+    /// <param name="gameName">Name of new game.</param>
+    /// <param name="statusCallback">0 = New game succuessful. 1 = Invalid game name. 2 = Game already exists. string = New game directory.</param>
+    public static void CreateNewGameDirectory(string gameName, Action<int, string> statusCallback)
     {
         if (string.IsNullOrEmpty(gameName) || string.IsNullOrWhiteSpace(gameName))
         {
-            Debug.LogError("Please choose a valid game name.");
-            statusCallback(1);
+            statusCallback(1, null);
             return;
         }
 
         if (!GameExists(gameName))
         {
-            SetCurrentGame(gameName);
-            Directory.CreateDirectory(CurrentGamePath);
-            statusCallback(0);
+            SetCurrentGamePath(savedGamesPath + "/" + gameName);
+            DirectoryInfo di = Directory.CreateDirectory(CurrentGamePath);
+            statusCallback(0, di.FullName);
         }
         else
         {
-            Debug.LogError("Game with name [" + gameName + "] already exists. Please choose a unique game name.");
-            statusCallback(2);
+            statusCallback(2, null);
         }
     }
 
     /// <summary>
     /// Sets the path of the current game.
     /// </summary>
-    /// <param name="gameName">Name of game.</param>
-    public static void SetCurrentGame(string gameName)
+    /// <param name="gamePath">Name of game.</param>
+    public static void SetCurrentGamePath(string gamePath)
     {
-        if (GameExists(gameName))
-        {
-            CurrentGamePath = savedGamesPath + "/" + gameName;
-        }
+        CurrentGamePath = gamePath;
+
+        //if (GamePathExists(gamePath))
+        //    CurrentGamePath = gamePath;
+        //else
+        //{
+        //    Debug.LogError("Game path [" + gamePath + "] does not exist.");
+        //    Debug.Break();
+        //}
     }
 
     /// <summary>
@@ -89,5 +111,33 @@ public static class GameDataManager
     public static string GetCurrentGamePath()
     {
         return CurrentGamePath;
+    }
+
+    /// <summary>
+    /// Gets the name of a game from gamePath.
+    /// </summary>
+    /// <param name="gamePath">The game directory.</param>
+    /// <returns></returns>
+    public static string GetGameNameFromPath(string gamePath)
+    {
+        gamePath = Reverse(gamePath);
+
+        string[] result = gamePath.Split('/','\\');
+
+        result[0] = Reverse(result[0]);
+        
+        return result[0];
+    }
+
+    /// <summary>
+    /// Helper function that returns string s reversed.
+    /// </summary>
+    /// <param name="s">String to be reversed.</param>
+    /// <returns></returns>
+    private static string Reverse(string s)
+    {
+        char[] charArray = s.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
     }
 }
