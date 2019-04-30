@@ -6,7 +6,6 @@ using UnityEngine;
 public class KeyBindings
 {
     public static KeyCode Interact = KeyCode.E;
-    public static KeyCode QuestMenu = KeyCode.Q;
     public static KeyCode ToggleMenuSet = KeyCode.Tab;
     public static KeyCode ActionOne = KeyCode.Mouse0;
     public static KeyCode ActionTwo = KeyCode.Mouse1;
