@@ -8,7 +8,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public static bool MenuOpen;
 
-    [Header("UI")]
+    [Header("New Game")]
     [SerializeField] GameObject newGameUI;
     [SerializeField] InputField newGameInputField;
     [SerializeField] Text newGameErrorText;
@@ -113,12 +113,6 @@ public class MainMenuManager : MonoBehaviour
 
     #endregion
 
-    #region Options
-
-
-
-    #endregion
-
     // START GAME
     private void StartGame(string gamePath)
     {
@@ -128,7 +122,6 @@ public class MainMenuManager : MonoBehaviour
         // FIXME: Let a scene loader handle this
         SceneManager.LoadScene("Game");
     }
-
 
     #region Button Event Listeners
 
@@ -151,6 +144,7 @@ public class MainMenuManager : MonoBehaviour
     {
         MenuOpen = true;
 
+        GameSettings.instance.OpenMenu(true);
     }
 
     // QUIT GAME
