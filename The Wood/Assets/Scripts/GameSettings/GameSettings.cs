@@ -25,6 +25,8 @@ public class GameSettings : MonoBehaviour
     [SerializeField] Dropdown shadowQualityDropdown;
     [SerializeField] Dropdown shadowCascadesDropdown;
     [SerializeField] Slider shadowDistanceSlider;
+    [SerializeField] ToggleButton softVegetationToggleButton;
+    [SerializeField] ToggleButton softParticlesToggleButton;
 
     private void Awake()
     {
@@ -39,26 +41,33 @@ public class GameSettings : MonoBehaviour
 
     private void Start()
     {
-        UpdateOverallQuality();
-
         #region Graphics
         overallQualityDropdown.onValueChanged.AddListener(delegate { UpdateOverallQuality(); });
         textureQualityDropdown.onValueChanged.AddListener(delegate { UpdateTextureQuality(); });
         antiAliasingDropdown.onValueChanged.AddListener(delegate { UpdateAntiAliasing(); });
+        shadowQualityDropdown.onValueChanged.AddListener(delegate { UpdateShadowQuality(); });
+        shadowCascadesDropdown.onValueChanged.AddListener(delegate { UpdateShadowCascades(); });
+        shadowDistanceSlider.onValueChanged.AddListener(delegate { UpdateShadowDistance(); });
+        softVegetationToggleButton.onValueChanged.AddListener(delegate { UpdateSoftVegetation(); });
+        softParticlesToggleButton.onValueChanged.AddListener(delegate { UpdateSoftParticles(); });
+
+        // Load OverallQuality value
+        overallQualityDropdown.value = PlayerPrefs.GetInt("OverallQuality", 1);
+        EnableCustomControls(overallQualityDropdown.value == 0);
         #endregion
     }
 
     public void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            // Don't open the menu by key input while in the main menu scene
-            if (!menuOpen && SceneManager.GetActiveScene().buildIndex == mainMenuSceneIndex)
-                return;
+        //if (Input.GetKeyUp(KeyCode.Escape))
+        //{
+        //    // Don't open the menu by key input while in the main menu scene
+        //    if (!menuOpen && SceneManager.GetActiveScene().buildIndex == mainMenuSceneIndex)
+        //        return;
 
-            // Toggle options menu
-            OpenMenu(menuOpen = !menuOpen);
-        }
+        //    // Toggle options menu
+        //    OpenMenu(menuOpen = !menuOpen);
+        //}
     }
 
     #region Menu UI
@@ -78,47 +87,99 @@ public class GameSettings : MonoBehaviour
 
     #region Graphics UI
     
-    void UpdateOverallQuality()
+    void EnableCustomControls(bool state)
     {
-        int overallQualityValue = (6 - overallQualityDropdown.value);
+        if (state)
+            SetCustomGraphics();
+        else
+        {
+            UpdateTextureQuality();
+            UpdateAntiAliasing();
+            UpdateShadowQuality();
+            UpdateShadowCascades();
+            UpdateShadowDistance();
+            UpdateSoftVegetation();
+            UpdateSoftParticles();
+        }
 
-        EnableFullGraphicsControls(overallQualityValue == 6);
-
-        GraphicsSettings.SetOverallQuality((GraphicsSettings.OverallQualities)overallQualityValue);
-    }
-
-    void EnableFullGraphicsControls(bool state)
-    {
         textureQualityDropdown.interactable = state;
         antiAliasingDropdown.interactable = state;
         shadowQualityDropdown.interactable = state;
         shadowCascadesDropdown.interactable = state;
         shadowDistanceSlider.interactable = state;
+        softVegetationToggleButton.button.interactable = state;
+        softParticlesToggleButton.button.interactable = state;
+    }
+
+    void SetCustomGraphics()
+    {
+        textureQualityDropdown.value = PlayerPrefs.GetInt("TextureQuality", 0);
+        antiAliasingDropdown.value = PlayerPrefs.GetInt("AntiAliasing", 0);
+        shadowQualityDropdown.value = PlayerPrefs.GetInt("ShadowQuality", 0);
+        shadowCascadesDropdown.value = PlayerPrefs.GetInt("ShadowCascades", 0);
+        shadowDistanceSlider.value = PlayerPrefs.GetInt("ShadowDistance", 500);
+        softVegetationToggleButton.Value = (PlayerPrefs.GetInt("SoftVegetation", 1) == 1);
+        softParticlesToggleButton.Value = (PlayerPrefs.GetInt("SoftParticles", 1) == 1);
+    }
+
+    void UpdateOverallQuality()
+    {
+        int overallQualityValue = (6 - overallQualityDropdown.value);
+
+        EnableCustomControls(overallQualityValue == 6);
+
+        GraphicsSettings.SetOverallQuality((GraphicsSettings.OverallQualities)overallQualityValue);
+        
+        PlayerPrefs.SetInt("OverallQuality", overallQualityDropdown.value);
     }
 
     void UpdateTextureQuality()
     {
         GraphicsSettings.SetTextureQuality(textureQualityDropdown.value);
+
+        PlayerPrefs.SetInt("TextureQuality", textureQualityDropdown.value);
     }
 
     void UpdateAntiAliasing()
     {
         GraphicsSettings.SetAntiAliasing(3 - antiAliasingDropdown.value);
+
+        PlayerPrefs.SetInt("AntiAliasing", antiAliasingDropdown.value);
     }
 
     void UpdateShadowQuality()
     {
+        GraphicsSettings.SetShadowQuality((ShadowResolution)(3 - shadowQualityDropdown.value));
 
+        PlayerPrefs.SetInt("ShadowQuality", shadowQualityDropdown.value);
     }
 
     void UpdateShadowCascades()
     {
+        GraphicsSettings.SetShadowCascades(2 - shadowCascadesDropdown.value);
 
+        PlayerPrefs.SetInt("ShadowCascades", shadowCascadesDropdown.value);
     }
 
     void UpdateShadowDistance()
     {
+        GraphicsSettings.SetShadowDistance((int)shadowDistanceSlider.value);
 
+        PlayerPrefs.SetInt("ShadowDistance", (int)shadowDistanceSlider.value);
+    }
+
+    void UpdateSoftVegetation()
+    {
+        GraphicsSettings.SetSoftVegetation(softVegetationToggleButton.Value);
+
+        PlayerPrefs.SetInt("SoftVegetation", softVegetationToggleButton.Value ? 1 : 0);
+    }
+
+    void UpdateSoftParticles()
+    {
+        GraphicsSettings.SetSoftParticles(softParticlesToggleButton.Value);
+
+        PlayerPrefs.SetInt("SoftParticles", softParticlesToggleButton.Value ? 1 : 0);
     }
 
     #endregion

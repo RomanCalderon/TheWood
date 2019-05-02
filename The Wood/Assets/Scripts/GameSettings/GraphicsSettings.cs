@@ -14,23 +14,9 @@ public class GraphicsSettings
         ULTRA,
         CUSTOM
     }
-
-    public OverallQualities OverallQuality;
-    
-    public int TextureQuality;
-    
-    public int AntiAliasing;
     
     public void SetOverallQuality(OverallQualities newOverallQuality)
     {
-        try
-        {
-            OverallQuality = newOverallQuality;
-        }
-        catch
-        {
-            Debug.Log((int)newOverallQuality);
-        }
         QualitySettings.SetQualityLevel((int)newOverallQuality, true);
     }
 
@@ -74,5 +60,66 @@ public class GraphicsSettings
                 Debug.Log("Unexpected value: " + newAntiAliasing);
                 break;
         }
+    }
+
+    /// <summary>
+    /// Sets QualitySettings.shadowResolution to newShadowQuality. (ShadowResolution)
+    /// </summary>
+    /// <param name="newShadowQuality">The new Shadow Resolution.</param>
+    public void SetShadowQuality(ShadowResolution newShadowQuality)
+    {
+        QualitySettings.shadowResolution = newShadowQuality;
+    }
+
+    /// <summary>
+    /// Sets QualitySettings.shadowCascades to newShadowCascades.
+    /// 4 = Four Cascades
+    /// 2 = Two Cascades
+    /// 1 = No Cascades
+    /// </summary>
+    /// <param name="newShadowCascades">The new shadow cascades. (0-2)</param>
+    public void SetShadowCascades(int newShadowCascades)
+    {
+        switch (newShadowCascades)
+        {
+            case 2:
+                QualitySettings.shadowCascades = 4;
+                break;
+            case 1:
+                QualitySettings.shadowCascades = 2;
+                break;
+            case 0:
+                QualitySettings.shadowCascades = 1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Sets QualitySettings.shadowDistance to newShadowDistance.
+    /// </summary>
+    /// <param name="newShadowDistance">New shadow distance.</param>
+    public void SetShadowDistance(int newShadowDistance)
+    {
+        QualitySettings.shadowDistance = newShadowDistance;
+    }
+
+    /// <summary>
+    /// Sets QualitySettings.softVegetation to newSoftVegetation.
+    /// </summary>
+    /// <param name="newSoftVegetation">New soft vegetation value.</param>
+    public void SetSoftVegetation(bool newSoftVegetation)
+    {
+        QualitySettings.softVegetation = newSoftVegetation;
+    }
+
+    /// <summary>
+    /// Sets QualitySettings.softParticles to newSoftParticles.
+    /// </summary>
+    /// <param name="newSoftParticles">New softParticles value.</param>
+    public void SetSoftParticles(bool newSoftParticles)
+    {
+        QualitySettings.softParticles = newSoftParticles;
     }
 }
