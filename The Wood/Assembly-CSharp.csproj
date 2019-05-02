@@ -147,6 +147,7 @@
     <Compile Include="Assets\Scripts\StatBonus.cs" />
     <Compile Include="Assets\Scripts\UI\ActionBarItem.cs" />
     <Compile Include="Assets\Scripts\UI\Base UI\MultiView.cs" />
+    <Compile Include="Assets\Scripts\UI\Base UI\SliderText.cs" />
     <Compile Include="Assets\Scripts\UI\CustomScrollRect.cs" />
     <Compile Include="Assets\Scripts\UI\DragAndDrop\DraggableElement.cs" />
     <Compile Include="Assets\Scripts\UI\DragAndDrop\DropZone.cs" />

@@ -19,6 +19,12 @@ public class GameSettings : MonoBehaviour
 
     [Header("Graphics UI")]
     [SerializeField] Dropdown overallQualityDropdown;
+    [Space]
+    [SerializeField] Dropdown textureQualityDropdown;
+    [SerializeField] Dropdown antiAliasingDropdown;
+    [SerializeField] Dropdown shadowQualityDropdown;
+    [SerializeField] Dropdown shadowCascadesDropdown;
+    [SerializeField] Slider shadowDistanceSlider;
 
     private void Awake()
     {
@@ -33,8 +39,12 @@ public class GameSettings : MonoBehaviour
 
     private void Start()
     {
+        UpdateOverallQuality();
+
         #region Graphics
         overallQualityDropdown.onValueChanged.AddListener(delegate { UpdateOverallQuality(); });
+        textureQualityDropdown.onValueChanged.AddListener(delegate { UpdateTextureQuality(); });
+        antiAliasingDropdown.onValueChanged.AddListener(delegate { UpdateAntiAliasing(); });
         #endregion
     }
 
@@ -70,7 +80,45 @@ public class GameSettings : MonoBehaviour
     
     void UpdateOverallQuality()
     {
-        GraphicsSettings.SetOverallQuality((GraphicsSettings.OverallQualities)(6 - overallQualityDropdown.value));
+        int overallQualityValue = (6 - overallQualityDropdown.value);
+
+        EnableFullGraphicsControls(overallQualityValue == 6);
+
+        GraphicsSettings.SetOverallQuality((GraphicsSettings.OverallQualities)overallQualityValue);
+    }
+
+    void EnableFullGraphicsControls(bool state)
+    {
+        textureQualityDropdown.interactable = state;
+        antiAliasingDropdown.interactable = state;
+        shadowQualityDropdown.interactable = state;
+        shadowCascadesDropdown.interactable = state;
+        shadowDistanceSlider.interactable = state;
+    }
+
+    void UpdateTextureQuality()
+    {
+        GraphicsSettings.SetTextureQuality(textureQualityDropdown.value);
+    }
+
+    void UpdateAntiAliasing()
+    {
+        GraphicsSettings.SetAntiAliasing(3 - antiAliasingDropdown.value);
+    }
+
+    void UpdateShadowQuality()
+    {
+
+    }
+
+    void UpdateShadowCascades()
+    {
+
+    }
+
+    void UpdateShadowDistance()
+    {
+
     }
 
     #endregion
