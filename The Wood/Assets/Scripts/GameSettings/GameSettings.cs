@@ -8,7 +8,9 @@ public class GameSettings : MonoBehaviour
 {
     public static GameSettings instance;
 
-    public GraphicsSettings GraphicsSettings = new GraphicsSettings();
+    private GraphicsSettings graphicsSettings = new GraphicsSettings();
+
+    private VideoSettings videoSettings = new VideoSettings();
 
     [SerializeField] int mainMenuSceneIndex;
     [SerializeField] GameObject backgroundPanelUI;
@@ -27,6 +29,12 @@ public class GameSettings : MonoBehaviour
     [SerializeField] Slider shadowDistanceSlider;
     [SerializeField] ToggleButton softVegetationToggleButton;
     [SerializeField] ToggleButton softParticlesToggleButton;
+
+    [Header("Video UI")]
+    [SerializeField] Dropdown monitorDropdown;
+    [SerializeField] Dropdown resolutionDropdown;
+    [SerializeField] Dropdown displayModeDropdown;
+    [SerializeField] Dropdown vsyncDropdown;
 
     private void Awake()
     {
@@ -55,19 +63,15 @@ public class GameSettings : MonoBehaviour
         overallQualityDropdown.value = PlayerPrefs.GetInt("OverallQuality", 1);
         EnableCustomControls(overallQualityDropdown.value == 0);
         #endregion
-    }
 
-    public void Update()
-    {
-        //if (Input.GetKeyUp(KeyCode.Escape))
-        //{
-        //    // Don't open the menu by key input while in the main menu scene
-        //    if (!menuOpen && SceneManager.GetActiveScene().buildIndex == mainMenuSceneIndex)
-        //        return;
+        #region Video
+        monitorDropdown.onValueChanged.AddListener(delegate { UpdateMonitor(); });
+        resolutionDropdown.onValueChanged.AddListener(delegate { UpdateResolution(); });
+        displayModeDropdown.onValueChanged.AddListener(delegate { UpdateDisplayMode(); });
+        vsyncDropdown.onValueChanged.AddListener(delegate { UpdateVSync(); });
 
-        //    // Toggle options menu
-        //    OpenMenu(menuOpen = !menuOpen);
-        //}
+        GetMonitors();
+        #endregion
     }
 
     #region Menu UI
@@ -128,58 +132,94 @@ public class GameSettings : MonoBehaviour
 
         EnableCustomControls(overallQualityValue == 6);
 
-        GraphicsSettings.SetOverallQuality((GraphicsSettings.OverallQualities)overallQualityValue);
+        graphicsSettings.SetOverallQuality((GraphicsSettings.OverallQualities)overallQualityValue);
         
         PlayerPrefs.SetInt("OverallQuality", overallQualityDropdown.value);
     }
 
     void UpdateTextureQuality()
     {
-        GraphicsSettings.SetTextureQuality(textureQualityDropdown.value);
+        graphicsSettings.SetTextureQuality(textureQualityDropdown.value);
 
         PlayerPrefs.SetInt("TextureQuality", textureQualityDropdown.value);
     }
 
     void UpdateAntiAliasing()
     {
-        GraphicsSettings.SetAntiAliasing(3 - antiAliasingDropdown.value);
+        graphicsSettings.SetAntiAliasing(3 - antiAliasingDropdown.value);
 
         PlayerPrefs.SetInt("AntiAliasing", antiAliasingDropdown.value);
     }
 
     void UpdateShadowQuality()
     {
-        GraphicsSettings.SetShadowQuality((ShadowResolution)(3 - shadowQualityDropdown.value));
+        graphicsSettings.SetShadowQuality((ShadowResolution)(3 - shadowQualityDropdown.value));
 
         PlayerPrefs.SetInt("ShadowQuality", shadowQualityDropdown.value);
     }
 
     void UpdateShadowCascades()
     {
-        GraphicsSettings.SetShadowCascades(2 - shadowCascadesDropdown.value);
+        graphicsSettings.SetShadowCascades(2 - shadowCascadesDropdown.value);
 
         PlayerPrefs.SetInt("ShadowCascades", shadowCascadesDropdown.value);
     }
 
     void UpdateShadowDistance()
     {
-        GraphicsSettings.SetShadowDistance((int)shadowDistanceSlider.value);
+        graphicsSettings.SetShadowDistance((int)shadowDistanceSlider.value);
 
         PlayerPrefs.SetInt("ShadowDistance", (int)shadowDistanceSlider.value);
     }
 
     void UpdateSoftVegetation()
     {
-        GraphicsSettings.SetSoftVegetation(softVegetationToggleButton.Value);
+        graphicsSettings.SetSoftVegetation(softVegetationToggleButton.Value);
 
         PlayerPrefs.SetInt("SoftVegetation", softVegetationToggleButton.Value ? 1 : 0);
     }
 
     void UpdateSoftParticles()
     {
-        GraphicsSettings.SetSoftParticles(softParticlesToggleButton.Value);
+        graphicsSettings.SetSoftParticles(softParticlesToggleButton.Value);
 
         PlayerPrefs.SetInt("SoftParticles", softParticlesToggleButton.Value ? 1 : 0);
+    }
+
+    #endregion
+
+    #region Video UI
+
+    void GetMonitors()
+    {
+        Display[] displays = videoSettings.GetDisplays();
+
+        foreach (Display display in displays)
+        {
+            Dropdown.OptionData option = new Dropdown.OptionData(display.ToString());
+            monitorDropdown.options.Add(option);
+        }
+
+    }
+
+    void UpdateMonitor()
+    {
+        videoSettings.SetDisplay(monitorDropdown.value);
+    }
+
+    void UpdateResolution()
+    {
+
+    }
+
+    void UpdateDisplayMode()
+    {
+
+    }
+
+    void UpdateVSync()
+    {
+
     }
 
     #endregion

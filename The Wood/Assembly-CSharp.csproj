@@ -91,6 +91,7 @@
     <Compile Include="Assets\Scripts\GameSettings\GameSettings.cs" />
     <Compile Include="Assets\Scripts\GameSettings\GraphicsSettings.cs" />
     <Compile Include="Assets\Scripts\GameSettings\KeyBindings.cs" />
+    <Compile Include="Assets\Scripts\GameSettings\VideoSettings.cs" />
     <Compile Include="Assets\Scripts\Interactable\ActionItem.cs" />
     <Compile Include="Assets\Scripts\Interactable\Bed.cs" />
     <Compile Include="Assets\Scripts\Interactable\Building\Blueprint.cs" />
