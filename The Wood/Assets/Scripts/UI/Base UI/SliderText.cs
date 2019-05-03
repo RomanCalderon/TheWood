@@ -19,6 +19,12 @@ public class SliderText : MonoBehaviour
     
     void UpdateText()
     {
-        valueText.text = slider.value.ToString();
+        if (valueText != null)
+            valueText.text = GetComponent<Slider>().value.ToString();
     }
+
+    //private void OnValidate()
+    //{
+    //    UpdateText();
+    //}
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class GameSettings : MonoBehaviour
 {
@@ -11,6 +11,8 @@ public class GameSettings : MonoBehaviour
     private GraphicsSettings graphicsSettings = new GraphicsSettings();
 
     private VideoSettings videoSettings = new VideoSettings();
+
+    private SoundSettings soundSettings = new SoundSettings();
 
     [SerializeField] int mainMenuSceneIndex;
     [SerializeField] GameObject backgroundPanelUI;
@@ -36,6 +38,12 @@ public class GameSettings : MonoBehaviour
     [SerializeField] Dropdown displayModeDropdown;
     [SerializeField] Dropdown vsyncDropdown;
     [SerializeField] Text infoText;
+
+    [Header("Sound")]
+    [SerializeField] AudioMixer masterMixer;
+    [SerializeField] Slider masterVolumeSlider;
+    [SerializeField] Slider musicVolumeSlider;
+    [SerializeField] Slider soundsVolumeSlider;
 
     private void Awake()
     {
@@ -76,6 +84,14 @@ public class GameSettings : MonoBehaviour
 
         SetVideoSettings();
         #endregion
+
+        #region Sound
+        masterVolumeSlider.onValueChanged.AddListener(delegate { UpdateMasterVolume(); });
+        musicVolumeSlider.onValueChanged.AddListener(delegate { UpdateMusicVolume(); });
+        soundsVolumeSlider.onValueChanged.AddListener(delegate { UpdateSoundVolume(); });
+
+        SetSoundSettings();
+        #endregion
     }
 
     #region Menu UI
@@ -93,7 +109,7 @@ public class GameSettings : MonoBehaviour
 
     #endregion
 
-    #region Graphics UI
+    #region Graphics Settings
     
     void EnableCustomControls(bool state)
     {
@@ -192,7 +208,7 @@ public class GameSettings : MonoBehaviour
 
     #endregion
 
-    #region Video UI
+    #region Video Settings
 
     void SetVideoSettings()
     {
@@ -280,6 +296,38 @@ public class GameSettings : MonoBehaviour
         videoSettings.SetVSync(vsyncDropdown.value);
 
         PlayerPrefs.SetInt("VSync", vsyncDropdown.value);
+    }
+
+    #endregion
+
+    #region Sound Settings
+
+    void SetSoundSettings()
+    {
+        masterVolumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0);
+        soundsVolumeSlider.value = PlayerPrefs.GetFloat("SoundVolume", 0);
+    }
+
+    void UpdateMasterVolume()
+    {
+        soundSettings.SetMasterVolume(masterMixer, masterVolumeSlider.value / masterVolumeSlider.maxValue);
+
+        PlayerPrefs.SetFloat("MasterVolume", masterVolumeSlider.value);
+    }
+
+    void UpdateMusicVolume()
+    {
+        soundSettings.SetMusicVolume(masterMixer, musicVolumeSlider.value / musicVolumeSlider.maxValue);
+
+        PlayerPrefs.SetFloat("MusicVolume", musicVolumeSlider.value);
+    }
+
+    void UpdateSoundVolume()
+    {
+        soundSettings.SetSoundVolume(masterMixer, soundsVolumeSlider.value / soundsVolumeSlider.maxValue);
+
+        PlayerPrefs.SetFloat("SoundVolume", soundsVolumeSlider.value);
     }
 
     #endregion
