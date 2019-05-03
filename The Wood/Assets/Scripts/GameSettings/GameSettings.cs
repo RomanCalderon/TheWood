@@ -35,6 +35,7 @@ public class GameSettings : MonoBehaviour
     [SerializeField] Dropdown resolutionDropdown;
     [SerializeField] Dropdown displayModeDropdown;
     [SerializeField] Dropdown vsyncDropdown;
+    [SerializeField] Text infoText;
 
     private void Awake()
     {
@@ -71,6 +72,9 @@ public class GameSettings : MonoBehaviour
         vsyncDropdown.onValueChanged.AddListener(delegate { UpdateVSync(); });
 
         GetMonitors();
+        GetResolutions();
+
+        SetVideoSettings();
         #endregion
     }
 
@@ -190,36 +194,92 @@ public class GameSettings : MonoBehaviour
 
     #region Video UI
 
+    void SetVideoSettings()
+    {
+        //monitorDropdown.value = PlayerPrefs.GetInt("Monitor", 0);
+        //resolutionDropdown.value = PlayerPrefs.GetInt("Resolution");
+        displayModeDropdown.value = PlayerPrefs.GetInt("DisplayMode", 0);
+        vsyncDropdown.value = PlayerPrefs.GetInt("VSync", 1);
+    }
+
     void GetMonitors()
     {
         Display[] displays = videoSettings.GetDisplays();
 
-        foreach (Display display in displays)
+        for (int i = 0; i < displays.Length; i++)
         {
-            Dropdown.OptionData option = new Dropdown.OptionData(display.ToString());
+            Dropdown.OptionData option = new Dropdown.OptionData("monitor " + (i + 1));
             monitorDropdown.options.Add(option);
         }
 
+        monitorDropdown.value = videoSettings.currentDisplay = PlayerPrefs.GetInt("UnitySelectMonitor");
+    }
+
+    public IEnumerator TargetDisplay(int targetDisplay)
+    {
+        if (videoSettings.displayChanged)
+            infoText.text = "restart game to apply changes";
+
+        // THE PROCESS BELOW REQUIRES A RESET FOR CHANGES TO APPLY
+
+            // Get the current screen resolution.
+        int screenWidth = Screen.width;
+        int screenHeight = Screen.height;
+
+        // Set the target display and a low resolution.
+        PlayerPrefs.SetInt("UnitySelectMonitor", targetDisplay);
+        Screen.SetResolution(800, 600, FullScreenMode.MaximizedWindow);
+
+        // Wait a frame.
+        yield return null;
+
+        // Restore resolution.
+        Screen.SetResolution(screenWidth, screenHeight, Screen.fullScreenMode);
     }
 
     void UpdateMonitor()
     {
         videoSettings.SetDisplay(monitorDropdown.value);
+
+        //PlayerPrefs.SetInt("Monitor", monitorDropdown.value);
+    }
+
+    void GetResolutions()
+    {
+        Resolution[] resolutions = videoSettings.GetResolutions();
+        int currentResolutionIndex = 0;
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            if (resolutions[i].Equals(Screen.currentResolution))
+                currentResolutionIndex = i;
+
+            Dropdown.OptionData option = new Dropdown.OptionData(resolutions[i].width + "x" + resolutions[i].height);
+            resolutionDropdown.options.Add(option);
+        }
+
+        PlayerPrefs.SetInt("Resolution", resolutionDropdown.value = currentResolutionIndex);
     }
 
     void UpdateResolution()
     {
+        videoSettings.SetResolution(resolutionDropdown.value);
 
+        PlayerPrefs.SetInt("Resolution", resolutionDropdown.value);
     }
 
     void UpdateDisplayMode()
     {
+        videoSettings.SetDisplayMode((FullScreenMode)displayModeDropdown.value);
 
+        PlayerPrefs.SetInt("DisplayMode", displayModeDropdown.value);
     }
 
     void UpdateVSync()
     {
+        videoSettings.SetVSync(vsyncDropdown.value);
 
+        PlayerPrefs.SetInt("VSync", vsyncDropdown.value);
     }
 
     #endregion
