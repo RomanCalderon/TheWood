@@ -9,11 +9,8 @@ public class GameSettings : MonoBehaviour
     public static GameSettings instance;
 
     private GraphicsSettings graphicsSettings = new GraphicsSettings();
-
     private VideoSettings videoSettings = new VideoSettings();
-
     private SoundSettings soundSettings = new SoundSettings();
-
     public class Controls
     {
         public static float Sensitivity;
