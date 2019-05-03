@@ -14,6 +14,11 @@ public class GameSettings : MonoBehaviour
 
     private SoundSettings soundSettings = new SoundSettings();
 
+    public class Controls
+    {
+        public static float Sensitivity;
+    }
+
     [SerializeField] int mainMenuSceneIndex;
     [SerializeField] GameObject backgroundPanelUI;
 
@@ -44,6 +49,14 @@ public class GameSettings : MonoBehaviour
     [SerializeField] Slider masterVolumeSlider;
     [SerializeField] Slider musicVolumeSlider;
     [SerializeField] Slider soundsVolumeSlider;
+
+    [Header("Controls")]
+    [SerializeField] Slider sensitivitySlider;
+    [SerializeField] KeyBindInput interactKeyBind;
+    [SerializeField] KeyBindInput toggleInventoryKeyBind;
+    [SerializeField] KeyBindInput actionOneKeyBind;
+    [SerializeField] KeyBindInput actionTwoKeyBind;
+    [SerializeField] KeyBindInput sprintKeyBind;
 
     private void Awake()
     {
@@ -91,6 +104,17 @@ public class GameSettings : MonoBehaviour
         soundsVolumeSlider.onValueChanged.AddListener(delegate { UpdateSoundVolume(); });
 
         SetSoundSettings();
+        #endregion
+
+        #region Controls
+        sensitivitySlider.onValueChanged.AddListener(delegate { UpdateSensitivity(); });
+        interactKeyBind.onValueChanged.AddListener(delegate { UpdateInteractKeyBind(); });
+        toggleInventoryKeyBind.onValueChanged.AddListener(delegate { UpdateToggleInventory(); });
+        actionOneKeyBind.onValueChanged.AddListener(delegate { UpdateActionOne(); });
+        actionTwoKeyBind.onValueChanged.AddListener(delegate { UpdateActionTwo(); });
+        sprintKeyBind.onValueChanged.AddListener(delegate { UpdateSprint(); });
+
+        SetControls();
         #endregion
     }
 
@@ -331,4 +355,50 @@ public class GameSettings : MonoBehaviour
     }
 
     #endregion
+
+    #region Controls Settings
+
+    void SetControls()
+    {
+        Controls.Sensitivity = sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 25);
+        KeyBindings.Interact = interactKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("InteractKB", 0);
+
+    }
+
+    void UpdateSensitivity()
+    {
+
+    }
+
+    void UpdateInteractKeyBind()
+    {
+        KeyBindings.Interact = interactKeyBind.Value;
+
+        print((int)interactKeyBind.Value);
+        PlayerPrefs.SetInt("InteractKB", (int)interactKeyBind.Value);
+    }
+
+    void UpdateToggleInventory()
+    {
+
+    }
+
+    void UpdateActionOne()
+    {
+
+    }
+
+    void UpdateActionTwo()
+    {
+        
+    }
+
+    void UpdateSprint()
+    {
+
+    }
+
+
+    #endregion
+
 }

@@ -148,6 +148,7 @@
     <Compile Include="Assets\Scripts\Spawner.cs" />
     <Compile Include="Assets\Scripts\StatBonus.cs" />
     <Compile Include="Assets\Scripts\UI\ActionBarItem.cs" />
+    <Compile Include="Assets\Scripts\UI\Base UI\KeyBindInput.cs" />
     <Compile Include="Assets\Scripts\UI\Base UI\MultiView.cs" />
     <Compile Include="Assets\Scripts\UI\Base UI\SliderText.cs" />
     <Compile Include="Assets\Scripts\UI\Base UI\ToggleButton.cs" />

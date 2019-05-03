@@ -15,9 +15,12 @@ public class ToggleButton : MonoBehaviour
         set
         {
             if (value != this.value)
+            {
+                this.value = value;
                 onValueChanged?.Invoke();
-
+            }
             this.value = value;
+
             UpdateValueText();
         }
     }
