@@ -52,6 +52,10 @@ public class GameSettings : MonoBehaviour
 
     [Header("Controls")]
     [SerializeField] Slider sensitivitySlider;
+    [Space]
+    [SerializeField] GameObject keybindOverlay;
+    [SerializeField] Text keybindMessageText;
+    [Space]
     [SerializeField] KeyBindInput interactKeyBind;
     [SerializeField] KeyBindInput toggleInventoryKeyBind;
     [SerializeField] KeyBindInput actionOneKeyBind;
@@ -108,11 +112,19 @@ public class GameSettings : MonoBehaviour
 
         #region Controls
         sensitivitySlider.onValueChanged.AddListener(delegate { UpdateSensitivity(); });
+
         interactKeyBind.onValueChanged.AddListener(delegate { UpdateInteractKeyBind(); });
         toggleInventoryKeyBind.onValueChanged.AddListener(delegate { UpdateToggleInventory(); });
         actionOneKeyBind.onValueChanged.AddListener(delegate { UpdateActionOne(); });
         actionTwoKeyBind.onValueChanged.AddListener(delegate { UpdateActionTwo(); });
         sprintKeyBind.onValueChanged.AddListener(delegate { UpdateSprint(); });
+        
+        // Keybind Overlay
+        interactKeyBind.onRecording.AddListener(DisplayKeybindOverlay);
+        toggleInventoryKeyBind.onRecording.AddListener(DisplayKeybindOverlay);
+        actionOneKeyBind.onRecording.AddListener(DisplayKeybindOverlay);
+        actionTwoKeyBind.onRecording.AddListener(DisplayKeybindOverlay);
+        sprintKeyBind.onRecording.AddListener(DisplayKeybindOverlay);
 
         SetControls();
         #endregion
@@ -361,41 +373,61 @@ public class GameSettings : MonoBehaviour
     void SetControls()
     {
         Controls.Sensitivity = sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 25);
-        KeyBindings.Interact = interactKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("InteractKB", 0);
+        KeyBindings.Interact = interactKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("InteractKB", 102);
+        KeyBindings.ToggleMenuSet = toggleInventoryKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("ToggleInventoryKB", 9);
+        KeyBindings.ActionOne = actionOneKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("ActionOneKB", 323);
+        KeyBindings.ActionTwo = actionTwoKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("ActionTwoKB", 324);
+        KeyBindings.Sprint = sprintKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("SprintKB", 304);
+    }
 
+    void DisplayKeybindOverlay(bool state, string message)
+    {
+        keybindOverlay.SetActive(state);
+
+        if (state && message != null && keybindMessageText != null)
+            keybindMessageText.text = message;
     }
 
     void UpdateSensitivity()
     {
+        Controls.Sensitivity = sensitivitySlider.value;
 
+        PlayerPrefs.SetFloat("Sensitivity", sensitivitySlider.value);
     }
 
     void UpdateInteractKeyBind()
     {
         KeyBindings.Interact = interactKeyBind.Value;
-
-        print((int)interactKeyBind.Value);
+        
         PlayerPrefs.SetInt("InteractKB", (int)interactKeyBind.Value);
     }
 
     void UpdateToggleInventory()
     {
-
+        KeyBindings.ToggleMenuSet = toggleInventoryKeyBind.Value;
+        
+        PlayerPrefs.SetInt("ToggleInventoryKB", (int)toggleInventoryKeyBind.Value);
     }
 
     void UpdateActionOne()
     {
-
+        KeyBindings.ActionOne = actionOneKeyBind.Value;
+        
+        PlayerPrefs.SetInt("ActionOneKB", (int)actionOneKeyBind.Value);
     }
 
     void UpdateActionTwo()
     {
-        
+        KeyBindings.ActionTwo = actionTwoKeyBind.Value;
+
+        PlayerPrefs.SetInt("ActionTwoKB", (int)actionTwoKeyBind.Value);
     }
 
     void UpdateSprint()
     {
-
+        KeyBindings.Sprint = sprintKeyBind.Value;
+        
+        PlayerPrefs.SetInt("SprintKB", (int)sprintKeyBind.Value);
     }
 
 
