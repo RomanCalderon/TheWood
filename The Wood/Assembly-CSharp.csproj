@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\GameManagement\SaveData\PlayerSaveData.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveLoadController.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveSystem.cs" />
+    <Compile Include="Assets\Scripts\GameManagement\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SleepController.cs" />
     <Compile Include="Assets\Scripts\GameSettings\GameSettings.cs" />
     <Compile Include="Assets\Scripts\GameSettings\GraphicsSettings.cs" />

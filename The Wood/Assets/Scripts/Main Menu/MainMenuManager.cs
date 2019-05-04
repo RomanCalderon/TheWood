@@ -119,8 +119,7 @@ public class MainMenuManager : MonoBehaviour
         // Sets the current game path to gamePath
         GameDataManager.SetCurrentGamePath(gamePath);
 
-        // FIXME: Let a scene loader handle this
-        SceneManager.LoadScene("Game");
+        SceneLoader.instance.LoadScene("Game");
     }
 
     #region Button Event Listeners
