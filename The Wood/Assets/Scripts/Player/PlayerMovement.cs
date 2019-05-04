@@ -147,6 +147,9 @@ public class PlayerMovement : MonoBehaviour
         m_RigidBody = GetComponent<Rigidbody>();
         m_Capsule = GetComponent<CapsuleCollider>();
         mouseLook.Init(transform, cam.transform);
+        mouseLook.XSensitivity = GameSettings.ControlsSettings.Sensitivity / 10f;
+        mouseLook.YSensitivity = GameSettings.ControlsSettings.Sensitivity / 10f;
+
         movementSettings.RunKey = KeyBindings.Sprint;
     }
 

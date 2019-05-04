@@ -11,7 +11,7 @@ public class GameSettings : MonoBehaviour
     private GraphicsSettings graphicsSettings = new GraphicsSettings();
     private VideoSettings videoSettings = new VideoSettings();
     private SoundSettings soundSettings = new SoundSettings();
-    public class Controls
+    public class ControlsSettings
     {
         public static float Sensitivity;
     }
@@ -369,7 +369,7 @@ public class GameSettings : MonoBehaviour
 
     void SetControls()
     {
-        Controls.Sensitivity = sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 25);
+        ControlsSettings.Sensitivity = sensitivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 25);
         KeyBindings.Interact = interactKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("InteractKB", 102);
         KeyBindings.ToggleMenuSet = toggleInventoryKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("ToggleInventoryKB", 9);
         KeyBindings.ActionOne = actionOneKeyBind.Value = (KeyCode)PlayerPrefs.GetInt("ActionOneKB", 323);
@@ -387,7 +387,7 @@ public class GameSettings : MonoBehaviour
 
     void UpdateSensitivity()
     {
-        Controls.Sensitivity = sensitivitySlider.value;
+        ControlsSettings.Sensitivity = sensitivitySlider.value;
 
         PlayerPrefs.SetFloat("Sensitivity", sensitivitySlider.value);
     }
