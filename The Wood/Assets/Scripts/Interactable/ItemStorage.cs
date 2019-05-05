@@ -71,6 +71,11 @@ public class ItemStorage : Interactable
     }
 
     
+    /// <summary>
+    /// Called from UnityEvents.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="inStorage"></param>
     public void ReceiveElement(GameObject obj, bool inStorage)
     {
         InventoryUIItem uiItem = obj.GetComponent<InventoryUIItem>();
@@ -79,19 +84,17 @@ public class ItemStorage : Interactable
         
         if (inStorage)
         {
-            //print("Add [" + uiItem.Item.Name + "] to STORAGE. Remove from inventory.");
             storageItems.Add(uiItem.Item);
             playerItems.Remove(uiItem.Item);
         }
         else
         {
-            //print("Add [" + uiItem.Item.Name + "] to INVENTORY. Remove from storage.");
             playerItems.Add(uiItem.Item);
             storageItems.Remove(uiItem.Item);
-        }
 
-        // Add this Item to the player's inventory
-        UIEventHandler.ItemAddedToInventory(uiItem.Item);
+            // Add this Item to the player's inventory
+            UIEventHandler.ItemAddedToInventory(uiItem.Item);
+        }
     }
     
 
@@ -107,7 +110,7 @@ public class ItemStorage : Interactable
 
         // Get an updated list of Items in the player's inventory
         InventoryManager.OnItemListUpdated += InventoryManager_OnItemListUpdated;
-        InventoryManager.instance.UpdatedItemList();
+        InventoryManager.instance.UpdateItemList();
     }
 
     /// <summary>
@@ -122,6 +125,13 @@ public class ItemStorage : Interactable
 
         InventoryManager.OnItemListUpdated -= InventoryManager_OnItemListUpdated;
         closeButton.onClick.RemoveAllListeners();
+
+        // Clear playerItems UI and list
+        foreach (Item item in playerItems)
+            RemoveItemUI(item, playerItemsHolder);
+
+        playerItems.Clear();
+
         HasInteracted = false;
     }
 
@@ -172,13 +182,18 @@ public class ItemStorage : Interactable
 
     #region Event Listeners
     
+    /// <summary>
+    /// Updates playerItems list to match Items in the players' inventory.
+    /// </summary>
+    /// <param name="updatedList">List of Items in players' inventory.</param>
     private void InventoryManager_OnItemListUpdated(List<Item> updatedList)
     {
-        playerItems = updatedList;
-
         // Remove all old UI elements in playerItemsHolder
         foreach (Item item in playerItems)
             RemoveItemUI(item, playerItemsHolder);
+
+        playerItems.Clear();
+        playerItems = updatedList;
 
         // Construct new list of UI Item elements
         foreach (Item item in updatedList)

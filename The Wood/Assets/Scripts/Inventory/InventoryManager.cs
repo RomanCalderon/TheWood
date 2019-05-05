@@ -181,7 +181,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Events
-    public void UpdatedItemList()
+    public void UpdateItemList()
     {
         OnItemListUpdated?.Invoke(playerItems);
     }
@@ -225,7 +225,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         // Invoke event (OnItemListUpdated)
-        UpdatedItemList();
+        UpdateItemList();
     }
 
     // Item compare method
