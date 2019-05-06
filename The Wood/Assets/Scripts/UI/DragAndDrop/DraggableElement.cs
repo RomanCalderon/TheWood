@@ -108,8 +108,6 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     private void ValidDropZone(DropZone newDropZone)
     {
-        print("New valid DropZone detected.");
-
         // Set the new drop zone
         dropZone = newDropZone;
 

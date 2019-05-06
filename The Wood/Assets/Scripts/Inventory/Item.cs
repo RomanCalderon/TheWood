@@ -19,7 +19,7 @@ public class Item
 {
     [Header("Data")]
     public string Name;         // Name of the Item
-    public string ID;             // Item ID
+    [SerializeField] private string ID;             // Item ID
     public string ItemSlug;     // Item slug
     public string Description;  // A description for the Item
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -28,33 +28,68 @@ public class Item
     public List<BaseStat> Stats { get; set; }
     public bool ItemModifier;
 
+    private bool idCreated = false;
+
     [Header("UI")]
     public Sprite Icon;
 
 
     #region Constructors
-    
-    public Item(List<BaseStat> stats, string itemSlug)
-    {
-        Stats = stats;
-        ItemSlug = itemSlug;
-        ID = Guid.NewGuid().ToString();
-    }
 
+    /// <summary>
+    /// This constructor should ONLY be called from the ItemDatabase class.
+    /// </summary>
+    /// <param name="stats"></param>
+    /// <param name="itemSlug"></param>
+    /// <param name="description"></param>
+    /// <param name="itemType"></param>
+    /// <param name="actionName"></param>
+    /// <param name="itemName"></param>
+    /// <param name="itemModifier"></param>
     [JsonConstructor]
     public Item(List<BaseStat> stats, string itemSlug, string description, ItemType itemType, string actionName, string itemName, bool itemModifier)
     {
-        Stats = stats;
-        ID = Guid.NewGuid().ToString();
+        Name = itemName;
+        CreateID();
         ItemSlug = itemSlug;
         Description = description;
         ItemType = itemType;
         ActionName = actionName;
-        Name = itemName;
+        Stats = stats;
         ItemModifier = itemModifier;
     }
 
+    /// <summary>
+    /// Copy constructor with unique ID.
+    /// </summary>
+    public Item(Item item)
+    {
+        Name = item.Name;
+        idCreated = false;
+        CreateID();
+        ItemSlug = item.ItemSlug;
+        Description = item.Description;
+        ItemType = item.ItemType;
+        ActionName = item.ActionName;
+        Stats = item.Stats;
+        ItemModifier = item.ItemModifier;
+    }
+
     #endregion
+
+    /// <summary>
+    /// Creates a new, unique Item Guid.
+    /// </summary>
+    public void CreateID()
+    {
+        if (idCreated)
+            return;
+
+        ID = Guid.NewGuid().ToString();
+        //Debug.Log("[" + Name + "] Create new guid [" + ID + "]");
+
+        idCreated = true;
+    }
 
     /// <summary>
     /// Compares other by its ID (Guid).
@@ -66,5 +101,4 @@ public class Item
     {
         return ID == other.ID;
     }
-
 }

@@ -101,6 +101,7 @@ public class InventoryManager : MonoBehaviour
         if (item == null)
             return;
 
+        item.CreateID();
         playerItems.Add(item);
         UIEventHandler.ItemAddedToInventory(item);
     }
