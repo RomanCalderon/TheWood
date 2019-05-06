@@ -446,6 +446,9 @@ MonoBehaviour:
   closeButton: {fileID: 4098238037971725799}
   playerItemsHolder: {fileID: 6825153699330054923}
   storageItemsHolder: {fileID: 7087915968677821269}
+  storageCapacity: 50
+  playerDropZone: 0
+  storageDropZone: 1
   playerItems: []
   storageItems: []
 --- !u!1 &724969896738735178
@@ -838,6 +841,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e6f651e4b12334ab0777fc6fd9805c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnElementDropRequested:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3076824246964034723}
+        m_MethodName: ElementRequest
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: DropRequestEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   OnElementAdded:
     m_PersistentCalls:
       m_Calls:
@@ -854,7 +873,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: DropZoneEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  storage: 0
+  DropZoneID: 0
   contentHolder: {fileID: 6825153699330054923}
 --- !u!1 &1406543837962977447
 GameObject:
@@ -889,7 +908,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1822,12 +1841,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e6f651e4b12334ab0777fc6fd9805c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnElementDropRequested:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: DropRequestEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   OnElementAdded:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: DropZoneEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  storage: 0
+  DropZoneID: 0
   contentHolder: {fileID: 3359874469555799952}
 --- !u!1 &3456936132881167985
 GameObject:
@@ -2285,7 +2309,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2524,6 +2548,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e6f651e4b12334ab0777fc6fd9805c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnElementDropRequested:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3076824246964034723}
+        m_MethodName: ElementRequest
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: DropRequestEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   OnElementAdded:
     m_PersistentCalls:
       m_Calls:
@@ -2540,7 +2580,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: DropZoneEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  storage: 1
+  DropZoneID: 1
   contentHolder: {fileID: 7087915968677821269}
 --- !u!1 &4614467246107617218
 GameObject:
@@ -2650,7 +2690,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00002942098, y: -0.000056609257}
+  m_AnchoredPosition: {x: -0.00002942098, y: -0.000051972776}
   m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1677921041494599297
@@ -3159,7 +3199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8318506787448603700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3563,12 +3603,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e6f651e4b12334ab0777fc6fd9805c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnElementDropRequested:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: DropRequestEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   OnElementAdded:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: DropZoneEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  storage: 0
+  DropZoneID: 0
   contentHolder: {fileID: 2803849942012664534}
 --- !u!1 &7299680324598733522
 GameObject:
@@ -3588,7 +3633,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8281025718109735022
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4503,7 +4548,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00002942098, y: -0.000047531288}
+  m_AnchoredPosition: {x: -0.00002942098, y: -0.000053629476}
   m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4673764261264486844

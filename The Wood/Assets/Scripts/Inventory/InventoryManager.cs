@@ -46,6 +46,7 @@ public class InventoryManager : MonoBehaviour
         SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
 
         UIEventHandler.OnItemAddedToInventory += UIEventHandler_OnItemAddedToInventory;
+        UIEventHandler.OnItemRemovedFromInventory += UIEventHandler_OnItemRemovedFromInventory;
 
         playerWeaponController = GetComponent<PlayerWeaponController>();
         consumableController = GetComponent<ConsumableController>();
@@ -89,6 +90,12 @@ public class InventoryManager : MonoBehaviour
         GiveItem(item, amount);
     }
 
+    public void GiveItem(Item item, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+            GiveItem(item);
+    }
+
     public void GiveItem(Item item)
     {
         if (item == null)
@@ -96,12 +103,6 @@ public class InventoryManager : MonoBehaviour
 
         playerItems.Add(item);
         UIEventHandler.ItemAddedToInventory(item);
-    }
-
-    public void GiveItem(Item item, int amount)
-    {
-        for (int i = 0; i < amount; i++)
-            GiveItem(item);
     }
 
     #endregion
@@ -136,6 +137,7 @@ public class InventoryManager : MonoBehaviour
 
     #endregion
 
+    #region Equip/Unequip/Consume Item
 
     public void EquipItem(Item itemToEquip)
     {
@@ -157,10 +159,20 @@ public class InventoryManager : MonoBehaviour
         consumableController.ConsumeItem(itemToConsume);
     }
 
+    #endregion
+
+    #region Remove Item
+
     public void RemoveItem(Item item)
     {
-        if (item == null || !playerItems.Contains(item))
+        if (item == null)
             return;
+
+        if (!playerItems.Contains(item))
+        {
+            Debug.LogError("Player does not have Item [" + item.Name + "]");
+            return;
+        }
 
         UIEventHandler.ItemRemovedFromInventory(item);
         playerItems.Remove(item);
@@ -174,6 +186,8 @@ public class InventoryManager : MonoBehaviour
         UIEventHandler.ItemRemovedFromInventory(GetItem(itemSlug));
         playerItems.Remove(GetItem(itemSlug));
     }
+
+    #endregion
 
     public void SetItemDetails(Item item, Button selectedButton)
     {
@@ -215,14 +229,22 @@ public class InventoryManager : MonoBehaviour
     
     /// <summary>
     /// Sorts the new Item into the Inventory list of Items
+    /// then invokes the OnItemListUpdated event.
     /// </summary>
     /// <param name="item">The new Item.</param>
     private void UIEventHandler_OnItemAddedToInventory(Item item)
     {
         if (playerItems.Count > 0)
-        {
             playerItems.Sort(SortByType);
-        }
+
+        // Invoke event (OnItemListUpdated)
+        UpdateItemList();
+    }
+
+    private void UIEventHandler_OnItemRemovedFromInventory(Item item)
+    {
+        if (playerItems.Count > 0)
+            playerItems.Sort(SortByType);
 
         // Invoke event (OnItemListUpdated)
         UpdateItemList();

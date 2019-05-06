@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 
 public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public delegate void DraggableElementHandler(Transform transform);
-    public static event DraggableElementHandler OnDraggableElementEnter;
-    public static event DraggableElementHandler OnDraggableElementExit;
+    //public delegate void DraggableElementHandler(Transform transform);
+    //public static event DraggableElementHandler OnDraggableElementEnter;
+    //public static event DraggableElementHandler OnDraggableElementExit;
 
     GameObject placeholder;
     [HideInInspector] public DropZone dropZone = null;
@@ -17,10 +17,10 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     void Awake()
     {
-        DropZone.OnDropZoneEnter += DropZone_OnDropZoneEnter;
-        DropZone.OnDropZoneExit += DropZone_OnDropZoneExit;
-        OnDraggableElementEnter += DraggableElement_OnDraggableElementEnter;
-        OnDraggableElementExit += DraggableElement_OnDraggableElementExit;
+        DropZone.OnPointerEnterDropZone += DropZone_OnPointerEnter;
+        DropZone.OnPointerExitDropZone += DropZone_OnPointereExit;
+        //OnDraggableElementEnter += OnDraggableElementEnter;
+        //OnDraggableElementExit += OnDraggableElementExit;
     }
 
     void Start()
@@ -53,13 +53,14 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        // Failed drop
         if (dropZone == null)
         {
             // Put this element in the same location as the placeholder's
             transform.SetParent(placeholder.transform.parent);
             transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
         }
-        // Otherwise, put this element in the DropZone's content holder
+        // Successful drop
         else
         {
             transform.SetParent(dropZone.contentHolder, false);
@@ -72,7 +73,7 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         Destroy(placeholder.gameObject);
         placeholder = null;
 
-        // Reomve the canvas group
+        // Remove the canvas group
         Destroy(canvasGroup);
         canvasGroup = null;
 
@@ -80,31 +81,49 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     }
 
     // Event Listeners
-    private void DropZone_OnDropZoneEnter(DropZone dropZone)
+    /// <summary>
+    /// Called when the pointer enters a DropZone.
+    /// </summary>
+    /// <param name="dropZone">DropZone the pointer entered.</param>
+    private void DropZone_OnPointerEnter(DropZone dropZone)
     {
         if (isDragging)
         {
+            // Check if dropZone is valid
+            dropZone.RequestElementDrop(gameObject, ValidDropZone);
+
             // Set the new drop zone
-            this.dropZone = dropZone;
+            //this.dropZone = dropZone;
 
             // Move the placeholder to new drop zone
-            placeholder.transform.SetParent(dropZone.contentHolder, false);
+            //placeholder.transform.SetParent(dropZone.contentHolder, false);
         }
     }
 
-    private void DropZone_OnDropZoneExit(DropZone dropZone)
+    private void DropZone_OnPointereExit(DropZone dropZone)
     {
         if (isDragging)
             this.dropZone = null;
     }
 
-    private void DraggableElement_OnDraggableElementEnter(Transform transform)
+    private void ValidDropZone(DropZone newDropZone)
+    {
+        print("New valid DropZone detected.");
+
+        // Set the new drop zone
+        dropZone = newDropZone;
+
+        // Move the placeholder to new drop zone
+        placeholder.transform.SetParent(dropZone.contentHolder, false);
+    }
+
+    private void OnDraggableElementEnter(Transform transform)
     {
         if (isDragging)
             placeholder.transform.SetSiblingIndex(transform.GetSiblingIndex());
     }
 
-    private void DraggableElement_OnDraggableElementExit(Transform transform)
+    private void OnDraggableElementExit(Transform transform)
     {
 
     }
@@ -112,12 +131,12 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     // Events
     public void OnPointerEnter(PointerEventData eventData)
     {
-        OnDraggableElementEnter?.Invoke(transform);
+        OnDraggableElementEnter(transform);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        OnDraggableElementExit?.Invoke(transform);
+        OnDraggableElementExit(transform);
     }
 
 
@@ -132,6 +151,6 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     void OnDisable()
     {
-        DropZone.OnDropZoneExit -= DropZone_OnDropZoneEnter;
+        DropZone.OnPointerExitDropZone -= DropZone_OnPointerEnter;
     }
 }

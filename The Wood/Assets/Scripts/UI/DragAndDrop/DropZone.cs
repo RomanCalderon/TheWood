@@ -6,17 +6,36 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 [Serializable]
-public class DropZoneEvent : UnityEvent<GameObject, bool> { }
+public class DropRequestEvent : UnityEvent<GameObject, DropZone.DropZoneIDs, Action> { }
+
+[Serializable]
+public class DropZoneEvent : UnityEvent<GameObject, DropZone.DropZoneIDs> { }
 
 public class DropZone : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public DropRequestEvent OnElementDropRequested;
+    private Action<DropZone> dropZoneRequest;
+
     public DropZoneEvent OnElementAdded;
 
     public delegate void DropZoneHandler(DropZone dropZone);
-    public static event DropZoneHandler OnDropZoneEnter;
-    public static event DropZoneHandler OnDropZoneExit;
+    public static event DropZoneHandler OnPointerEnterDropZone;
+    public static event DropZoneHandler OnPointerExitDropZone;
 
-    public bool storage;
+    public enum DropZoneIDs
+    {
+        DROPZONE1,
+        DROPZONE2,
+        DROPZONE3,
+        DROPZONE4,
+        DROPZONE5,
+        DROPZONE6,
+        DROPZONE7,
+        DROPZONE8,
+        DROPZONE9
+    }
+
+    public DropZoneIDs DropZoneID;
     public Transform contentHolder;
 
     private void Awake ()
@@ -32,16 +51,30 @@ public class DropZone : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        OnDropZoneEnter?.Invoke(this);
+        OnPointerEnterDropZone?.Invoke(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        OnDropZoneExit?.Invoke(this);
+        OnPointerExitDropZone?.Invoke(this);
+    }
+
+    public void RequestElementDrop(GameObject obj, Action<DropZone> callback)
+    {
+        if (callback == null)
+            return;
+
+        dropZoneRequest = callback;
+        OnElementDropRequested?.Invoke(obj, DropZoneID, ValidDropZone);
+    }
+
+    private void ValidDropZone()
+    {
+        dropZoneRequest(this);
     }
 
     public void AddElement(GameObject obj)
     {
-        OnElementAdded?.Invoke(obj, storage);
+        OnElementAdded?.Invoke(obj, DropZoneID);
     }
 }
