@@ -80,7 +80,7 @@ public class DayNightManager : MonoBehaviour
     // Event for daytime
     private void DayNightCycle_OnDaytime()
     {
-        print("It's daytime!");
+        //print("It's daytime!");
 
         // Stop all nighttime sounds
         Stop(TimesOfDay.NIGHT, "NaturalSound");
@@ -93,7 +93,7 @@ public class DayNightManager : MonoBehaviour
     // Event for nightfall
     private void DayNightCycle_OnNightfall()
     {
-        print("Nightfall has started.");
+        //print("Nightfall has started.");
 
         // Stop all daytime sounds
         Stop(TimesOfDay.DAY, "Wind");

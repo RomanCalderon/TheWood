@@ -132,7 +132,7 @@ public class PlayerSleepController : MonoBehaviour
 
         IsSleeping = true;
 
-        print("You fell asleep...");
+        //print("You fell asleep...");
     }
 
     private void SleepController_OnWakeUp()

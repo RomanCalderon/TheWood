@@ -56,7 +56,7 @@ public class SleepController : MonoBehaviour
 
     private IEnumerator SaveGameEnum()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.2f);
 
         // Invoke the SaveGame event
         SaveLoadController.SaveGame();
