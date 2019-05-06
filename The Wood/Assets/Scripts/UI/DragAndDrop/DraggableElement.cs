@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 
 public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    //public delegate void DraggableElementHandler(Transform transform);
-    //public static event DraggableElementHandler OnDraggableElementEnter;
-    //public static event DraggableElementHandler OnDraggableElementExit;
+    public delegate void DraggableElementHandler(Transform transform);
+    public static event DraggableElementHandler OnDraggableElementEnter;
+    public static event DraggableElementHandler OnDraggableElementExit;
 
     GameObject placeholder;
     [HideInInspector] public DropZone dropZone = null;
@@ -19,8 +19,8 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         DropZone.OnPointerEnterDropZone += DropZone_OnPointerEnter;
         DropZone.OnPointerExitDropZone += DropZone_OnPointereExit;
-        //OnDraggableElementEnter += OnDraggableElementEnter;
-        //OnDraggableElementExit += OnDraggableElementExit;
+        OnDraggableElementEnter += DraggableElementEnter;
+        OnDraggableElementExit += DraggableElementExit;
     }
 
     void Start()
@@ -117,13 +117,17 @@ public class DraggableElement : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         placeholder.transform.SetParent(dropZone.contentHolder, false);
     }
 
-    private void OnDraggableElementEnter(Transform transform)
+    /// <summary>
+    /// Moves the placeholder relative to this when being dragged.
+    /// </summary>
+    /// <param name="transform"></param>
+    private void DraggableElementEnter(Transform transform)
     {
         if (isDragging)
             placeholder.transform.SetSiblingIndex(transform.GetSiblingIndex());
     }
 
-    private void OnDraggableElementExit(Transform transform)
+    private void DraggableElementExit(Transform transform)
     {
 
     }

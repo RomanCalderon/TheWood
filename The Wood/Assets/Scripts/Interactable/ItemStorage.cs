@@ -114,17 +114,13 @@ public class ItemStorage : Interactable
         if (dropZoneID == storageDropZone)
         {
             // Check if the Item is already in storage
-            if (ContainsItem(storageItemsHolder, uiItem.Item))
+            if (storageItems.Find(i => i.Equals(uiItem.Item)) != null)
             {
                 print("Item [" + uiItem.Item.Name + "] already in storage.");
                 return;
             }
 
-            // FIXME: It it's getting removed from the players' inventory
-            // Item keeps getting added back to player inventory after moving it to storage
-
             storageItems.Add(uiItem.Item);
-            playerItems.Remove(uiItem.Item);
 
             // Remove this Item from the players' inventroy
             InventoryManager.instance.RemoveItem(uiItem.Item);
@@ -133,16 +129,15 @@ public class ItemStorage : Interactable
         else if (dropZoneID == playerDropZone)
         {
             // Check if the Item is already in the players' inventory
-            if (ContainsItem(playerItemsHolder, uiItem.Item))
+            if (playerItems.Find(i => i.Equals(uiItem.Item)) != null)
             {
                 print("Item [" + uiItem.Item.Name + "] already in player inventory.");
                 return;
             }
-
-            //playerItems.Add(uiItem.Item);
+            
             storageItems.Remove(uiItem.Item);
 
-            // Add this Item to the player's inventory
+            // Add this Item to the players' inventory
             InventoryManager.instance.GiveItem(uiItem.Item);
         }
     }
@@ -198,7 +193,6 @@ public class ItemStorage : Interactable
         playerItems = new List<Item>(updatedList);
 
         UpdatePlayerItemsUI();
-
         UpdateStorageItemsUI();
     }
 
@@ -229,22 +223,6 @@ public class ItemStorage : Interactable
 
     #region Helper Functions
     
-    private bool ContainsItem(Transform parent, Item item)
-    {
-        foreach (Transform t in parent)
-        {
-            if (t.GetComponent<InventoryUIItem>() != null)
-            {
-                Item i = t.GetComponent<InventoryUIItem>().Item;
-
-                if (item.Equals(i))
-                    return true;
-            }
-        }
-
-        return false;
-    }
-
     private void UpdatePlayerItemsUI()
     {
         // Remove all UI elements in playerItemsHolder

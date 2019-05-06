@@ -107,7 +107,7 @@ public class InventoryManager : MonoBehaviour
 
     #endregion
 
-    #region GetItem(s)
+    #region Get Item(s)
 
     public Item GetItem(string itemSlug)
     {
@@ -174,8 +174,8 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        UIEventHandler.ItemRemovedFromInventory(item);
         playerItems.Remove(item);
+        UIEventHandler.ItemRemovedFromInventory(item);
     }
 
     public void RemoveItem(string itemSlug)
@@ -183,8 +183,8 @@ public class InventoryManager : MonoBehaviour
         if (itemSlug == string.Empty || !playerItems.Contains(GetItem(itemSlug)))
             return;
 
-        UIEventHandler.ItemRemovedFromInventory(GetItem(itemSlug));
         playerItems.Remove(GetItem(itemSlug));
+        UIEventHandler.ItemRemovedFromInventory(GetItem(itemSlug));
     }
 
     #endregion
