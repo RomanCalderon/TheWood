@@ -15,14 +15,14 @@ MonoBehaviour:
   effectType: 0
   enableDithering: 0
   ditherStrength: 0.03
-  alpha: 1.03905
+  alpha: 0.407582
   noiseStrength: 0.24
   noiseScale: 0.031
   distance: 0
   distanceFallOff: 0.01
   maxDistance: 0.999
   maxDistanceFallOff: 0
-  height: 50
+  height: 300
   maxHeight: 100
   heightFallOff: 1
   baselineHeight: 10
@@ -35,7 +35,7 @@ MonoBehaviour:
   skyHaze: 350
   skySpeed: 0.05
   skyNoiseStrength: 0.8
-  skyAlpha: 1.03905
+  skyAlpha: 0.407582
   useXZDistance: 0
   scattering: 0.7
   scatteringColor: {r: 1, g: 1, b: 0.8, a: 1}

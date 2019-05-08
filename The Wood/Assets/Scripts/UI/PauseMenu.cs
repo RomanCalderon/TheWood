@@ -43,6 +43,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         pauseMenuUI.SetActive(false);
+        quitToMenu = quitToDesktop = false;
     }
 
     // Update is called once per frame
@@ -107,6 +108,7 @@ public class PauseMenu : MonoBehaviour
             Application.Quit();
 
         // Closes the warning menu and pause menu
+        quitToMenu = quitToDesktop = false;
         CloseSubMenu();
         menusOpen.Clear();
         PauseController.ResumeGame();
