@@ -179,13 +179,10 @@ public class InventoryManager : MonoBehaviour
             return;
 
         if (!playerItems.Contains(item))
-        {
-            Debug.LogError("Player does not have Item [" + item.Name + "]");
             return;
-        }
 
-        playerItems.Remove(item);
         UIEventHandler.ItemRemovedFromInventory(item);
+        playerItems.Remove(item);
     }
 
     public void RemoveItem(string itemSlug)
@@ -193,8 +190,8 @@ public class InventoryManager : MonoBehaviour
         if (itemSlug == string.Empty || !playerItems.Contains(GetItem(itemSlug)))
             return;
 
-        playerItems.Remove(GetItem(itemSlug));
         UIEventHandler.ItemRemovedFromInventory(GetItem(itemSlug));
+        playerItems.Remove(GetItem(itemSlug));
     }
 
     #endregion
