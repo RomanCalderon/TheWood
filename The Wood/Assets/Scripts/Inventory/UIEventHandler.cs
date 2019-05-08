@@ -6,6 +6,12 @@ public class UIEventHandler : MonoBehaviour
 {
     public delegate void UIDisplayEventHandler(bool state);
     public static event UIDisplayEventHandler OnUIDisplayed;
+    private static int uiDisplayCount = 0;
+    public static bool IsUIDisplayed
+    {
+        get { return uiDisplayCount > 0; }
+        private set { }
+    }
 
     public delegate void ItemEventHandler(Item item);
     public static event ItemEventHandler OnItemAddedToInventory;
@@ -27,7 +33,13 @@ public class UIEventHandler : MonoBehaviour
 
     public static void UIDisplayed(bool state)
     {
-        OnUIDisplayed?.Invoke(state);
+        if (state)
+            uiDisplayCount++;
+        else if (uiDisplayCount > 0)
+            uiDisplayCount--;
+
+        //print("UIs displayed: " + uiDisplayCount);
+        OnUIDisplayed?.Invoke(IsUIDisplayed);
     }
 
     public static void ItemAddedToInventory(Item item)

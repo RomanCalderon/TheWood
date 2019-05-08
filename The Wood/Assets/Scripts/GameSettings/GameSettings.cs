@@ -19,8 +19,9 @@ public class GameSettings : MonoBehaviour
     [SerializeField] int mainMenuSceneIndex;
     [SerializeField] GameObject backgroundPanelUI;
 
+    public bool menuOpen { get; private set; }
+
     [Header("Menu UI")]
-    bool menuOpen = false;
     [SerializeField] GameObject optionsMenu;
 
     [Header("Graphics UI")]

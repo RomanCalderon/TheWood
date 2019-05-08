@@ -16,13 +16,23 @@ public class SceneLoader : MonoBehaviour
     
     [SerializeField] CanvasGroup canvasGroup;
 
+    AsyncOperation async;
+
+    Coroutine beginLoadCoroutine;
+    Coroutine audioListenerVolumeCoroutine;
+
     private void Awake()
     {
         if (instance != null && instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
         else
             instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     public void LoadScene(int sceneIndex)
@@ -35,11 +45,13 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        if (SceneManager.GetSceneByName(sceneName) == null)
+        if (IsLoadingScene || SceneManager.GetSceneByName(sceneName) == null)
             return;
 
         print("Loading scene: [" + sceneName + "]");
-        StartCoroutine(BeginLoad(sceneName));
+        if (beginLoadCoroutine != null)
+            StopCoroutine(beginLoadCoroutine);
+        beginLoadCoroutine = StartCoroutine(BeginLoad(sceneName));
     }
 
     private void Update()
@@ -52,34 +64,72 @@ public class SceneLoader : MonoBehaviour
         // Set IsLoadingScene to true and enable the loading canvas
         canvasGroup.blocksRaycasts = IsLoadingScene = true;
 
-        while(AudioListener.volume > 0.01f)
-        {
-            AudioListener.volume -= Time.deltaTime;
-            yield return null;
-        }
-        AudioListener.volume = 0f;
+        // Decrease AudioListener.volume
+        audioListenerVolumeCoroutine = StartCoroutine(AudioListenerVolume(false));
 
         yield return new WaitForSeconds(2f);
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.LoadSceneAsync(sceneName);
+        // Start scene load
+        async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        async.allowSceneActivation = false;
+
+        while ((!async.isDone) && (async.progress < 0.9f))
+        {
+            //Debug.Log(async.progress);
+            yield return null;
+        }
+        async.allowSceneActivation = true;
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode loadMode)
     {
-        StartCoroutine(EndLoad());
+        EndLoad(scene);
     }
 
-    private IEnumerator EndLoad()
+    private void EndLoad(Scene scene)
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        Debug.Log("Finished loading scene [" + scene.name + "]");
+
         canvasGroup.blocksRaycasts = IsLoadingScene = false;
 
-        while (AudioListener.volume < 0.95f)
+        // Increase AudioListener.volume
+        audioListenerVolumeCoroutine = StartCoroutine(AudioListenerVolume(true));
+    }
+
+    private IEnumerator AudioListenerVolume(bool state)
+    {
+        float timeout = 3f;
+
+        if (state)
         {
-            AudioListener.volume += Time.deltaTime;
-            yield return null;
+            while (AudioListener.volume < 0.95f)
+            {
+                AudioListener.volume += Time.deltaTime;
+                yield return null;
+
+                timeout -= Time.deltaTime;
+                if (timeout <= 0)
+                    break;
+            }
+            AudioListener.volume = 1f;
         }
-        AudioListener.volume = 1f;
+        else
+        {
+            while (AudioListener.volume > 0.01f)
+            {
+                AudioListener.volume -= Time.deltaTime;
+                yield return null;
+
+                timeout -= Time.deltaTime;
+                if (timeout <= 0)
+                    break;
+            }
+            AudioListener.volume = 0f;
+        }
     }
 }

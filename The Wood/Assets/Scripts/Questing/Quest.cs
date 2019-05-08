@@ -35,6 +35,13 @@ public class Quest : ScriptableObject
         QuestController.OnQuestAbandoned -= QuestAbandoned;
     }
 
+    private void OnDestroy()
+    {
+        QuestController.OnQuestTracked -= QuestTracked;
+        QuestController.OnQuestUntracked -= QuestUntracked;
+        QuestController.OnQuestAbandoned -= QuestAbandoned;
+    }
+
     public void CheckGoals()
     {
         Debug.Log("KillGoals Completed = " + KillGoals.All(g => g.Completed));

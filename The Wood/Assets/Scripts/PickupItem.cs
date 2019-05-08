@@ -11,4 +11,10 @@ public class PickupItem : Interactable
         InventoryManager.instance.GiveItem(Item);
         Destroy(gameObject);
     }
+
+    private void Start()
+    {
+        // When this pickup item is Instantiated, set its velocity to zero
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
 }

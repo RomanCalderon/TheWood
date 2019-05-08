@@ -25,12 +25,6 @@ public class MainMenuManager : MonoBehaviour
         GameDataManager.VerifySavedGamesDirectory();
 
         #region Button Event Subscriptions
-        // Unsubscribe from button events
-        SignInteractions.OnNewGamePressed -= SignInteractions_OnNewGamePressed;
-        SignInteractions.OnContinueGamePressed -= SignInteractions_OnContinueGamePressed;
-        SignInteractions.OnOptionsPressed -= SignInteractions_OnOptionsPressed;
-        SignInteractions.OnQuitPressed -= SignInteractions_OnQuitPressed;
-
         // Subscribe to button events
         SignInteractions.OnNewGamePressed += SignInteractions_OnNewGamePressed;
         SignInteractions.OnContinueGamePressed += SignInteractions_OnContinueGamePressed;
@@ -43,6 +37,10 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         MenuOpen = false;
+
+        // Show and unlock cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     #region New Game
@@ -127,12 +125,18 @@ public class MainMenuManager : MonoBehaviour
     // NEW GAME
     private void SignInteractions_OnNewGamePressed()
     {
+        //if (newGameUI == null)
+        //    return;
+
         newGameUI.SetActive(MenuOpen = true);
     }
 
     // CONTINUE GAME
     private void SignInteractions_OnContinueGamePressed()
     {
+        //if (continueGameUI == null)
+        //    return;
+
         continueGameUI.SetActive(MenuOpen = true);
 
         GameDataManager.RetreiveGameDirectories(LoadSavedGames);
@@ -155,5 +159,14 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
     }
 
-#endregion
+    #endregion
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from button events
+        SignInteractions.OnNewGamePressed -= SignInteractions_OnNewGamePressed;
+        SignInteractions.OnContinueGamePressed -= SignInteractions_OnContinueGamePressed;
+        SignInteractions.OnOptionsPressed -= SignInteractions_OnOptionsPressed;
+        SignInteractions.OnQuitPressed -= SignInteractions_OnQuitPressed;
+    }
 }

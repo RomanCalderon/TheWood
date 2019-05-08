@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveLoadController : MonoBehaviour
 {
@@ -13,17 +14,28 @@ public class SaveLoadController : MonoBehaviour
     private void Awake()
     {
         if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
         else
             Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode loadMode)
+    {
+        if (scene.name == "Game")
+            LoadGame();
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        LoadGame();
-    }
+    //void Start()
+    //{
+    //    LoadGame();
+    //}
 
     // Events
     public static void SaveGame()

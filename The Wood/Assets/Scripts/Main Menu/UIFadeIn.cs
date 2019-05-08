@@ -10,13 +10,16 @@ public class UIFadeIn : MonoBehaviour
     [SerializeField] float fadeDelay;
     [SerializeField] float fadeSpeed = 1;
 
-    // Start is called before the first frame update
-    void Start()
+    Coroutine fadeCoroutine;
+    
+    void OnEnable()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         canvasGroup.alpha = 0;
 
-        StartCoroutine(FadeInDelay());
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeInDelay());
     }
 
     IEnumerator FadeInDelay()
@@ -28,5 +31,15 @@ public class UIFadeIn : MonoBehaviour
             canvasGroup.alpha += Time.deltaTime * fadeSpeed;
             yield return null;
         }
+
+        fadeCoroutine = null;
+    }
+
+    private void OnDisable()
+    {
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = null;
     }
 }

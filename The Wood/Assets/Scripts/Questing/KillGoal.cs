@@ -22,4 +22,9 @@ public class KillGoal : Goal
             Evaluate();
         }
     }
+
+    ~KillGoal()
+    {
+        CombatEvents.OnEnemyDeath -= EnemyDied;
+    }
 }

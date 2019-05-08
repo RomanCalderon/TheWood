@@ -22,4 +22,9 @@ public class CollectionGoal : Goal
             Evaluate();
         }
     }
+
+    ~CollectionGoal()
+    {
+        UIEventHandler.OnItemAddedToInventory -= ItemPickedUp;
+    }
 }

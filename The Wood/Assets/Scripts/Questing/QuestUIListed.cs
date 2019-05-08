@@ -33,6 +33,11 @@ public class QuestUIListed : MonoBehaviour
         QuestController.OnQuestProgressUpdated -= QuestProgressUpdated;
     }
 
+    private void OnDestroy()
+    {
+        QuestController.OnQuestProgressUpdated -= QuestProgressUpdated;
+    }
+
     private void QuestProgressUpdated(Quest quest)
     {
         if (this.quest != quest)

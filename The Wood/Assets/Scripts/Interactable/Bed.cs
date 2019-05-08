@@ -18,6 +18,11 @@ public class Bed : Interactable
         OnOutOfBed += Bed_OnOutOfBed;
     }
 
+    private void OnDestroy()
+    {
+        OnOutOfBed -= Bed_OnOutOfBed;
+    }
+
     public override void Interact()
     {
         base.Interact();

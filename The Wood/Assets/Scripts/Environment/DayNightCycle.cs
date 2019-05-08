@@ -46,7 +46,7 @@ public class DayNightCycle : MonoBehaviour
     private void Awake()
     {
         if (instance != null && instance != this)
-            Destroy(gameObject);
+            Destroy(this);
         else
             instance = this;
 
@@ -61,7 +61,14 @@ public class DayNightCycle : MonoBehaviour
         baseFogAlpha = 0.7f;
         baseSkyFogAlpha = 0.7f;
     }
-    
+
+    private void OnDestroy()
+    {
+        instance = null;
+        SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame -= SaveLoadController_OnLoadGame;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

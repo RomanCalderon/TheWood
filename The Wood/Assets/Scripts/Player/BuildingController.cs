@@ -66,8 +66,6 @@ public class BuildingController : MonoBehaviour
     private void Awake()
     {
         // Resources
-        //UIEventHandler.OnItemAddedToInventory += AddResource;
-        //UIEventHandler.OnItemRemovedFromInventory += RemoveResource;
         InventoryManager.OnItemListUpdated += InventoryManager_OnItemListUpdated;
 
         OnRequestResources += ValidateResourceRequest;
@@ -75,6 +73,18 @@ public class BuildingController : MonoBehaviour
 
         // Blueprints
         OnSelectedBlueprint += BuildingController_OnSelectedBlueprint;
+    }
+
+    private void OnDestroy()
+    {
+        // Resources
+        InventoryManager.OnItemListUpdated -= InventoryManager_OnItemListUpdated;
+
+        OnRequestResources -= ValidateResourceRequest;
+        OnAddResources -= BuildingController_OnAddResources;
+
+        // Blueprints
+        OnSelectedBlueprint -= BuildingController_OnSelectedBlueprint;
     }
 
     private void Start()

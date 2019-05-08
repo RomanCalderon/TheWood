@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Environment\Tree.cs" />
     <Compile Include="Assets\Scripts\GameManagement\BuildingManager.cs" />
     <Compile Include="Assets\Scripts\GameManagement\GameDataManager.cs" />
+    <Compile Include="Assets\Scripts\GameManagement\PauseController.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveData\DayNightCycleSaveData.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveData\PlayerSaveData.cs" />
     <Compile Include="Assets\Scripts\GameManagement\SaveLoadController.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Assets\Scripts\UI\DragAndDrop\DraggableElement.cs" />
     <Compile Include="Assets\Scripts\UI\DragAndDrop\DropZone.cs" />
     <Compile Include="Assets\Scripts\UI\MainMenu\SavedGameButton.cs" />
+    <Compile Include="Assets\Scripts\UI\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\UI\SaveSystemUI.cs" />
     <Compile Include="Assets\yaSingleton\yaSingleton\Attributes\SingletonAttribute.cs" />
     <Compile Include="Assets\yaSingleton\yaSingleton\BaseSingleton.cs" />

@@ -36,7 +36,16 @@ public class PlayerSleepController : MonoBehaviour
         sleepButton.onClick.AddListener(delegate { Sleep(); });
         cancelSleepButton.onClick.AddListener(delegate { CancelSleep(); });
     }
-    
+
+    private void OnDestroy()
+    {
+        Bed.OnInBed -= Bed_OnInBed;
+        Bed.OnOutOfBed -= Bed_OnOutOfBed;
+
+        SleepController.OnGoToSleep -= SleepController_OnGoToSleep;
+        SleepController.OnWakeUp -= SleepController_OnWakeUp;
+    }
+
     // Update is called once per frame
     void Update()
     {

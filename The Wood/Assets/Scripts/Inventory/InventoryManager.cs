@@ -38,7 +38,7 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         if (instance != null && instance != this)
-            Destroy(gameObject);
+            Destroy(this);
         else
             instance = this;
 
@@ -50,7 +50,16 @@ public class InventoryManager : MonoBehaviour
 
         playerWeaponController = GetComponent<PlayerWeaponController>();
         consumableController = GetComponent<ConsumableController>();
+    }
 
+    private void OnDestroy()
+    {
+        instance = null;
+        SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame -= SaveLoadController_OnLoadGame;
+
+        UIEventHandler.OnItemAddedToInventory -= UIEventHandler_OnItemAddedToInventory;
+        UIEventHandler.OnItemRemovedFromInventory -= UIEventHandler_OnItemRemovedFromInventory;
     }
 
     private void Start()
@@ -220,12 +229,7 @@ public class InventoryManager : MonoBehaviour
 
         // From load - Give saved Items
         foreach (string itemSlug in data.playerItemsSlugs)
-        {
-            //if (!playerItems.Contains(GetItem(itemSlug)))
-                GiveItem(itemSlug);
-        }
-
-        //Debug.Log("Loaded InventoryManager");
+            GiveItem(itemSlug);
     }
     
     /// <summary>

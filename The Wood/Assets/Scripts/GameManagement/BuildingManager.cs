@@ -55,10 +55,28 @@ public class BuildingManager : MonoBehaviour
         OnBlueprintAdded += BuildingManager_OnBlueprintAdded;
         OnBlueprintRemoved += BuildingManager_OnBlueprintRemoved;
         OnContainsBlueprint += BuildingManager_OnContainsBlueprint;
+
         // Buildings
         OnBuildingAdded += BuildingManager_OnBuildingAdded;
         OnBuildingRemoved += BuildingManager_OnBuildingRemoved;
         OnContainsBuilding += BuildingManager_OnContainsBuilding;
+    }
+
+    private void OnDestroy()
+    {
+        // Save/Load
+        SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame -= SaveLoadController_OnLoadGame;
+
+        // Blueprints
+        OnBlueprintAdded -= BuildingManager_OnBlueprintAdded;
+        OnBlueprintRemoved -= BuildingManager_OnBlueprintRemoved;
+        OnContainsBlueprint -= BuildingManager_OnContainsBlueprint;
+
+        // Buildings
+        OnBuildingAdded -= BuildingManager_OnBuildingAdded;
+        OnBuildingRemoved -= BuildingManager_OnBuildingRemoved;
+        OnContainsBuilding -= BuildingManager_OnContainsBuilding;
     }
 
     #region Events

@@ -55,4 +55,10 @@ public class Sound
         if (source.isPlaying)
             source.volume = Mathf.Lerp(source.volume, volume, Time.deltaTime / ((fadeDuration == 0f) ? 0.01f : fadeDuration) * DayNightCycle.instance.GetRate());
     }
+
+    ~Sound()
+    {
+        playCoroutine = null;
+        stopCoroutine = null;
+    }
 }

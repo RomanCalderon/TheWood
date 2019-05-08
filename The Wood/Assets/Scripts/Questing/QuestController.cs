@@ -46,14 +46,22 @@ public class QuestController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //OnQuestMenuStateChanged += QuestMenuState;
-
         OnQuestProposed += ReceiveQuestProposal;
         OnQuestDeclined += RemoveQuest;
         OnQuestAccepted += AcceptQuest;
         OnQuestTracked += TrackQuest;
         OnQuestUntracked += UntrackQuest;
         OnQuestAbandoned += AbandonQuest;
+    }
+
+    private void OnDestroy()
+    {
+        OnQuestProposed -= ReceiveQuestProposal;
+        OnQuestDeclined -= RemoveQuest;
+        OnQuestAccepted -= AcceptQuest;
+        OnQuestTracked -= TrackQuest;
+        OnQuestUntracked -= UntrackQuest;
+        OnQuestAbandoned -= AbandonQuest;
     }
 
     // Events

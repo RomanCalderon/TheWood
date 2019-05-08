@@ -16,6 +16,11 @@ public class Tree : MonoBehaviour
         DayNightManager.OnUpdateSeason += UpdateSeason;
     }
 
+    private void OnDestroy()
+    {
+        DayNightManager.OnUpdateSeason -= UpdateSeason;
+    }
+
     private void Start()
     {
         foreach (GameObject tree in seasonalTreeModels)

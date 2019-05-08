@@ -18,6 +18,7 @@ public class ItemDatabase : MonoBehaviour
             Destroy(gameObject);
         else
             instance = this;
+        DontDestroyOnLoad(gameObject);
 
         BuildDatabase();
     }

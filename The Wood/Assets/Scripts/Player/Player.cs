@@ -23,8 +23,18 @@ public class Player : Killable
         SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
 
         UIEventHandler.OnUIDisplayed += UIEventHandler_OnUIDisplayed;
+        PauseController.OnPauseEvent += PauseController_OnPauseEvent;
 
         CharacterStats = new CharacterStats(4, 2);
+    }
+
+    private void OnDestroy()
+    {
+        SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame -= SaveLoadController_OnLoadGame;
+
+        UIEventHandler.OnUIDisplayed -= UIEventHandler_OnUIDisplayed;
+        PauseController.OnPauseEvent -= PauseController_OnPauseEvent;
     }
 
     // Start is called before the first frame update
@@ -57,6 +67,15 @@ public class Player : Killable
     {
         SetCursorActive(state);
         SetControlState(!state);
+    }
+
+    private void PauseController_OnPauseEvent(bool paused)
+    {
+        if (!paused)
+        {
+            SetCursorActive(false);
+            SetControlState(true);
+        }
     }
 
     private void SaveLoadController_OnSaveGame()

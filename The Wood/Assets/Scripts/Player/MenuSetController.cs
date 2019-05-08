@@ -35,6 +35,20 @@ public class MenuSetController : MonoBehaviour
         BuildingController.OnSelectedBlueprint += BuildingController_OnSelectedBlueprint;
 
         UIEventHandler.OnItemStorage += UIEventHandler_OnItemStorage;
+        PauseController.OnPauseEvent += PauseController_OnPauseEvent;
+    }
+
+    private void OnDestroy()
+    {
+        QuestController.OnQuestMenuStateChanged -= QuestController_OnQuestMenuStateChanged;
+        BuildingController.OnSelectedBlueprint -= BuildingController_OnSelectedBlueprint;
+
+        UIEventHandler.OnItemStorage -= UIEventHandler_OnItemStorage;
+        PauseController.OnPauseEvent -= PauseController_OnPauseEvent;
+
+        inventoryButton.onClick.RemoveAllListeners();
+        questsButton.onClick.RemoveAllListeners();
+        builderButton.onClick.RemoveAllListeners();
     }
 
     // Start is called before the first frame update
@@ -50,8 +64,8 @@ public class MenuSetController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Toggle Menu Set UI if player is not in bed
-        if (Input.GetKeyDown(KeyBindings.ToggleMenuSet) && !PlayerSleepController.IsInBed && canInteract)
+        // Toggle Menu Set UI if player is not in bed, can interact and the game is not paused
+        if (Input.GetKeyDown(KeyBindings.ToggleMenuSet) && !PlayerSleepController.IsInBed && canInteract && !PauseController.IsPaused)
             ChangeMenuSetState(menuIsActive ? MenuPanels.NONE : currentMenuPanel);
     }
 
@@ -129,7 +143,7 @@ public class MenuSetController : MonoBehaviour
     }
 
 
-    // Event listener
+    // Event listeners
     private void QuestController_OnQuestMenuStateChanged(bool state)
     {
         // Called when a Quest has been proposed, open the menu set AND quest panel
@@ -144,5 +158,11 @@ public class MenuSetController : MonoBehaviour
     private void UIEventHandler_OnItemStorage(bool state)
     {
         canInteract = !state;
+    }
+    
+    private void PauseController_OnPauseEvent(bool paused)
+    {
+        if (paused && menuIsActive)
+            ChangeMenuSetState(MenuPanels.NONE);
     }
 }

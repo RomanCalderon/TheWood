@@ -33,6 +33,15 @@ public class CharacterPanel : MonoBehaviour
         UIEventHandler.OnPlayerLevelChange += UpdateLevel;
     }
 
+    private void OnDestroy()
+    {
+        UIEventHandler.OnPlayerHealthChanged -= UpdateHealth;
+        UIEventHandler.OnStatsChanged -= UpdateStats;
+        UIEventHandler.OnItemEquipped -= UpdateEquippedWeapon;
+        UIEventHandler.OnItemUnequipped -= UnequipWeapon;
+        UIEventHandler.OnPlayerLevelChange -= UpdateLevel;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

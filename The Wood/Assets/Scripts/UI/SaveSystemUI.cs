@@ -14,6 +14,12 @@ public class SaveSystemUI : MonoBehaviour
         SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
     }
 
+    private void OnDestroy()
+    {
+        SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame -= SaveLoadController_OnLoadGame;
+    }
+
     private void Start()
     {
         savingGameIcon.enabled = false;

@@ -61,6 +61,14 @@ public class ItemStorage : Interactable
         SetCanvasGroupActive(false);
     }
 
+    private void OnDestroy()
+    {
+        SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame -= SaveLoadController_OnLoadGame;
+
+        InventoryManager.OnItemListUpdated -= GetUpdatedItemList;
+    }
+
     public override void Interact()
     {
         if (HasInteracted)

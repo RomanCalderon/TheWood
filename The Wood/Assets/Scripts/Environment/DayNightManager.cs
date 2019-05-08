@@ -37,8 +37,21 @@ public class DayNightManager : MonoBehaviour
 
     private void Awake()
     {
+        // Initialize all sounds
+        foreach (Sound s in daySounds)
+            s.Initialize(gameObject.AddComponent<AudioSource>());
+        foreach (Sound s in nightSounds)
+            s.Initialize(gameObject.AddComponent<AudioSource>());
+
+
         DayNightCycle.OnDaytime += DayNightCycle_OnDaytime;
         DayNightCycle.OnNightfall += DayNightCycle_OnNightfall;
+    }
+
+    private void OnDestroy()
+    {
+        DayNightCycle.OnDaytime -= DayNightCycle_OnDaytime;
+        DayNightCycle.OnNightfall -= DayNightCycle_OnNightfall;
     }
 
     // Start is called before the first frame update
@@ -50,11 +63,10 @@ public class DayNightManager : MonoBehaviour
         SetCurrentSeason();
 
         // Initialize all sounds
-        foreach (Sound s in daySounds)
-            s.Initialize(gameObject.AddComponent<AudioSource>());
-        foreach (Sound s in nightSounds)
-            s.Initialize(gameObject.AddComponent<AudioSource>());
-
+        //foreach (Sound s in daySounds)
+        //    s.Initialize(gameObject.AddComponent<AudioSource>());
+        //foreach (Sound s in nightSounds)
+        //    s.Initialize(gameObject.AddComponent<AudioSource>());
     }
 
     // Update is called once per frame
@@ -138,6 +150,9 @@ public class DayNightManager : MonoBehaviour
     
     private IEnumerator PlaySound(Sound sound, float playbackTime)
     {
+        if (sound == null)
+            yield break;
+
         // Stop the source if it's playing something already
         sound.source.Stop();
 
@@ -148,19 +163,16 @@ public class DayNightManager : MonoBehaviour
         sound.volume = sound.baseVolume;
         
         // Wait for the delay
-        //if (sound.delay > 0)
-        //    print("Play [" + sound.name + "] in " + sound.delay + " seconds.");
         yield return new WaitForSeconds(sound.delay / DayNightCycle.instance.GetRate());
 
         // Play the Sound
         sound.source.Play();
-
-        //print("Play [" + sound.name + "]");
     }
 
     private IEnumerator StopSound(Sound sound)
     {
-        //print("StopSound [" + sound.name + "]");
+        if (sound == null)
+            yield break;
 
         // Set the target volume to 0
         sound.volume = 0;
@@ -175,7 +187,9 @@ public class DayNightManager : MonoBehaviour
 
     private IEnumerator RestartSound(Sound sound, float playbackTime)
     {
-        //print("RestartSound [" + sound.name + "]");
+        if (sound == null)
+            yield break;
+
         yield return StopSound(sound);
         sound.playCoroutine = StartCoroutine(PlaySound(sound, playbackTime));
     }

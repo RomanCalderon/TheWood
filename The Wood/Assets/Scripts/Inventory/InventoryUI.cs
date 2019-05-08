@@ -10,12 +10,18 @@ public class InventoryUI : MonoBehaviour
     Item currentSelectedItem { get; set; }
     
 
-    private void Start()
+    private void Awake()
     {
         itemContainer = Resources.Load<InventoryUIItem>("UI/Item_Container");
-        //UIEventHandler.OnItemAddedToInventory += ItemAdded;
+
         InventoryManager.OnItemListUpdated += InventoryManager_OnItemListUpdated;
         UIEventHandler.OnItemRemovedFromInventory += RemoveItemUI;
+    }
+
+    private void OnDestroy()
+    {
+        InventoryManager.OnItemListUpdated -= InventoryManager_OnItemListUpdated;
+        UIEventHandler.OnItemRemovedFromInventory -= RemoveItemUI;
     }
 
     private void InventoryManager_OnItemListUpdated(List<Item> updatedList)

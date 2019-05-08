@@ -21,6 +21,13 @@ public class QuestGiver : NPC
         interactionName = Name;
     }
 
+    private void OnDestroy()
+    {
+        QuestController.OnQuestAccepted -= QuestAccepted;
+        QuestController.OnQuestDeclined -= QuestDeclined;
+        QuestController.OnQuestAbandoned -= QuestAbandoned;
+    }
+
     private void DialogueSystem_OnDialogueFinished()
     {
         // Get Quest proposal from NPC

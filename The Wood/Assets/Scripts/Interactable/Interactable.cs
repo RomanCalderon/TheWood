@@ -13,7 +13,8 @@ public class Interactable : MonoBehaviour
         DECONSTRUCT,
         SEARCH,
         TAKE,
-        SLEEP
+        SLEEP,
+        OPEN
     }
 
     [HideInInspector] public bool HasInteracted;
@@ -23,6 +24,11 @@ public class Interactable : MonoBehaviour
     protected virtual void Awake()
     {
         DialogueSystem.OnDialogueFinished += DialogueSystem_OnDialogueFinished;
+    }
+
+    private void OnDestroy()
+    {
+        DialogueSystem.OnDialogueFinished -= DialogueSystem_OnDialogueFinished;
     }
 
     public virtual void Preview()
@@ -67,6 +73,8 @@ public class Interactable : MonoBehaviour
                 return "TAKE " + interactionName.ToUpper();
             case InteractionTypes.SLEEP:
                 return "SLEEP";
+            case InteractionTypes.OPEN:
+                return "OPEN " + interactionName.ToUpper();
             default:
                 break;
         }

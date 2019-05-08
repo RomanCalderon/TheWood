@@ -75,6 +75,12 @@ public class Building : Killable
         BuildingManager.OnLoad += BuildingManager_OnLoad;
     }
 
+    private void OnDestroy()
+    {
+        BuildingManager.OnSave -= BuildingManager_OnSave;
+        BuildingManager.OnLoad -= BuildingManager_OnLoad;
+    }
+
     private void BuildingManager_OnSave()
     {
         // Add a reference of this building to the BuildingManager
