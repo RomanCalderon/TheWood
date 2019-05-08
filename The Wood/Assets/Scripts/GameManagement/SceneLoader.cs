@@ -16,6 +16,9 @@ public class SceneLoader : MonoBehaviour
     
     [SerializeField] CanvasGroup canvasGroup;
 
+    [Space]
+    [SerializeField] Slider loadingBar;
+
     AsyncOperation async;
 
     Coroutine beginLoadCoroutine;
@@ -67,6 +70,9 @@ public class SceneLoader : MonoBehaviour
         // Decrease AudioListener.volume
         audioListenerVolumeCoroutine = StartCoroutine(AudioListenerVolume(false));
 
+        // Reset loading bar
+        loadingBar.value = 0f;
+
         yield return new WaitForSeconds(2f);
 
         // Start scene load
@@ -75,10 +81,11 @@ public class SceneLoader : MonoBehaviour
 
         while ((!async.isDone) && (async.progress < 0.9f))
         {
-            //Debug.Log(async.progress);
+            loadingBar.value = Mathf.Lerp(loadingBar.value, async.progress, Time.deltaTime);
             yield return null;
         }
         async.allowSceneActivation = true;
+        loadingBar.value = 1f;
     }
 
     private void OnSceneUnloaded(Scene scene)
