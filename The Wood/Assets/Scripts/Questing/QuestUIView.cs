@@ -67,7 +67,7 @@ public class QuestUIView : MonoBehaviour
             default:
                 break;
         }
-        if (statusType != QuestStatusType.PROPOSED)
+        if (statusType != QuestStatusType.PROPOSED && statusType != QuestStatusType.COMPLETED)
         {
             // Remove old listener for onValueChange
             questOptionsDropdown.onValueChanged.RemoveAllListeners();

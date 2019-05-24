@@ -40,6 +40,14 @@
     "actionName": "Drink",
     "itemModifier": 0
   },
+  {
+    "itemSlug": "funshroom",
+    "itemName": "Funshroom",
+    "description": "A small but effective shroom known for having good times.",
+    "itemType": "CONSUMABLE",
+    "actionName": "Eat",
+    "itemModifier": 0
+  },
 
 
   // WEAPONS

@@ -5,17 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class Goal
 {
-    protected Quest Quest;
+    [System.NonSerialized] protected Quest Quest;
     public string Description;
     public bool Completed { get; set; }
     public int CurrentAmount { get; set; }
     public int RequiredAmount;
 
-    public virtual void Init(Quest quest)
+    public Goal(Quest quest)
     {
         Quest = quest;
-        Completed = false;
-        CurrentAmount = 0;
+    }
+
+    public virtual void Init(Quest quest, bool completed, int currentAmount)
+    {
+        Quest = quest;
+
+        Completed = completed;
+        CurrentAmount = currentAmount;
     }
 
     public void Evaluate()
@@ -25,6 +31,7 @@ public class Goal
         if (Completed)
             Quest.CheckGoals();
 
+        Debug.Log("QuestController.UpdateQuestProgress(Quest)");
         QuestController.UpdateQuestProgress(Quest);
     }
 }

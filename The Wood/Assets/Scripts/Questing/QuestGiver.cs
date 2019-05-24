@@ -7,9 +7,9 @@ public class QuestGiver : NPC
     public bool ProposedQuest { get; set; }
     public bool AcceptedQuest { get; set; }
     public bool FinishedQuest { get; set; }
-    
+
     [Header("Quest")]
-    [SerializeField]
+    [SerializeField] string questName;
     private Quest Quest;
 
     private void Start()
@@ -19,6 +19,8 @@ public class QuestGiver : NPC
         QuestController.OnQuestAbandoned += QuestAbandoned;
 
         interactionName = Name;
+
+        Quest = QuestDatabase.instance.GetQuestByName(questName);
     }
 
     private void OnDestroy()
@@ -26,6 +28,7 @@ public class QuestGiver : NPC
         QuestController.OnQuestAccepted -= QuestAccepted;
         QuestController.OnQuestDeclined -= QuestDeclined;
         QuestController.OnQuestAbandoned -= QuestAbandoned;
+        DialogueSystem.OnDialogueFinished -= DialogueSystem_OnDialogueFinished;
     }
 
     private void DialogueSystem_OnDialogueFinished()
@@ -68,13 +71,13 @@ public class QuestGiver : NPC
 
     private void QuestAccepted(Quest quest)
     {
-        if (quest == Quest)
+        if (quest.Equals(Quest))
             AcceptedQuest = true;
     }
 
     private void QuestDeclined(Quest quest)
     {
-        if (quest == Quest)
+        if (quest.Equals(Quest))
         {
             ProposedQuest = false;
             AcceptedQuest = false;
@@ -83,7 +86,7 @@ public class QuestGiver : NPC
 
     private void QuestAbandoned(Quest quest)
     {
-        if (quest == Quest)
+        if (quest.Equals(Quest))
         {
             ProposedQuest = false;
             AcceptedQuest = false;
@@ -107,4 +110,5 @@ public class QuestGiver : NPC
             DialogueSystem.instance.AddNewDialogue(Name, new string[] { "You haven't finished this quest. Come back when you're done." });
         }
     }
+    
 }

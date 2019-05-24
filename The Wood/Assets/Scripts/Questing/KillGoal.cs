@@ -7,9 +7,20 @@ public class KillGoal : Goal
 {
     public int EnemyID;
     
-    public override void Init(Quest quest)
+    public KillGoal(Quest quest) : base(quest)
     {
-        base.Init(quest);
+        Debug.Log("KillGoal()");
+        //CombatEvents.OnEnemyDeath += EnemyDied;
+    }
+
+    public override void Init(Quest quest, bool completed, int currentAmount)
+    {
+        Debug.Log("Kill Goal [" + Description + "] initialized.");
+        Quest = quest;
+
+        Completed = completed;
+        CurrentAmount = currentAmount;
+
         CombatEvents.OnEnemyDeath += EnemyDied;
     }
 
@@ -18,7 +29,7 @@ public class KillGoal : Goal
         if (Quest.IsTracked && enemy.ID == EnemyID)
         {
             CurrentAmount++;
-            //Debug.Log("KillGoal progress = " + CurrentAmount + "/" + RequiredAmount);
+            Debug.Log("KillGoal progress = " + CurrentAmount + "/" + RequiredAmount);
             Evaluate();
         }
     }

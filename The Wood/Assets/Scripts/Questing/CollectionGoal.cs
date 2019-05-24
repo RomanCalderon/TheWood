@@ -7,9 +7,20 @@ public class CollectionGoal : Goal
 {
     public string ItemID;
     
-    public override void Init(Quest quest)
+    public CollectionGoal(Quest quest) : base(quest)
     {
-        base.Init(quest);
+        Debug.Log("CollectionGoal()");
+        //UIEventHandler.OnItemAddedToInventory += ItemPickedUp;
+    }
+
+    public override void Init(Quest quest, bool completed, int currentAmount)
+    {
+        Debug.Log("Collection Goal [" + Description + "] initialized.");
+        Quest = quest;
+
+        Completed = completed;
+        CurrentAmount = currentAmount;
+
         UIEventHandler.OnItemAddedToInventory += ItemPickedUp;
     }
 
@@ -18,7 +29,7 @@ public class CollectionGoal : Goal
         if (Quest.IsTracked && item.ItemSlug == ItemID)
         {
             CurrentAmount++;
-            //Debug.Log("CollectionGoal progress = " + CurrentAmount + "/" + RequiredAmount);
+            Debug.Log("CollectionGoal progress = " + CurrentAmount + "/" + RequiredAmount);
             Evaluate();
         }
     }

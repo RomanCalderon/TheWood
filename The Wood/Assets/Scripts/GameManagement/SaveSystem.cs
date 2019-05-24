@@ -99,4 +99,18 @@ public static class SaveSystem
         Debug.Log("Saved ItemStorage data.");
     }
 
+    // Save QuestController
+    public static void SaveQuestController(QuestController questController, string path)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(GameDataManager.GetCurrentGamePath() + path, FileMode.Create);
+
+        QuestSaveData data = new QuestSaveData(questController);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+
+        Debug.Log("Saved QuestController data.");
+    }
+
 }
