@@ -12,11 +12,14 @@ public class QuestGiver : NPC
     [SerializeField] string questName;
     private Quest Quest;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+
         QuestController.OnQuestAccepted += QuestAccepted;
         QuestController.OnQuestDeclined += QuestDeclined;
         QuestController.OnQuestAbandoned += QuestAbandoned;
+        QuestController.OnQuestCompleted += QuestCompleted;
 
         interactionName = Name;
 
@@ -28,6 +31,8 @@ public class QuestGiver : NPC
         QuestController.OnQuestAccepted -= QuestAccepted;
         QuestController.OnQuestDeclined -= QuestDeclined;
         QuestController.OnQuestAbandoned -= QuestAbandoned;
+        QuestController.OnQuestCompleted -= QuestCompleted;
+
         DialogueSystem.OnDialogueFinished -= DialogueSystem_OnDialogueFinished;
     }
 
@@ -92,14 +97,32 @@ public class QuestGiver : NPC
             AcceptedQuest = false;
         }
     }
+    
+    private void QuestCompleted(Quest quest)
+    {
+        if (quest.QuestName != Quest.QuestName)
+            return;
 
-    void CheckQuest()
+        print("Quest givers' quest [" + quest.QuestName + "] has been completed!");
+
+        Quest = quest;
+        ProposedQuest = true;
+        AcceptedQuest = true;
+    }
+
+    /// <summary>
+    /// This is called when the player returns to the Quest Giver to cash in the Quest.
+    /// </summary>
+    private void CheckQuest()
     {
         // Quest is done, receive reward
-        if (Quest.Completed)
+        if (Quest.Completed && !FinishedQuest)
         {
-            Quest.GiveReward();
             FinishedQuest = true;
+
+            Quest.GiveReward();
+            QuestController.TurnInQuest(Quest);
+
             DialogueSystem.instance.AddNewDialogue(Name, new string[] { "Thank you! Here's your reward." });
 
             DialogueSystem.OnDialogueFinished -= DialogueSystem_OnDialogueFinished;

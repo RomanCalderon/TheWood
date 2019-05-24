@@ -53,6 +53,8 @@ public class QuestController : MonoBehaviour
     public static event QuestOptionsHandler OnQuestAbandoned;
     public delegate void QuestProgressHandler(Quest quest);
     public static event QuestProgressHandler OnQuestProgressUpdated;
+    public static event QuestProgressHandler OnQuestCompleted;
+    public static event QuestProgressHandler OnQuestTurnedIn;
 
     private bool QuestMenuDisplayed = false;
 
@@ -92,8 +94,9 @@ public class QuestController : MonoBehaviour
         OnQuestUntracked += UntrackQuest;
         OnQuestAbandoned += AbandonQuest;
         OnQuestProgressUpdated += QuestProgressUpdated;
+        OnQuestTurnedIn += TurnQuestIn;
     }
-    
+
     private void OnDestroy()
     {
         SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
@@ -106,6 +109,7 @@ public class QuestController : MonoBehaviour
         OnQuestUntracked -= UntrackQuest;
         OnQuestAbandoned -= AbandonQuest;
         OnQuestProgressUpdated -= QuestProgressUpdated;
+        OnQuestTurnedIn -= TurnQuestIn;
     }
 
     #region Events
@@ -149,6 +153,16 @@ public class QuestController : MonoBehaviour
     public static void UpdateQuestProgress(Quest quest)
     {
         OnQuestProgressUpdated?.Invoke(quest);
+    }
+
+    public static void QuestCompleted(Quest quest)
+    {
+        OnQuestCompleted?.Invoke(quest);
+    }
+
+    public static void TurnInQuest(Quest quest)
+    {
+        OnQuestTurnedIn?.Invoke(quest);
     }
 
     #endregion
@@ -203,6 +217,13 @@ public class QuestController : MonoBehaviour
         // move it to the completed quests list
         if (quest.Completed)
             MoveListedQuest(quest, QuestStatusType.TRACKED, QuestStatusType.COMPLETED);
+    }
+    
+    private void TurnQuestIn(Quest quest)
+    {
+        print("Quest [" + quest.QuestName + "] turned in!");
+
+        DestroyListedQuest(quest, QuestStatusType.COMPLETED);
     }
 
     #endregion

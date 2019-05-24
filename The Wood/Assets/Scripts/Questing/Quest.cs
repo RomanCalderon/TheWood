@@ -110,12 +110,15 @@ public class Quest
 
     /// <summary>
     /// Hooks up all the listeners for Quest events
+    /// and does a check for quest completion
     /// </summary>
     public void InitializeQuest()
     {
         QuestController.OnQuestTracked += QuestTracked;
         QuestController.OnQuestUntracked += QuestUntracked;
         QuestController.OnQuestAbandoned += QuestAbandoned;
+
+        CheckGoals();
     }
 
     private void OnDisable()
@@ -138,6 +141,9 @@ public class Quest
         Debug.Log("CollectionGoals Completed = " + CollectionGoals?.All(g => g.Completed));
 
         Completed = ((KillGoals!=null)?KillGoals.All(g => g.Completed):true) && ((CollectionGoals!=null)?CollectionGoals.All(g => g.Completed):true);
+
+        if (Completed)
+            QuestController.QuestCompleted(this);
     }
 
     public void GiveReward()

@@ -6,16 +6,11 @@ using UnityEngine;
 public class KillGoal : Goal
 {
     public int EnemyID;
-    
-    public KillGoal(Quest quest) : base(quest)
-    {
-        Debug.Log("KillGoal()");
-        //CombatEvents.OnEnemyDeath += EnemyDied;
-    }
+
+    public KillGoal(Quest quest) : base(quest) { }
 
     public override void Init(Quest quest, bool completed, int currentAmount)
     {
-        Debug.Log("Kill Goal [" + Description + "] initialized.");
         Quest = quest;
 
         Completed = completed;

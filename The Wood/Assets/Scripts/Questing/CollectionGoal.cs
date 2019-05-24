@@ -6,16 +6,11 @@ using UnityEngine;
 public class CollectionGoal : Goal
 {
     public string ItemID;
-    
-    public CollectionGoal(Quest quest) : base(quest)
-    {
-        Debug.Log("CollectionGoal()");
-        //UIEventHandler.OnItemAddedToInventory += ItemPickedUp;
-    }
+
+    public CollectionGoal(Quest quest) : base(quest) { }
 
     public override void Init(Quest quest, bool completed, int currentAmount)
     {
-        Debug.Log("Collection Goal [" + Description + "] initialized.");
         Quest = quest;
 
         Completed = completed;
