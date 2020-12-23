@@ -21,7 +21,7 @@ public class KillGoal : Goal
 
     void EnemyDied(Hostile enemy)
     {
-        if (Quest.IsTracked && enemy.ID == EnemyID)
+        if (Quest.IsTracked && !Quest.Completed && enemy.ID == EnemyID)
         {
             CurrentAmount++;
             Debug.Log("KillGoal progress = " + CurrentAmount + "/" + RequiredAmount);

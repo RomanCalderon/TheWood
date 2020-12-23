@@ -21,7 +21,7 @@ public class CollectionGoal : Goal
 
     void ItemPickedUp(Item item)
     {
-        if (Quest.IsTracked && item.ItemSlug == ItemID)
+        if (Quest.IsTracked && !Quest.Completed && item.ItemSlug == ItemID)
         {
             CurrentAmount++;
             Debug.Log("CollectionGoal progress = " + CurrentAmount + "/" + RequiredAmount);

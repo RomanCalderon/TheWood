@@ -137,13 +137,11 @@ public class Quest
 
     public void CheckGoals()
     {
-        Debug.Log("KillGoals Completed = " + KillGoals?.All(g => g.Completed));
-        Debug.Log("CollectionGoals Completed = " + CollectionGoals?.All(g => g.Completed));
+        Completed = ( KillGoals == null || KillGoals.All ( g => g.Completed ) ) &&
+            ( CollectionGoals == null || CollectionGoals.All ( g => g.Completed ) );
 
-        Completed = ((KillGoals!=null)?KillGoals.All(g => g.Completed):true) && ((CollectionGoals!=null)?CollectionGoals.All(g => g.Completed):true);
-
-        if (Completed)
-            QuestController.QuestCompleted(this);
+        if ( Completed )
+            QuestController.QuestCompleted ( this );
     }
 
     public void GiveReward()
@@ -154,13 +152,9 @@ public class Quest
 
     public string GetQuestRewardString()
     {
-        string rewardString = string.Empty;
-
-        rewardString = ((ExperienceReward > 0) ? ExperienceReward + " Experience\n" : "") +
-            ((MoneyReward > 0) ? MoneyReward + " Silver\n" : "") +
-            ((!string.IsNullOrEmpty(ItemRewardSlug)) ? ItemDatabase.instance.GetItem(ItemRewardSlug).Name : "");
-
-        return rewardString;
+        return ( ( ExperienceReward > 0 ) ? ExperienceReward + " Experience\n" : "" ) +
+            ( ( MoneyReward > 0 ) ? MoneyReward + " Silver\n" : "" ) +
+            ( ( !string.IsNullOrEmpty ( ItemRewardSlug ) ) ? ItemDatabase.instance.GetItem ( ItemRewardSlug ).Name : "" );
     }
 
     public string GetQuestProgressString()

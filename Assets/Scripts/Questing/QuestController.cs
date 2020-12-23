@@ -298,40 +298,14 @@ public class QuestController : MonoBehaviour
         }
     }
 
-    private Transform GetListedQuest(Quest quest, QuestStatusType statusType)
-    {
-        Transform result = null;
-
-        switch (statusType)
-        {
-            case QuestStatusType.TRACKED:
-                foreach (Transform t in trackedQuestsHolder)
-                    if (t.GetComponent<QuestUIListed>().GetQuest() == quest)
-                        result = t;
-                break;
-            case QuestStatusType.UNTRACKED:
-                foreach (Transform t in untrackedQuestsHolder)
-                    if (t.GetComponent<QuestUIListed>().GetQuest() == quest)
-                        result = t;
-                break;
-            case QuestStatusType.PROPOSED:
-                foreach (Transform t in proposedQuestsHolder)
-                    if (t.GetComponent<QuestUIListed>().GetQuest() == quest)
-                        result = t;
-                break;
-            default:
-                break;
-        }
-
-        if (result == null)
-            Debug.LogError("Could not find " + quest + " in " + statusType.ToString());
-
-        return result;
-    }
-
     private void MoveListedQuest(Quest quest, QuestStatusType fromStatus, QuestStatusType toStatus)
     {
         Transform listedQuestTransform = GetListedQuest(quest, fromStatus);
+        if (listedQuestTransform == null)
+        {
+            Debug.LogError ($"GetListedQuest({quest}, {fromStatus}) returned null.");
+            return;
+        }
         QuestUIListed questUIListed = listedQuestTransform.GetComponent<QuestUIListed>();
 
         // Clear old listeners
@@ -395,6 +369,32 @@ public class QuestController : MonoBehaviour
         }
         else
             Debug.LogError("Could not move ListedQuest because it was not found.");
+    }
+
+    private Transform GetListedQuest(Quest quest, QuestStatusType statusType)
+    {
+        switch (statusType)
+        {
+            case QuestStatusType.TRACKED:
+                foreach ( Transform t in trackedQuestsHolder )
+                    if ( t.GetComponent<QuestUIListed> ().GetQuest () == quest )
+                        return t;
+                break;
+            case QuestStatusType.UNTRACKED:
+                foreach (Transform t in untrackedQuestsHolder)
+                    if (t.GetComponent<QuestUIListed>().GetQuest() == quest)
+                        return t;
+                break;
+            case QuestStatusType.PROPOSED:
+                foreach (Transform t in proposedQuestsHolder)
+                    if (t.GetComponent<QuestUIListed>().GetQuest() == quest)
+                        return t;
+                break;
+            default:
+                break;
+        }
+        Debug.LogError("Could not find " + quest + " in " + statusType.ToString());
+        return null;
     }
 
     Quest FindQuestByID(string id, QuestStatusType status)

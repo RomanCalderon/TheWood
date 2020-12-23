@@ -26,6 +26,12 @@ public class Goal
 
     public void Evaluate()
     {
+        if ( Completed )
+        {
+            Debug.Log ($"Quest [{Quest}] already completed!");
+            return;
+        }
+
         Completed = (CurrentAmount >= RequiredAmount);
 
         if (Completed)

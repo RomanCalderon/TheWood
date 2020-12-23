@@ -4689,7 +4689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.319, b: 0.319, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -41201,7 +41201,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6689033746364120296}
-  m_Mesh: {fileID: 4300002, guid: 3cfc6af49c4ac164baa591dfeef80851, type: 3}
+  m_Mesh: {fileID: 8691780276856062721, guid: 3cfc6af49c4ac164baa591dfeef80851, type: 3}
 --- !u!114 &2965397358264649880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41596,7 +41596,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3398979918421479566}
-  m_Mesh: {fileID: 4300000, guid: 3cfc6af49c4ac164baa591dfeef80851, type: 3}
+  m_Mesh: {fileID: 6239881831769578202, guid: 3cfc6af49c4ac164baa591dfeef80851, type: 3}
 --- !u!114 &4162509767800790932
 MonoBehaviour:
   m_ObjectHideFlags: 0
