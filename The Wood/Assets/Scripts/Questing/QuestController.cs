@@ -2,11 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class QuestSaveData
+{
+    public List<QuestToken> trackedQuestTokens;
+    public List<QuestToken> untrackedQuestTokens;
+    public List<QuestToken> proposedQuestTokens;
+    public List<QuestToken> completedQuestTokens;
+
+    public QuestSaveData(QuestController questController)
+    {
+        trackedQuestTokens = new List<QuestToken>();
+        untrackedQuestTokens = new List<QuestToken>();
+        proposedQuestTokens = new List<QuestToken>();
+        completedQuestTokens = new List<QuestToken>();
+
+        foreach (Quest quest in questController.trackedQuests)
+            trackedQuestTokens.Add(new QuestToken(quest));
+
+        foreach (Quest quest in questController.untrackedQuests)
+            untrackedQuestTokens.Add(new QuestToken(quest));
+
+        foreach (Quest quest in questController.proposedQuests)
+            proposedQuestTokens.Add(new QuestToken(quest));
+
+        foreach (Quest quest in questController.completedQuests)
+            completedQuestTokens.Add(new QuestToken(quest));
+    }
+}
+
 public enum QuestStatusType
 {
     TRACKED,
     UNTRACKED,
-    PROPOSED
+    PROPOSED,
+    COMPLETED
 }
 
 public class QuestController : MonoBehaviour
@@ -23,17 +53,21 @@ public class QuestController : MonoBehaviour
     public static event QuestOptionsHandler OnQuestAbandoned;
     public delegate void QuestProgressHandler(Quest quest);
     public static event QuestProgressHandler OnQuestProgressUpdated;
+    public static event QuestProgressHandler OnQuestCompleted;
+    public static event QuestProgressHandler OnQuestTurnedIn;
 
     private bool QuestMenuDisplayed = false;
 
     public List<Quest> trackedQuests = new List<Quest>();
     public List<Quest> untrackedQuests = new List<Quest>();
     public List<Quest> proposedQuests = new List<Quest>();
+    public List<Quest> completedQuests = new List<Quest>();
 
     [Header("Listed Quest Holders")]
     [SerializeField] Transform trackedQuestsHolder;
     [SerializeField] Transform untrackedQuestsHolder;
     [SerializeField] Transform proposedQuestsHolder;
+    [SerializeField] Transform completedQuestsHolder;
 
     [Space]
     [SerializeField] GameObject listedQuestPrefab;
@@ -42,6 +76,13 @@ public class QuestController : MonoBehaviour
     [SerializeField] QuestUIView trackedQuestView;
     [SerializeField] QuestUIView untrackedQuestView;
     [SerializeField] QuestUIView proposedQuestView;
+    [SerializeField] QuestUIView completedQuestView;
+
+    private void Awake()
+    {
+        SaveLoadController.OnSaveGame += SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame += SaveLoadController_OnLoadGame;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -52,19 +93,27 @@ public class QuestController : MonoBehaviour
         OnQuestTracked += TrackQuest;
         OnQuestUntracked += UntrackQuest;
         OnQuestAbandoned += AbandonQuest;
+        OnQuestProgressUpdated += QuestProgressUpdated;
+        OnQuestTurnedIn += TurnQuestIn;
     }
 
     private void OnDestroy()
     {
+        SaveLoadController.OnSaveGame -= SaveLoadController_OnSaveGame;
+        SaveLoadController.OnLoadGame -= SaveLoadController_OnLoadGame;
+
         OnQuestProposed -= ReceiveQuestProposal;
         OnQuestDeclined -= RemoveQuest;
         OnQuestAccepted -= AcceptQuest;
         OnQuestTracked -= TrackQuest;
         OnQuestUntracked -= UntrackQuest;
         OnQuestAbandoned -= AbandonQuest;
+        OnQuestProgressUpdated -= QuestProgressUpdated;
+        OnQuestTurnedIn -= TurnQuestIn;
     }
 
-    // Events
+    #region Events
+
     public static void ChangeQuestMenuState(bool state)
     {
         OnQuestMenuStateChanged?.Invoke(state);
@@ -105,7 +154,20 @@ public class QuestController : MonoBehaviour
     {
         OnQuestProgressUpdated?.Invoke(quest);
     }
-    
+
+    public static void QuestCompleted(Quest quest)
+    {
+        OnQuestCompleted?.Invoke(quest);
+    }
+
+    public static void TurnInQuest(Quest quest)
+    {
+        OnQuestTurnedIn?.Invoke(quest);
+    }
+
+    #endregion
+
+    #region Event Listeners
 
     // Received Quest proposal and adds to proposedQuests list
     public void ReceiveQuestProposal(Quest quest)
@@ -143,9 +205,28 @@ public class QuestController : MonoBehaviour
 
     private void AbandonQuest(Quest quest)
     {
-        Debug.Log("Abandoned (" + quest.QuestName + ")");
+        Debug.Log("Abandoned Quest [" + quest.QuestName + "]");
         DestroyListedQuest(quest, (quest.IsTracked) ? QuestStatusType.TRACKED : QuestStatusType.UNTRACKED);
     }
+
+    private void QuestProgressUpdated(Quest quest)
+    {
+        print("QuestProgressUpdated(" + quest.QuestName + ") quest id: " + quest.QuestID);
+
+        // If this Quest was completed,
+        // move it to the completed quests list
+        if (quest.Completed)
+            MoveListedQuest(quest, QuestStatusType.TRACKED, QuestStatusType.COMPLETED);
+    }
+    
+    private void TurnQuestIn(Quest quest)
+    {
+        print("Quest [" + quest.QuestName + "] turned in!");
+
+        DestroyListedQuest(quest, QuestStatusType.COMPLETED);
+    }
+
+    #endregion
 
     #region Listed Quest Functions
 
@@ -159,19 +240,25 @@ public class QuestController : MonoBehaviour
                 trackedQuests.Add(quest);
                 newListedQuest = Instantiate(listedQuestPrefab, trackedQuestsHolder).GetComponent<QuestUIListed>();
                 newListedQuest.Initialize(quest);
-                newListedQuest.openQuestViewButton.onClick.AddListener(delegate { proposedQuestView.Initialize(quest); });
+                newListedQuest.openQuestViewButton.onClick.AddListener(delegate { trackedQuestView.Initialize(quest); });
                 break;
             case QuestStatusType.UNTRACKED:
                 untrackedQuests.Add(quest);
                 newListedQuest = Instantiate(listedQuestPrefab, untrackedQuestsHolder).GetComponent<QuestUIListed>();
                 newListedQuest.Initialize(quest);
-                newListedQuest.openQuestViewButton.onClick.AddListener(delegate { proposedQuestView.Initialize(quest); });
+                newListedQuest.openQuestViewButton.onClick.AddListener(delegate { untrackedQuestView.Initialize(quest); });
                 break;
             case QuestStatusType.PROPOSED:
                 proposedQuests.Add(quest);
                 newListedQuest = Instantiate(listedQuestPrefab, proposedQuestsHolder).GetComponent<QuestUIListed>();
                 newListedQuest.Initialize(quest);
                 newListedQuest.openQuestViewButton.onClick.AddListener(delegate { proposedQuestView.Initialize(quest); });
+                break;
+            case QuestStatusType.COMPLETED:
+                completedQuests.Add(quest);
+                newListedQuest = Instantiate(listedQuestPrefab, completedQuestsHolder).GetComponent<QuestUIListed>();
+                newListedQuest.Initialize(quest);
+                newListedQuest.openQuestViewButton.onClick.AddListener(delegate { completedQuestView.Initialize(quest); });
                 break;
             default:
                 break;
@@ -197,6 +284,12 @@ public class QuestController : MonoBehaviour
             case QuestStatusType.PROPOSED:
                 proposedQuests.Remove(quest);
                 foreach (Transform t in proposedQuestsHolder)
+                    if (t.GetComponent<QuestUIListed>().GetQuest().QuestName == quest.QuestName)
+                        Destroy(t.gameObject);
+                break;
+            case QuestStatusType.COMPLETED:
+                completedQuests.Remove(quest);
+                foreach (Transform t in completedQuestsHolder)
                     if (t.GetComponent<QuestUIListed>().GetQuest().QuestName == quest.QuestName)
                         Destroy(t.gameObject);
                 break;
@@ -265,6 +358,10 @@ public class QuestController : MonoBehaviour
                     proposedQuests.Remove(quest);
                     proposedQuestView.CloseQuestUIView();
                     break;
+                case QuestStatusType.COMPLETED:
+                    completedQuests.Remove(quest);
+                    completedQuestView.CloseQuestUIView();
+                    break;
                 default:
                     break;
             }
@@ -287,12 +384,74 @@ public class QuestController : MonoBehaviour
                     listedQuestTransform.SetParent(proposedQuestsHolder);
                     questUIListed.openQuestViewButton.onClick.AddListener(delegate { proposedQuestView.Initialize(quest); });
                     break;
+                case QuestStatusType.COMPLETED:
+                    completedQuests.Add(quest);
+                    listedQuestTransform.SetParent(completedQuestsHolder);
+                    questUIListed.openQuestViewButton.onClick.AddListener(delegate { completedQuestView.Initialize(quest); });
+                    break;
                 default:
                     break;
             }
         }
         else
             Debug.LogError("Could not move ListedQuest because it was not found.");
+    }
+
+    Quest FindQuestByID(string id, QuestStatusType status)
+    {
+        switch (status)
+        {
+            case QuestStatusType.TRACKED:
+                return trackedQuests.Find(q => q.QuestID == id);
+            case QuestStatusType.UNTRACKED:
+                return untrackedQuests.Find(q => q.QuestID == id);
+            case QuestStatusType.PROPOSED:
+                return proposedQuests.Find(q => q.QuestID == id);
+            case QuestStatusType.COMPLETED:
+                return completedQuests.Find(q => q.QuestID == id);
+            default:
+                break;
+        }
+
+        return null;
+    }
+
+    #endregion
+
+    #region Save/Load Listeners
+
+    private void SaveLoadController_OnSaveGame()
+    {
+        SaveSystem.SaveQuestController(this, "/quests.dat");
+    }
+
+    private void SaveLoadController_OnLoadGame()
+    {
+        QuestSaveData data = SaveSystem.LoadData<QuestSaveData>("/quests.dat");
+        
+        if (data == null)
+            return;
+
+        trackedQuests = new List<Quest>();
+        untrackedQuests = new List<Quest>();
+        proposedQuests = new List<Quest>();
+        completedQuests = new List<Quest>();
+
+        // Tracked Quests
+        foreach (QuestToken token in data.trackedQuestTokens)
+            CreateListedQuest(new Quest(token), QuestStatusType.TRACKED);
+
+        // Untracked Quests
+        foreach (QuestToken token in data.untrackedQuestTokens)
+            CreateListedQuest(new Quest(token), QuestStatusType.UNTRACKED);
+
+        // Proposed Quests
+        foreach (QuestToken token in data.proposedQuestTokens)
+            CreateListedQuest(new Quest(token), QuestStatusType.PROPOSED);
+
+        // Completed Quests
+        foreach (QuestToken token in data.completedQuestTokens)
+            CreateListedQuest(new Quest(token), QuestStatusType.COMPLETED);
     }
 
     #endregion

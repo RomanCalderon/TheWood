@@ -123,6 +123,7 @@
     <Compile Include="Assets\Scripts\Main Menu\UIFadeIn.cs" />
     <Compile Include="Assets\Scripts\PickupItem.cs" />
     <Compile Include="Assets\Scripts\Player Items\BuildTool.cs" />
+    <Compile Include="Assets\Scripts\Player Items\Funshroom.cs" />
     <Compile Include="Assets\Scripts\Player Items\PitchFork.cs" />
     <Compile Include="Assets\Scripts\Player Items\PotionLog.cs" />
     <Compile Include="Assets\Scripts\Player Items\Torch.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Assets\Scripts\Questing\KillGoal.cs" />
     <Compile Include="Assets\Scripts\Questing\Quest.cs" />
     <Compile Include="Assets\Scripts\Questing\QuestController.cs" />
+    <Compile Include="Assets\Scripts\Questing\QuestDatabase.cs" />
     <Compile Include="Assets\Scripts\Questing\QuestGiver.cs" />
     <Compile Include="Assets\Scripts\Questing\QuestUIListed.cs" />
     <Compile Include="Assets\Scripts\Questing\QuestUIView.cs" />

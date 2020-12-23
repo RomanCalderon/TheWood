@@ -1,0 +1,60 @@
+[
+  // Example Quest
+  /*
+  {
+    "QuestName": "A Strange Encounter",
+    "Description": "Last night, a wolf attacked one of the villagers. They never hunt this close to the village. Can you help us find these beasts and bring and end to this?",
+    "KillGoals": [
+      {
+        "Description": "Kill 2 Corrupted Wolves",
+        "RequiredAmount": 2,
+        "EnemyID": 0
+      }
+    ],
+    "CollectionGoals": [
+      {
+        "Description": "Collection goal description.",
+        "RequiredAmount": 1,
+        "ItemID": "required_item_slug"
+      }
+    ],
+    "ExperienceReward": 0,
+    "MoneyReward": 0,
+    "ItemRewardSlug": "reward_item_slug"
+  },
+  */
+
+  // ALL QUESTS
+  {
+    "QuestName": "A Strange Encounter",
+    "Description": "Last night, a wolf attacked one of the villagers. They never hunt this close to the village. Can you help us find these beasts and bring an end to this?",
+    "KillGoals": [
+      {
+        "Description": "Kill 2 Corrupted Wolves",
+        "RequiredAmount": 2,
+        "EnemyID": 0
+      }
+    ],
+    "ExperienceReward": 100,
+    "MoneyReward": 16,
+    "ItemRewardSlug": null
+  },
+
+
+  {
+    "QuestName": "Learning the Ropes",
+    "Description": "Since it's your first time in the market, you should know how to trade. I'm sure there are a few things you need right now, but don't have the coin for it. Come back when you got what I need.",
+    "CollectionGoals": [
+      {
+        "Description": "Collect some funshrooms to trade",
+        "RequiredAmount": 3,
+        "ItemID": "funshroom"
+      }
+    ],
+    "ExperienceReward": 60,
+    "MoneyReward": 0,
+    "ItemRewardSlug": "pitchfork"
+  }
+
+
+]

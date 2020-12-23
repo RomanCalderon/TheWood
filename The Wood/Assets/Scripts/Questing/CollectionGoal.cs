@@ -6,10 +6,16 @@ using UnityEngine;
 public class CollectionGoal : Goal
 {
     public string ItemID;
-    
-    public override void Init(Quest quest)
+
+    public CollectionGoal(Quest quest) : base(quest) { }
+
+    public override void Init(Quest quest, bool completed, int currentAmount)
     {
-        base.Init(quest);
+        Quest = quest;
+
+        Completed = completed;
+        CurrentAmount = currentAmount;
+
         UIEventHandler.OnItemAddedToInventory += ItemPickedUp;
     }
 
@@ -18,7 +24,7 @@ public class CollectionGoal : Goal
         if (Quest.IsTracked && item.ItemSlug == ItemID)
         {
             CurrentAmount++;
-            //Debug.Log("CollectionGoal progress = " + CurrentAmount + "/" + RequiredAmount);
+            Debug.Log("CollectionGoal progress = " + CurrentAmount + "/" + RequiredAmount);
             Evaluate();
         }
     }
