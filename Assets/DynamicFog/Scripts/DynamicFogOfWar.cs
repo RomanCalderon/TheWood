@@ -126,8 +126,8 @@ namespace DynamicFogAndMist {
 
 								public void SetFogOfWarTerrainBoundary (Terrain terrain, float borderWidth) {
 												TerrainData td = terrain.terrainData;
-												int tw = td.heightmapWidth;
-												int th = td.heightmapHeight;
+												int tw = td.heightmapResolution;
+												int th = td.heightmapResolution;
 												float ta = td.size.y;
 												float[,] heights = td.GetHeights (0, 0, tw, th);
 												float y0 = transform.position.y - 1f;

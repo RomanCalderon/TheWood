@@ -220,28 +220,28 @@ public class DayNightManager : MonoBehaviour
     {
         switch (DateTime.Now.Month)
         {
-            case 2:
             case 3:
             case 4:
+            case 5:
                 currentSeason = Seasons.SPRING;
                 break;
-            case 5:
             case 6:
             case 7:
+            case 8:
                 currentSeason = Seasons.SUMMER;
                 break;
-            case 8:
             case 9:
             case 10:
+            case 11:
                 currentSeason = Seasons.AUTUMN;
                 break;
-            case 11:
-            case 0:
+            case 12:
             case 1:
+            case 2:
                 currentSeason = Seasons.WINTER;
                 break;
             default:
-                Debug.LogError("Current month [" + DateTime.Now.Month + "] isn't between 0-11?");
+                Debug.LogError("Invalid month [" + DateTime.Now.Month + "]");
                 break;
         }
 
